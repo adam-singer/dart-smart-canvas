@@ -1,6 +1,6 @@
 part of smartcanvas;
 
-class _SvgCircle extends _SvgDraggableNode{
+class _SvgCircle extends _SvgNode{
   double r;
 
   _SvgCircle(SvgCanvas canvas, Map<String, dynamic> attrs): super(canvas, attrs) {}

@@ -1,7 +1,6 @@
 part of smartcanvas;
 
 class SvgCanvas extends _ICanvasImpl {
-
   SvgCanvas(containerId, Map<String, dynamic> attrs)
       : super(containerId, attrs) {
   }

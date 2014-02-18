@@ -1,10 +1,10 @@
 part of smartcanvas;
 
-class SvgEllipse extends SvgNode{
+class _SvgEllipse extends _SvgNode{
   double rx;
   double ry;
 
-  SvgEllipse(_ICanvasImpl canvas, Map<String, dynamic> attrs): super(canvas, attrs) {}
+  _SvgEllipse(_ICanvasImpl canvas, Map<String, dynamic> attrs): super(canvas, attrs) {}
 
   SVG.SvgElement _createElement() {
     return new SVG.EllipseElement();

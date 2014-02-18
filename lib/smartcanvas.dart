@@ -19,11 +19,9 @@ part 'shape/line.dart';
 part 'impl/i_canvas_impl.dart';
 part 'impl/i_node_impl.dart';
 part 'impl/i_group_impl.dart';
-part 'impl/i_draggable.dart';
 
 part 'impl/svg/svg_canvas.dart';
 part 'impl/svg/svg_node.dart';
-part 'impl/svg/svg_draggable_node.dart';
 
 part 'impl/svg/shapes/circle.dart';
 part 'impl/svg/shapes/rect.dart';

@@ -1,6 +1,6 @@
 part of smartcanvas;
 
-class _SvgGroup extends _SvgDraggableNode implements _IGroupImpl {
+class _SvgGroup extends _SvgNode implements _IGroupImpl {
   Set<_SvgNode> _children = new Set<_SvgNode>();
   _SvgGroup(SvgCanvas canvas, Map<String, dynamic> attr, Set<Node> children)
     : super(canvas, attr) {

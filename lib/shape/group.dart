@@ -5,7 +5,7 @@ class Group extends Node {
   Group([Map<String, dynamic> config = null]): super(config) {}
 
   _INodeImpl _createSvgImpl(_ICanvasImpl canvas) {
-    return  new SvgGroup(canvas, _attrs, _children);
+    return  new _SvgGroup(canvas, _attrs, _children);
   }
 
   _INodeImpl _createCanvasImpl(_ICanvasImpl canvas) {

@@ -4,10 +4,18 @@ abstract class _SvgNode extends _INodeImpl {
   _ICanvasImpl _canvas;
   SVG.SvgElement _element;
 
+  bool _dragging;
+  num _dragOffsetX;
+  num _dragOffsetY;
+
   _SvgNode(this._canvas, Map<String, dynamic> attrs) : super(attrs) {
     _element = _createElement();
     _setElementAttributes();
 //    _setStyles();
+
+    if (_getAttribute('draggable') == true) {
+      _element.onMouseDown.listen(_onMouseDown);
+    }
   }
 
   String get type => 'svg';
@@ -42,4 +50,33 @@ abstract class _SvgNode extends _INodeImpl {
 //        + ';fill:' + this.fill;
 //    _element.setAttribute('style', style);
 //  }
+
+  void _onMouseDown(DOM.MouseEvent e) {
+    e.preventDefault();
+    this._dragging = true;
+
+    var pointerPosition = this._canvas.getPointerPosition();
+    this._dragOffsetX = pointerPosition.x - (this._element as SVG.GraphicsElement).getCtm().e;
+    this._dragOffsetY = pointerPosition.y - (this._element as SVG.GraphicsElement).getCtm().f;
+
+    this._canvas._element.onMouseMove.listen(dragStart).resume();
+    this._canvas._element.onMouseUp.listen(dragEnd).resume();
+  }
+
+  void dragStart(DOM.MouseEvent e) {
+    e.preventDefault();
+    if (this._dragging) {
+      var pointerPosition = this._canvas.getPointerPosition();
+      num x = pointerPosition.x - this._dragOffsetX;
+      num y = pointerPosition.y - this._dragOffsetY;
+      this._element.setAttribute('transform', 'translate($x, $y)');
+    }
+  }
+
+  void dragEnd(DOM.MouseEvent e) {
+    e.preventDefault();
+    this._dragging = false;
+    this._canvas._element.onMouseDown.listen(dragStart).cancel();
+    this._canvas._element.onMouseUp.listen(dragEnd).cancel();
+  }
 }

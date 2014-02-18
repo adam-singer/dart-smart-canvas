@@ -16,7 +16,7 @@ class Circle extends Node {
   }
 
   _INodeImpl _createSvgImpl(_ICanvasImpl canvas) {
-    return new SvgCircle(canvas, _attrs);
+    return new _SvgCircle(canvas, _attrs);
   }
 
   _INodeImpl _createCanvasImpl(_ICanvasImpl canvas) {

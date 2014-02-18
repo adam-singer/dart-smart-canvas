@@ -5,7 +5,7 @@ class Ellipse extends Node {
   Ellipse(Map<String, dynamic> config): super(config) {}
 
   _INodeImpl _createSvgImpl(_ICanvasImpl canvas) {
-    return new SvgEllipse(canvas, _attrs);
+    return new _SvgEllipse(canvas, _attrs);
   }
 
   _INodeImpl _createCanvasImpl(_ICanvasImpl canvas) {

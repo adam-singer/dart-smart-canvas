@@ -1,9 +1,9 @@
-part of smartcanvas;
+part of smartcanvas.svg;
 
-class _SvgCircle extends _SvgNode{
+class SvgCircle extends SvgNode{
   double r;
 
-  _SvgCircle(SvgCanvas canvas, Map<String, dynamic> attrs): super(canvas, attrs) {}
+  SvgCircle(Circle shell): super(shell) {}
 
   SVG.SvgElement _createElement() {
     return new SVG.CircleElement();
@@ -15,14 +15,14 @@ class _SvgCircle extends _SvgNode{
     return attrs;
   }
 
-  dynamic _getAttribute(attr) {
+  dynamic getAttribute(attr) {
     switch (attr) {
       case 'cx':
-        return super._getAttribute('x');
+        return super.getAttribute('x');
       case 'cy':
-        return super._getAttribute('y');
+        return super.getAttribute('y');
       default:
-        return super._getAttribute(attr);
+        return super.getAttribute(attr);
     }
   }
 }

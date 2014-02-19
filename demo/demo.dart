@@ -2,7 +2,8 @@ import 'dart:html';
 import '../lib/smartcanvas.dart';
 
 void main() {
-  Canvas canvas = new Canvas('#smartCanvas', 'svg', {
+  Element container = document.querySelector('#smartCanvas');
+  Canvas canvas = new Canvas(container, 'svg', {
       'width': 600,
       'height': 600,
       'draggable': true
@@ -15,17 +16,20 @@ void main() {
     'stroke': 'green',
 //    'strokeWidth': 4,
       'fill': 'yellow',
-//      'draggable': true
+//      'draggable': true,
+      'name': 'circle',
+      'listening': true
     });
 
     Rect rect = new Rect({
-      'x': 50,
-      'y': 50,
+      'x': 30,
+      'y': 30,
       'width': 40,
       'height': 40,
       'stroke': 'red',
       'strokeWidth': 2,
-//      'draggable': true
+//      'draggable': true,
+      'name': 'rect'
     });
 
     Ellipse ellipse = new Ellipse({
@@ -35,9 +39,11 @@ void main() {
       'ry': 50,
       'fill': 'green',
       'stroke': 'purple',
+      'listening': true
     });
+    ellipse.on(mousedown, (e){ ellipse.moveToTop(); });
 
-    Node line = new Line({
+    Line line = new Line({
       'x1': 100,
       'y1': 100,
       'x2': 150,
@@ -48,12 +54,30 @@ void main() {
 
     Group g = new Group({
       'draggable': true,
+      'listening': true,
+      'name': 'group'
     });
     g.add(circle);
     g.add(rect);
+//    g.on('mousedown', (e) => print('group clicked'));
+//    g.on(mousemove, (e) => print('....'));
 
 //  canvas.add(circle);
     canvas.add(g);
+    int i = 0;
+//    g.on('mousedown', (e){
+//      if (i < 2) {
+//        g.moveUp();
+//        ++i;
+//      } else {
+//        g.moveDown();
+//        --i;
+//      }
+//
+//    });
+    g.on(click, (e) => print('group clicked'));
+    g.on(dblclick, (e) => print('group double clicked'));
+
 //  canvas.add(rect);
     canvas.add(ellipse);
     canvas.add(line);

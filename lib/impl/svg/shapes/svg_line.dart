@@ -1,7 +1,7 @@
-part of smartcanvas;
+part of smartcanvas.svg;
 
-class SvgLine extends _SvgNode {
-  SvgLine(SvgCanvas canvas, Map<String, dynamic> attrs): super(canvas, attrs) {}
+class SvgLine extends SvgNode {
+  SvgLine(Line shell): super(shell) {}
 
   SVG.SvgElement _createElement() {
     return new SVG.LineElement();

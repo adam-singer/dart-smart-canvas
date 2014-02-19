@@ -1,27 +1,36 @@
-part of smartcanvas;
+part of smartcanvas.svg;
 
-class SvgCanvas extends _ICanvasImpl {
-  SvgCanvas(containerId, Map<String, dynamic> attrs)
-      : super(containerId, attrs) {
+class SvgCanvas extends CanvasImpl{
+  List<SvgNode> _children = new List<SvgNode>();
+  Position _pointerPositioin;
+
+  SvgCanvas(container, Canvas shell)
+      : super(container, shell) {
   }
 
   String get type => 'svg';
 
-  _createElement() {
+  DOM.Element createElement() {
     var svg = new SVG.SvgSvgElement();
     svg.attributes = {
-      'width': _getAttributeString('width'),
-      'height': _getAttributeString('height')
+      'width': getAttributeString('width'),
+      'height': getAttributeString('height')
     };
     return svg;
   }
 
-  void appendChild(_SvgNode node) {
-    this._element.nodes.add(node.element);
+  void appendChild(SvgNode node) {
+    node.parent = this;
+    this.element.nodes.add(node.element);
   }
 
-  void _setPointerPosition(e) {
-    SVG.SvgSvgElement canvas = this._element;
+  void remove() {
+    element.remove();
+    parent = null;
+  }
+
+  void setPointerPosition(e) {
+    SVG.SvgSvgElement canvas = this.element;
     num x = (e.client.x - canvas.currentTranslate.x) / canvas.currentScale;
     num y = (e.client.y - canvas.currentTranslate.y) / canvas.currentScale;
     this._pointerPositioin = new Position(x, y);
@@ -30,4 +39,36 @@ class SvgCanvas extends _ICanvasImpl {
   Position getPointerPosition() {
     return this._pointerPositioin;
   }
+
+  void add(SvgNode child) {
+    _children.add(child);
+    child.parent = this;
+    this.element.append(child._element);
+  }
+
+  void removeChildAt(int index) {
+    SvgNode node = _children[index];
+    removeChild(node);
+  }
+
+  void removeChild(SvgNode node) {
+    _children.remove(node);
+    node.element.remove();
+    node.parent = null;
+    // TODO: remove event listeners
+  }
+
+  void removeChildren() {
+    _children.forEach((child) {
+      removeChild(child);
+    });
+  }
+
+  void insert(int index, SvgNode node) {
+    node.parent = this;
+    _children.insert(index, node);
+    this.element.nodes.insert(index, node._element);
+  }
+
+  List<SvgNode> get children => _children;
 }

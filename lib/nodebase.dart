@@ -8,7 +8,7 @@ class _EventListener {
   _EventListener(this.id, this.handler);
 }
 
-class NodeBase {
+abstract class NodeBase {
   int _uid;
   Map<String, dynamic> _attrs = {};
 
@@ -20,39 +20,39 @@ class NodeBase {
 
   void _setAttributeFromConfig(String attr, Map<String, dynamic> config, [dynamic defaultVal = null]) {
     if (config.containsKey(attr)) {
-      _setAttribute(attr, config[attr]);
+      setAttribute(attr, config[attr]);
     } else if (defaultVal != null) {
-      _setAttribute(attr, defaultVal);
+      setAttribute(attr, defaultVal);
     }
   }
 
-  void _setAttribute(String attr, dynamic value) {
+  void setAttribute(String attr, dynamic value) {
     var oldValue = _attrs[attr];
     _attrs[attr] = value;
     fire(attr + 'Changed', oldValue, value);
   }
 
-  dynamic _getAttribute(String attr) {
+  dynamic getAttribute(String attr) {
     return _attrs[attr];
   }
 
-  String _getAttributeString(String attr) {
-    var value = _getAttribute(attr);
+  String getAttributeString(String attr) {
+    var value = getAttribute(attr);
     return '$value';
   }
 
-  void on(String event, Function handler, String id) {
-    List<String> ss = event.split(' ');
-    for (int i = 0; i < ss.length; i++) {
-      String event = ss[i];
-      if (_eventListeners[event] != null) {
-        _eventListeners[event] = new List<_EventListener>();
-      }
-      _eventListeners[event].add(new _EventListener(id, handler));
-    }
-  }
+  void on(String events, Function handler, [String id]);
+//  {
+//    List<String> ss = events.split(' ');
+//    ss.forEach((event) {
+//      if (_eventListeners[event] == null) {
+//        _eventListeners[event] = new List<_EventListener>();
+//      }
+//      _eventListeners[event].add(new _EventListener(id, handler));
+//    });
+//  }
 
-  void off(String event, String id) {
+  void off(String event, [String id]) {
     List<_EventListener> listeners = _eventListeners[event];
     if (listeners != null) {
       var i = 0;
@@ -93,4 +93,7 @@ class NodeBase {
       }
     }
   }
+
+  Map<String, dynamic> get attrs => _attrs;
+  Map<String, List<_EventListener>> get eventListeners => _eventListeners;
 }

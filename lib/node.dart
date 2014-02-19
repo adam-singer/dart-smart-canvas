@@ -1,9 +1,10 @@
 part of smartcanvas;
 
 abstract class Node extends NodeBase {
-  _ICanvasImpl _canvas = null;
-  _INodeImpl _impl = null;
+  CanvasImpl _canvas = null;
+  NodeImpl _impl = null;
   Node _parent = null;
+  int _index = null;
 
   Node([Map<String, dynamic> config = null]): super() {
     if (config == null) {
@@ -13,49 +14,133 @@ abstract class Node extends NodeBase {
   }
 
   void populateConfig(Map<String, dynamic> config) {
-    config.forEach(_setAttribute);
+    config.forEach(setAttribute);
     if (_attrs['fill'] == null) {
       _attrs['fill'] = 'transparent';
     }
   }
 
-  void addToCanvas(Canvas canvas) {
-    _canvas = canvas._impl;
-    _impl = _createImpl(_canvas);
-    _canvas.appendChild(_impl);
-  }
+  void remove() {
+    var container = _parent as Container;
+    if (container) {
+      if (_impl != null) {
+        _impl.remove();
+      }
 
-  _INodeImpl _createImpl(canvasOrType) {
-    var type = canvasOrType is String ? canvasOrType : canvasOrType.type;
-    switch (type) {
-      case 'svg':
-        return _createSvgImpl(canvasOrType);
-      default:
-        return _createCanvasImpl(canvasOrType);
+      container.children.remove(this);
+      _parent = null;
     }
   }
 
-  _INodeImpl _createSvgImpl(_ICanvasImpl canvas);
-  _INodeImpl _createCanvasImpl(_ICanvasImpl canvas);
+  NodeImpl createImpl(type) {
+    switch (type) {
+      case 'svg':
+        _impl = _createSvgImpl();
+        break;
+      default:
+        _impl = _createCanvasImpl();
+    }
 
-  void set id(String value) => _setAttribute('id', value);
-  String get id => _getAttribute('id');
+    return _impl;
+  }
 
-  void set x(num value) => _setAttribute('x', value);
-  num get x => _getAttribute('x');
+  NodeImpl _createSvgImpl();
+  NodeImpl _createCanvasImpl();
 
-  void set y(num value) => _setAttribute('y', value);
-  num get y => _getAttribute('y');
+  void moveTo(Container parent) {
+    if (_parent != null) {
+      (_parent as Container).removeChild(this);
+    }
+    parent.add(this);
+  }
 
-  void set stroke(String value) => _setAttribute('stroke', value);
-  String get stroke => _getAttribute('stroke');
+  void moveUp() {
+    int index;
+    Container container = _parent as Container;
+    if (container != null) {
+      index = container.children.indexOf(this);
+      if (index != container.children.length - 1) {
+        container.removeChild(this);
+        container.insert(index + 1, this);
+      }
+    }
+  }
 
-  void set strokeWidth(num value) => _setAttribute('stroke-width', value);
-  num get strokeWidth => _getAttribute('strokeWidth');
+  void moveDown() {
+    int index;
+    Container container = _parent as Container;
+    if (container != null) {
+      index = container.children.indexOf(this);
+      if (index > 0) {
+        container.removeChild(this);
+        container.insert(index - 1, this);
+      }
+    }
+  }
 
-  void set strokeOpacity(num value) => _setAttribute('stroke-opacity', value);
-  num get strokeOpacity => _getAttribute('stroke-opacity');
+  void moveToTop() {
+    int index;
+    Container container = _parent as Container;
+    if (container != null) {
+      index = container.children.indexOf(this);
+      if (index != container.children.length - 1) {
+        container.removeChild(this);
+        container.add(this);
+      }
+    }
+  }
 
-  void set fill(String value) => _setAttribute('fill', value);
-  String get fill => _getAttribute('fill');
+  void moveToBottom() {
+    int index;
+    Container container = _parent as Container;
+    if (container != null) {
+      index = container.children.indexOf(this);
+      if (index > 0) {
+        container.removeChild(this);
+        container.insert(0, this);
+      }
+    }
+  }
+
+  void on(String events, Function handler, [String id]) {
+    List<String> ss = events.split(' ');
+    ss.forEach((event) {
+      if (_eventListeners[event] == null) {
+        _eventListeners[event] = new List<_EventListener>();
+      }
+      _eventListeners[event].add(new _EventListener(id, handler));
+
+      if (_impl != null) {
+        _impl.on(event, handler, id);
+      }
+    });
+  }
+
+  CanvasImpl get canvas => _canvas;
+
+  void set id(String value) => setAttribute('id', value);
+  String get id => getAttribute('id');
+
+  void set x(num value) => setAttribute('x', value);
+  num get x => getAttribute('x');
+
+  void set y(num value) => setAttribute('y', value);
+  num get y => getAttribute('y');
+
+  void set stroke(String value) => setAttribute('stroke', value);
+  String get stroke => getAttribute('stroke');
+
+  void set strokeWidth(num value) => setAttribute('stroke-width', value);
+  num get strokeWidth => getAttribute('strokeWidth');
+
+  void set strokeOpacity(num value) => setAttribute('stroke-opacity', value);
+  num get strokeOpacity => getAttribute('stroke-opacity');
+
+  void set fill(String value) => setAttribute('fill', value);
+  String get fill => getAttribute('fill');
+
+  void set opacity(String value) => setAttribute('opacity', value);
+  String get opacity => getAttribute('opacity');
+
+  num get index => _index;
 }

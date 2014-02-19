@@ -1,20 +1,26 @@
-part of smartcanvas;
+part of smartcanvas.svg;
 
-abstract class _SvgNode extends _INodeImpl {
-  _ICanvasImpl _canvas;
+abstract class SvgNode extends NodeImpl {
   SVG.SvgElement _element;
 
-  bool _dragging;
+  bool _dragging = false;
+  bool _dragStarted = false;
   num _dragOffsetX;
   num _dragOffsetY;
 
-  _SvgNode(this._canvas, Map<String, dynamic> attrs) : super(attrs) {
+  SvgNode(Node shell) : super(shell) {
     _element = _createElement();
     _setElementAttributes();
 //    _setStyles();
 
-    if (_getAttribute('draggable') == true) {
-      _element.onMouseDown.listen(_onMouseDown);
+    if (getAttribute('draggable') == true) {
+      _element.onMouseDown.listen(_dragStart);
+    }
+
+    if(getAttribute('listening') == true) {
+      this.eventListeners.forEach((k, v) {
+        _registerDOMEvent(k);
+      });
     }
   }
 
@@ -35,7 +41,7 @@ abstract class _SvgNode extends _INodeImpl {
   }
 
   void _setElementAttribute(String attr) {
-    var value = _getAttribute(attr);
+    var value = getAttribute(attr);
     if (value != null) {
       if (!(value is String) || !value.isEmpty) {
         _element.attributes[attr] = '$value';
@@ -51,32 +57,91 @@ abstract class _SvgNode extends _INodeImpl {
 //    _element.setAttribute('style', style);
 //  }
 
-  void _onMouseDown(DOM.MouseEvent e) {
+  void remove() {
+    _element.remove();
+    (parent as Container).children.remove(this);
+    parent = null;
+  }
+
+  void _registerDOMEvent(String event) {
+    Function eventHandler = fireEvent(event);
+    switch (event) {
+      case 'mousedown':
+        _element.onMouseDown.listen(eventHandler);
+        break;
+      case 'mouseup':
+        _element.onMouseUp.listen(eventHandler);
+        break;
+      case 'mouseenter':
+        _element.onMouseEnter.listen(eventHandler);
+        break;
+      case 'mouseleave':
+        _element.onMouseLeave.listen(eventHandler);
+        break;
+      case 'mouseover':
+        _element.onMouseOver.listen(eventHandler);
+        break;
+      case 'mouseout':
+        _element.onMouseOut.listen(eventHandler);
+        break;
+      case 'mousemove':
+        _element.onMouseMove.listen(_onMouseMove);
+        break;
+      case 'click':
+        _element.onClick.listen(eventHandler);
+        break;
+      case 'dblclick':
+        _element.onDoubleClick.listen(eventHandler);
+        break;
+     }
+  }
+
+  Function fireEvent(String event) {
+    return (e) => fire(event, e);
+  }
+
+  void _dragStart(DOM.MouseEvent e) {
     e.preventDefault();
     this._dragging = true;
 
-    var pointerPosition = this._canvas.getPointerPosition();
+    var pointerPosition = this.canvas.getPointerPosition();
     this._dragOffsetX = pointerPosition.x - (this._element as SVG.GraphicsElement).getCtm().e;
     this._dragOffsetY = pointerPosition.y - (this._element as SVG.GraphicsElement).getCtm().f;
 
-    this._canvas._element.onMouseMove.listen(dragStart).resume();
-    this._canvas._element.onMouseUp.listen(dragEnd).resume();
+    this.canvas.element.onMouseMove.listen(_dragMove).resume();
+    this.canvas.element.onMouseUp.listen(_dragEnd).resume();
   }
 
-  void dragStart(DOM.MouseEvent e) {
-    e.preventDefault();
-    if (this._dragging) {
-      var pointerPosition = this._canvas.getPointerPosition();
+  void _dragMove(DOM.MouseEvent e) {
+    if (_dragging) {
+      e.preventDefault();
+      if (!_dragStarted) {
+        fire('dragstart', e);
+        _dragStarted = true;
+      }
+      var pointerPosition = this.canvas.getPointerPosition();
       num x = pointerPosition.x - this._dragOffsetX;
       num y = pointerPosition.y - this._dragOffsetY;
       this._element.setAttribute('transform', 'translate($x, $y)');
     }
   }
 
-  void dragEnd(DOM.MouseEvent e) {
+  void _dragEnd(DOM.MouseEvent e) {
     e.preventDefault();
-    this._dragging = false;
-    this._canvas._element.onMouseDown.listen(dragStart).cancel();
-    this._canvas._element.onMouseUp.listen(dragEnd).cancel();
+    _dragging = false;
+    this.canvas.element.onMouseMove.listen(_dragMove).cancel();
+    this.canvas.element.onMouseUp.listen(_dragEnd).cancel();
+  }
+
+  void _onMouseMove(DOM.MouseEvent e) {
+    if (!_dragging) {
+      fire('mousemove', e);
+      var name = getAttribute('name');
+      print (name + ' mousemove');
+    }
+  }
+
+  void on(String event, Function handler, [String id]) {
+    _registerDOMEvent(event);
   }
 }

@@ -11,18 +11,18 @@ class Circle extends Node {
       r = _attrs['r'] = 0;
     }
     var width = r * 2;
-    _setAttribute('width', width);
-    _setAttribute('height', width);
+    setAttribute('width', width);
+    setAttribute('height', width);
   }
 
-  _INodeImpl _createSvgImpl(_ICanvasImpl canvas) {
-    return new _SvgCircle(canvas, _attrs);
+  NodeImpl _createSvgImpl() {
+    return new SvgCircle(this);
   }
 
-  _INodeImpl _createCanvasImpl(_ICanvasImpl canvas) {
+  NodeImpl _createCanvasImpl() {
     throw 'Not implemented';
   }
 
-  void set r(num value) => _setAttribute('r', value);
-  num get r => _getAttribute('r');
+  void set r(num value) => setAttribute('r', value);
+  num get r => getAttribute('r');
 }

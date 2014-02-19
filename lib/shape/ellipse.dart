@@ -4,17 +4,17 @@ class Ellipse extends Node {
 
   Ellipse(Map<String, dynamic> config): super(config) {}
 
-  _INodeImpl _createSvgImpl(_ICanvasImpl canvas) {
-    return new _SvgEllipse(canvas, _attrs);
+  NodeImpl _createSvgImpl() {
+    return new SvgEllipse(this);
   }
 
-  _INodeImpl _createCanvasImpl(_ICanvasImpl canvas) {
+  NodeImpl _createCanvasImpl() {
     throw 'Not implemented';
   }
 
-  void set rx(num value) => _setAttribute('rx', value);
-  num get rx => _getAttribute('rx');
+  void set rx(num value) => setAttribute('rx', value);
+  num get rx => getAttribute('rx');
 
-  void set ry(num value) => _setAttribute('ry', value);
-  num get ry => _getAttribute('ry');
+  void set ry(num value) => setAttribute('ry', value);
+  num get ry => getAttribute('ry');
 }

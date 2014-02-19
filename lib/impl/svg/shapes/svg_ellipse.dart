@@ -1,10 +1,10 @@
-part of smartcanvas;
+part of smartcanvas.svg;
 
-class _SvgEllipse extends _SvgNode{
+class SvgEllipse extends SvgNode{
   double rx;
   double ry;
 
-  _SvgEllipse(_ICanvasImpl canvas, Map<String, dynamic> attrs): super(canvas, attrs) {}
+  SvgEllipse(Ellipse shell): super(shell) {}
 
   SVG.SvgElement _createElement() {
     return new SVG.EllipseElement();
@@ -16,14 +16,14 @@ class _SvgEllipse extends _SvgNode{
     return attrs;
   }
 
-  dynamic _getAttribute(String attr) {
+  dynamic getAttribute(String attr) {
     switch (attr) {
       case 'cx':
-        return super._getAttribute('x');
+        return super.getAttribute('x');
       case 'cy':
-        return super._getAttribute('y');
+        return super.getAttribute('y');
       default:
-        return super._getAttribute(attr);
+        return super.getAttribute(attr);
     }
   }
 }

@@ -24,7 +24,7 @@ abstract class SvgNode extends NodeImpl {
     }
   }
 
-  String get type => 'svg';
+  String get type => svg;
 
   SVG.SvgElement get element => _element;
 

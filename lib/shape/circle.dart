@@ -6,7 +6,7 @@ class Circle extends Node {
 
   void populateConfig(Map<String, dynamic> config) {
     super.populateConfig(config);
-    var r = _attrs['r'];
+    num r = _attrs['r'];
     if (r == null) {
       r = _attrs['r'] = 0;
     }

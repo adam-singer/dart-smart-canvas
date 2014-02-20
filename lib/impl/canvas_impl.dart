@@ -20,10 +20,10 @@ abstract class CanvasImpl extends NodeImpl implements Container<NodeImpl>{
 
   DOM.Element createElement();
 
-  /**
-   * Add a node to canvas
-   */
-  void appendChild(NodeImpl node);
+//  /**
+//   * Add a node to canvas
+//   */
+//  void appendChild(NodeImpl node);
 
   void setPointerPosition(e);
 

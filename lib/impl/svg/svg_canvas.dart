@@ -2,13 +2,13 @@ part of smartcanvas.svg;
 
 class SvgCanvas extends CanvasImpl{
   List<SvgNode> _children = new List<SvgNode>();
-  Position _pointerPositioin;
+  Position _pointerPosition;
 
   SvgCanvas(container, Canvas shell)
       : super(container, shell) {
   }
 
-  String get type => 'svg';
+  String get type => svg;
 
   DOM.Element createElement() {
     var svg = new SVG.SvgSvgElement();
@@ -33,11 +33,11 @@ class SvgCanvas extends CanvasImpl{
     SVG.SvgSvgElement canvas = this.element;
     num x = (e.client.x - canvas.currentTranslate.x) / canvas.currentScale;
     num y = (e.client.y - canvas.currentTranslate.y) / canvas.currentScale;
-    this._pointerPositioin = new Position(x, y);
+    this._pointerPosition = new Position(x, y);
   }
 
   Position getPointerPosition() {
-    return this._pointerPositioin;
+    return this._pointerPosition;
   }
 
   void add(SvgNode child) {

@@ -34,7 +34,7 @@ abstract class Node extends NodeBase {
 
   NodeImpl createImpl(type) {
     switch (type) {
-      case 'svg':
+      case svg:
         _impl = _createSvgImpl();
         break;
       default:
@@ -131,7 +131,7 @@ abstract class Node extends NodeBase {
   String get stroke => getAttribute('stroke');
 
   void set strokeWidth(num value) => setAttribute('stroke-width', value);
-  num get strokeWidth => getAttribute('strokeWidth');
+  num get strokeWidth => getAttribute('stroke-width');
 
   void set strokeOpacity(num value) => setAttribute('stroke-opacity', value);
   num get strokeOpacity => getAttribute('stroke-opacity');

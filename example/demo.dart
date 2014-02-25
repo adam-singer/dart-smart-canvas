@@ -6,7 +6,7 @@ void main() {
   Canvas canvas = new Canvas(container, 'svg', {
       'width': 600,
       'height': 600,
-      'draggable': true
+      'id': 'one'
     });
 
     Circle circle = new Circle({
@@ -81,4 +81,31 @@ void main() {
 //  canvas.add(rect);
     canvas.add(ellipse);
     canvas.add(line);
+
+    Circle c2 = new Circle({
+      'x': 100,
+      'y': 100,
+      'r': 50,
+      'fill': 'red',
+      'listening': true,
+//      'draggable': true
+    });
+
+//    Canvas canvas2 = new Canvas(container, svg, {
+//      'width': 600,
+//      'height': 600,
+//      'id': 'two'
+//    });
+//
+//    c2.on(click, (e) => print('c2 clicked'));
+//    canvas2.add(c2);
+
+    Layer layer = new Layer({
+      'id': 'addOnLayer',
+    });
+    layer.add(c2);
+    canvas.add(layer);
+    canvas.defaultLayer.moveUp();
+//    c2.moveTo(canvas.defaultLayer);
+    layer.draggalbe = true;
 }

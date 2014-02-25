@@ -9,12 +9,13 @@ abstract class SvgNode extends NodeImpl {
   num _dragOffsetY;
 
   SvgNode(Node shell) : super(shell) {
+    this.canvas = shell.canvas;
     _element = _createElement();
     _setElementAttributes();
 //    _setStyles();
 
     if (getAttribute('draggable') == true) {
-      _element.onMouseDown.listen(_dragStart);
+      _startDragHandling();
     }
 
     if(getAttribute('listening') == true) {
@@ -22,6 +23,14 @@ abstract class SvgNode extends NodeImpl {
         _registerDOMEvent(k);
       });
     }
+
+    this.shell.on('draggableChanged', (oldValue, newValue) {
+      if (newValue) {
+        _startDragHandling();
+      } else {
+        _stopDragHandling();
+      }
+    });
   }
 
   String get type => svg;
@@ -30,9 +39,18 @@ abstract class SvgNode extends NodeImpl {
 
   SVG.SvgElement _createElement();
 
+  void _startDragHandling() {
+    _element.onMouseDown.listen(_dragStart).resume();
+  }
+
+  void _stopDragHandling() {
+    _element.onMouseDown.listen(_dragStart).cancel();
+  }
+
   Set<String> _getElementAttributeNames() {
-    return new Set<String>.from(['id', 'name', 'x', 'y', 'width', 'height', 'stroke',
-            'stroke-width', 'stroke-opacity', 'fill', 'opacity']);
+    return new Set<String>.from(['id', 'class', 'name', 'x', 'y', 'width',
+                                 'height', 'stroke', 'stroke-width',
+                                 'stroke-opacity', 'fill', 'opacity']);
   }
 
   void _setElementAttributes() {

@@ -18,15 +18,11 @@ class Group extends Node implements Container<Node> {
     } else {
       _children.add(child);
       child._parent = this;
+      child.canvas = this.canvas;
       if (_impl != null ) {
         (_impl as Container).add(child.createImpl(_impl.type));
       }
     }
-  }
-
-  void removeChildAt(int index) {
-    Node child = _children[index];
-    child.remove();
   }
 
   void removeChild(Node node) {
@@ -45,5 +41,12 @@ class Group extends Node implements Container<Node> {
 
   void _addChildImpl(NodeImpl impl, Node child, CanvasImpl canvas) {
     NodeImpl chldImpl = child.createImpl(canvas);
+  }
+
+  void set canvas(CanvasImpl canvas) {
+    super.canvas = canvas;
+    _children.forEach((node) {
+      node.canvas = canvas;
+    });
   }
 }

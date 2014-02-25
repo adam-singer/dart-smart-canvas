@@ -1,27 +1,33 @@
 part of smartcanvas.svg;
 
-class SvgCanvas extends CanvasImpl{
+class SvgCanvas extends SvgNode implements CanvasImpl{
+  DOM.Element _container;
   List<SvgNode> _children = new List<SvgNode>();
+//  SvgLayer _defaultLayer = new SvgLayer(new Layer({'id': 'default'}));
   Position _pointerPosition;
 
-  SvgCanvas(container, Canvas shell)
-      : super(container, shell) {
+  SvgCanvas(this._container, Canvas shell)
+      : super(shell) {
+    if (this._container == null) {
+      throw "container doesn't exit";
+    }
+    this._container.nodes.add(this._element);
+
+    this._element.onMouseDown.listen(setPointerPosition);
+    this._element.onMouseMove.listen(setPointerPosition);
+    this._element.onMouseUp.listen(setPointerPosition);
+    this._element.onMouseEnter.listen(setPointerPosition);
+    this._element.onMouseLeave.listen(setPointerPosition);
   }
 
   String get type => svg;
 
-  DOM.Element createElement() {
-    var svg = new SVG.SvgSvgElement();
-    svg.attributes = {
-      'width': getAttributeString('width'),
-      'height': getAttributeString('height')
-    };
-    return svg;
+  DOM.Element _createElement() {
+    return new SVG.SvgSvgElement();
   }
 
-  void appendChild(SvgNode node) {
-    node.parent = this;
-    this.element.nodes.add(node.element);
+  Set<String> _getElementAttributeNames() {
+    return new Set<String>.from(['id', 'class', 'width', 'height']);
   }
 
   void remove() {
@@ -44,11 +50,6 @@ class SvgCanvas extends CanvasImpl{
     _children.add(child);
     child.parent = this;
     this.element.append(child._element);
-  }
-
-  void removeChildAt(int index) {
-    SvgNode node = _children[index];
-    removeChild(node);
   }
 
   void removeChild(SvgNode node) {

@@ -116,6 +116,12 @@ abstract class Node extends NodeBase {
     });
   }
 
+  void set canvas(CanvasImpl canvas) {
+    _canvas = canvas;
+    if (_impl != null) {
+      _impl.canvas = canvas;
+    }
+  }
   CanvasImpl get canvas => _canvas;
 
   void set id(String value) => setAttribute('id', value);
@@ -141,6 +147,9 @@ abstract class Node extends NodeBase {
 
   void set opacity(String value) => setAttribute('opacity', value);
   String get opacity => getAttribute('opacity');
+
+  void set draggalbe(bool value) => setAttribute('draggable', value);
+  bool get draggable => getAttribute('draggable');
 
   num get index => _index;
 }

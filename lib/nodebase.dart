@@ -8,7 +8,7 @@ class _EventListener {
   _EventListener(this.id, this.handler);
 }
 
-abstract class NodeBase {
+class NodeBase {
   int _uid;
   Map<String, dynamic> _attrs = {};
 
@@ -29,7 +29,9 @@ abstract class NodeBase {
   void setAttribute(String attr, dynamic value) {
     var oldValue = _attrs[attr];
     _attrs[attr] = value;
-    fire(attr + 'Changed', oldValue, value);
+    if (oldValue != value) {
+      fire(attr + 'Changed', oldValue, value);
+    }
   }
 
   dynamic getAttribute(String attr) {
@@ -41,16 +43,15 @@ abstract class NodeBase {
     return '$value';
   }
 
-  void on(String events, Function handler, [String id]);
-//  {
-//    List<String> ss = events.split(' ');
-//    ss.forEach((event) {
-//      if (_eventListeners[event] == null) {
-//        _eventListeners[event] = new List<_EventListener>();
-//      }
-//      _eventListeners[event].add(new _EventListener(id, handler));
-//    });
-//  }
+  void on(String events, Function handler, [String id]) {
+    List<String> ss = events.split(' ');
+    ss.forEach((event) {
+      if (_eventListeners[event] == null) {
+        _eventListeners[event] = new List<_EventListener>();
+      }
+      _eventListeners[event].add(new _EventListener(id, handler));
+    });
+  }
 
   void off(String event, [String id]) {
     List<_EventListener> listeners = _eventListeners[event];

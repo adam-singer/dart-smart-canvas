@@ -17,12 +17,8 @@ class SvgGroup extends SvgNode implements Container<SvgNode> {
   void add(SvgNode child) {
     _children.add(child);
     child.parent = this;
+    child.canvas = this.canvas;
     this._element.append(child._element);
-  }
-
-  void removeChildAt(int index) {
-    SvgNode node = _children[index];
-    node.remove();
   }
 
   void removeChild(SvgNode node) {
@@ -39,4 +35,11 @@ class SvgGroup extends SvgNode implements Container<SvgNode> {
   }
 
   List<SvgNode> get children => _children;
+
+  void set canvas(CanvasImpl canvas) {
+    super.canvas = canvas;
+    _children.forEach((nodeImpl) {
+      nodeImpl.canvas = canvas;
+    });
+  }
 }

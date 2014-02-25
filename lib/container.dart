@@ -8,8 +8,6 @@ abstract class Container<T> {
 
   void removeChild(T node);
 
-  void removeChildAt(int index);
-
   void insert(int index, T node);
 
   List<T> get children;

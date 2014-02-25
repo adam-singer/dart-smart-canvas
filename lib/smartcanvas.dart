@@ -13,6 +13,7 @@ part 'node.dart';
 part 'container.dart';
 part 'canvas.dart';
 part 'group.dart';
+part 'layer.dart';
 
 part 'utils/position.dart';
 part 'utils/constants.dart';
@@ -24,3 +25,4 @@ part 'shape/line.dart';
 
 part 'impl/canvas_impl.dart';
 part 'impl/node_impl.dart';
+part 'impl/layer_impl.dart';

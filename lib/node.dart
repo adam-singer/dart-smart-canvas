@@ -1,10 +1,11 @@
 part of smartcanvas;
 
 abstract class Node extends NodeBase {
-  CanvasImpl _canvas = null;
-  NodeImpl _impl = null;
-  Node _parent = null;
-  int _index = null;
+  Stage _stage;
+  Layer _layer;
+  NodeImpl _impl;
+  Node _parent;
+  _ReflectionNode _reflection;
 
   Node([Map<String, dynamic> config = null]): super() {
     if (config == null) {
@@ -14,7 +15,7 @@ abstract class Node extends NodeBase {
   }
 
   void populateConfig(Map<String, dynamic> config) {
-    config.forEach(setAttribute);
+    _attrs.addAll(config);
     if (_attrs['fill'] == null) {
       _attrs['fill'] = 'transparent';
     }
@@ -35,13 +36,11 @@ abstract class Node extends NodeBase {
   NodeImpl createImpl(type) {
     switch (type) {
       case svg:
-        _impl = _createSvgImpl();
+        return _createSvgImpl();
         break;
       default:
-        _impl = _createCanvasImpl();
+        return _createCanvasImpl();
     }
-
-    return _impl;
   }
 
   NodeImpl _createSvgImpl();
@@ -102,7 +101,7 @@ abstract class Node extends NodeBase {
     }
   }
 
-  void on(String events, Function handler, [String id]) {
+  NodeBase on(String events, Function handler, [String id]) {
     List<String> ss = events.split(' ');
     ss.forEach((event) {
       if (_eventListeners[event] == null) {
@@ -114,15 +113,40 @@ abstract class Node extends NodeBase {
         _impl.on(event, handler, id);
       }
     });
+    return this;
   }
 
-  void set canvas(CanvasImpl canvas) {
-    _canvas = canvas;
-    if (_impl != null) {
-      _impl.canvas = canvas;
+  Node clone([Map<String, dynamic> config]) {
+    ClassMirror cm = reflectClass(this.runtimeType);
+    Map<String, dynamic> cnfg;
+    if(config != null) {
+      cnfg = new Map<String, dynamic>.from(_attrs);
+      cnfg.addAll(config);
+    } else {
+      cnfg = _attrs;
     }
+    Node clone = cm.newInstance(const Symbol(''), [cnfg]).reflectee;
+    if (_impl != null) {
+      clone._impl = clone.createImpl(_impl.type);
+    }
+    return clone;
   }
-  CanvasImpl get canvas => _canvas;
+
+//  void set stage(Stage stage) {
+//    _stage = stage;
+//    if (_impl != null) {
+//      _impl.stage = stage;
+//    }
+//  }
+//  Stage get stage => _stage;
+
+  Layer get layer {
+    Node parent = this._parent;
+    while(parent._parent != null) {
+      parent = parent._parent;
+    }
+    return (parent is Layer) ? parent : null;
+  }
 
   void set id(String value) => setAttribute('id', value);
   String get id => getAttribute('id');
@@ -145,11 +169,24 @@ abstract class Node extends NodeBase {
   void set fill(String value) => setAttribute('fill', value);
   String get fill => getAttribute('fill');
 
-  void set opacity(String value) => setAttribute('opacity', value);
-  String get opacity => getAttribute('opacity');
+  void set opacity(int value) => setAttribute('opacity', value);
+  int get opacity {
+    int o = getAttribute('opacity');
+    if (o == null) {
+      return 1;
+    }
+    return o;
+  }
 
   void set draggalbe(bool value) => setAttribute('draggable', value);
-  bool get draggable => getAttribute('draggable');
+  bool get draggable {
+    bool b = getAttribute('draggable');
+    return (b != null) && b;
+  }
 
-  num get index => _index;
+  void set isListening(bool value) => setAttribute('listening', value);
+  bool get isListening {
+    bool b = getAttribute('listening');
+    return (b != null) && b;
+  }
 }

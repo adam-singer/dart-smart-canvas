@@ -43,7 +43,7 @@ class NodeBase {
     return '$value';
   }
 
-  void on(String events, Function handler, [String id]) {
+  NodeBase on(String events, Function handler, [String id]) {
     List<String> ss = events.split(' ');
     ss.forEach((event) {
       if (_eventListeners[event] == null) {
@@ -51,9 +51,10 @@ class NodeBase {
       }
       _eventListeners[event].add(new _EventListener(id, handler));
     });
+    return this;
   }
 
-  void off(String event, [String id]) {
+  NodeBase off(String event, [String id]) {
     List<_EventListener> listeners = _eventListeners[event];
     if (listeners != null) {
       var i = 0;
@@ -70,6 +71,7 @@ class NodeBase {
         _eventListeners.remove(event);
       }
     }
+    return this;
   }
 
   void fire(String event, [dynamic arg0, arg1, arg2, arg3, arg4, arg5]) {

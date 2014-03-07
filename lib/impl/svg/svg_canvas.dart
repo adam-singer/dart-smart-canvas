@@ -2,6 +2,7 @@ part of smartcanvas.svg;
 
 class SvgCanvas extends SvgNode implements CanvasImpl{
   DOM.Element _container;
+  static int i = 0;
   List<SvgNode> _children = new List<SvgNode>();
 //  SvgLayer _defaultLayer = new SvgLayer(new Layer({'id': 'default'}));
   Position _pointerPosition;
@@ -11,7 +12,15 @@ class SvgCanvas extends SvgNode implements CanvasImpl{
     if (this._container == null) {
       throw "container doesn't exit";
     }
-    this._container.nodes.add(this._element);
+    var div = new DOM.DivElement();
+    div.id = 'layer' + i.toString();
+    div.style.position = 'absolute';
+    div.style.left = '0';
+    div.style.top = '0';
+    div.style.zIndex = (i++).toString();
+    var root = div.createShadowRoot();
+    root.nodes.add(this._element);
+    _container.nodes.add(div);
 
     this._element.onMouseDown.listen(setPointerPosition);
     this._element.onMouseMove.listen(setPointerPosition);
@@ -35,16 +44,16 @@ class SvgCanvas extends SvgNode implements CanvasImpl{
     parent = null;
   }
 
-  void setPointerPosition(e) {
-    SVG.SvgSvgElement canvas = this.element;
-    num x = (e.client.x - canvas.currentTranslate.x) / canvas.currentScale;
-    num y = (e.client.y - canvas.currentTranslate.y) / canvas.currentScale;
-    this._pointerPosition = new Position(x, y);
-  }
-
-  Position getPointerPosition() {
-    return this._pointerPosition;
-  }
+//  void setPointerPosition(e) {
+//    SVG.SvgSvgElement canvas = this.element;
+//    num x = (e.client.x - canvas.currentTranslate.x) / canvas.currentScale;
+//    num y = (e.client.y - canvas.currentTranslate.y) / canvas.currentScale;
+//    this._pointerPosition = new Position(x, y);
+//  }
+//
+//  Position getPointerPosition() {
+//    return this._pointerPosition;
+//  }
 
   void add(SvgNode child) {
     _children.add(child);

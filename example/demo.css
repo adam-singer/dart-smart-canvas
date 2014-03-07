@@ -25,17 +25,3 @@ h1, p {
   text-align: center;
   margin-top: 140px;
 }
-
-#one {
-  position: absolute;
-  top: 50px;
-  left: 0px;
-  z-index: 100;
-}
-
-#two {
-  position: absolute,
-  top: 50px;
-  left: 0px;
-  z-index: 200;
-}

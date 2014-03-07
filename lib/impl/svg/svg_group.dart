@@ -4,10 +4,10 @@ class SvgGroup extends SvgNode implements Container<SvgNode> {
   List<SvgNode> _children = new List<SvgNode>();
   SvgGroup(Group shell)
     : super(shell) {
-    for (int i = 0; i < shell.children.length; i++) {
-      SvgNode node = shell.children[i].createImpl(shell.canvas.type);
+    shell.children.forEach((child) {
+      SvgNode node = child.createImpl(shell.layer.type);
       this.add(node);
-    }
+    });
   }
 
   SVG.SvgElement _createElement() {
@@ -17,7 +17,7 @@ class SvgGroup extends SvgNode implements Container<SvgNode> {
   void add(SvgNode child) {
     _children.add(child);
     child.parent = this;
-    child.canvas = this.canvas;
+//    child.stage = this.stage;
     this._element.append(child._element);
   }
 
@@ -31,15 +31,17 @@ class SvgGroup extends SvgNode implements Container<SvgNode> {
   }
 
   void insert(int index, SvgNode node) {
-    node.parent = null;
+    node.parent = this;
+    _children.insert(index, node);
+    this._element.nodes.insert(index, node._element);
   }
 
   List<SvgNode> get children => _children;
 
-  void set canvas(CanvasImpl canvas) {
-    super.canvas = canvas;
-    _children.forEach((nodeImpl) {
-      nodeImpl.canvas = canvas;
-    });
-  }
+//  void set stage(Stage stage) {
+////    super.stage = stage;
+//    _children.forEach((nodeImpl) {
+//      nodeImpl.stage = stage;
+//    });
+//  }
 }

@@ -3,10 +3,9 @@ import '../lib/smartcanvas.dart';
 
 void main() {
   Element container = document.querySelector('#smartCanvas');
-  Canvas canvas = new Canvas(container, 'svg', {
+  Stage stage = new Stage(container, 'svg', {
       'width': 600,
-      'height': 600,
-      'id': 'one'
+      'height': 600
     });
 
     Circle circle = new Circle({
@@ -39,7 +38,8 @@ void main() {
       'ry': 50,
       'fill': 'green',
       'stroke': 'purple',
-      'listening': true
+      'listening': true,
+      'draggable': true
     });
     ellipse.on(mousedown, (e){ ellipse.moveToTop(); });
 
@@ -63,7 +63,7 @@ void main() {
 //    g.on(mousemove, (e) => print('....'));
 
 //  canvas.add(circle);
-    canvas.add(g);
+    stage.add(g);
     int i = 0;
 //    g.on('mousedown', (e){
 //      if (i < 2) {
@@ -79,8 +79,8 @@ void main() {
     g.on(dblclick, (e) => print('group double clicked'));
 
 //  canvas.add(rect);
-    canvas.add(ellipse);
-    canvas.add(line);
+//    stage.add(ellipse);
+    stage.add(line);
 
     Circle c2 = new Circle({
       'x': 100,
@@ -88,24 +88,27 @@ void main() {
       'r': 50,
       'fill': 'red',
       'listening': true,
-//      'draggable': true
+      'draggable': true
     });
 
-//    Canvas canvas2 = new Canvas(container, svg, {
-//      'width': 600,
-//      'height': 600,
-//      'id': 'two'
+    Layer layer2 = new Layer(svg, {
+      'id': 'two'
+    });
+
+    c2.on(mousedown, (e) => print('c2 clicked'));
+    layer2.add(c2);
+    stage.add(layer2);
+
+    stage.add(ellipse);
+
+//    var c = c2.clone({'fill': 'red'});
+//    canvas2.add(c);
+//    Layer layer = new Layer({
+//      'id': 'addOnLayer',
 //    });
-//
-//    c2.on(click, (e) => print('c2 clicked'));
-//    canvas2.add(c2);
-
-    Layer layer = new Layer({
-      'id': 'addOnLayer',
-    });
-    layer.add(c2);
-    canvas.add(layer);
-    canvas.defaultLayer.moveUp();
-//    c2.moveTo(canvas.defaultLayer);
-    layer.draggalbe = true;
+//    layer.add(c2);
+//    canvas.add(layer);
+//    canvas.defaultLayer.moveUp();
+////    c2.moveTo(canvas.defaultLayer);
+//    layer.draggalbe = true;
 }

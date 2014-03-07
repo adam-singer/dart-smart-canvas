@@ -9,7 +9,7 @@ abstract class SvgNode extends NodeImpl {
   num _dragOffsetY;
 
   SvgNode(Node shell) : super(shell) {
-    this.canvas = shell.canvas;
+//    this.stage = shell.stage;
     _element = _createElement();
     _setElementAttributes();
 //    _setStyles();
@@ -67,6 +67,16 @@ abstract class SvgNode extends NodeImpl {
     }
   }
 
+  void _setElementStyle(Map<String, dynamic> styles) {
+    List<String> strStyles = [];
+    styles.forEach((k, v) {
+      if (v != null) {
+        strStyles.add(k + ':' + '$v');
+      }
+    });
+    _element.setAttribute('style', strStyles.join(';'));
+  }
+
 //  void _setStyles() {
 //    String style = 'stroke:' + this.stroke
 //        + ';stroke-width:' + '$this.strokeWidth'
@@ -122,12 +132,12 @@ abstract class SvgNode extends NodeImpl {
     e.preventDefault();
     this._dragging = true;
 
-    var pointerPosition = this.canvas.getPointerPosition();
+    var pointerPosition = this.stage.pointerPosition;
     this._dragOffsetX = pointerPosition.x - (this._element as SVG.GraphicsElement).getCtm().e;
     this._dragOffsetY = pointerPosition.y - (this._element as SVG.GraphicsElement).getCtm().f;
 
-    this.canvas.element.onMouseMove.listen(_dragMove).resume();
-    this.canvas.element.onMouseUp.listen(_dragEnd).resume();
+    this.stage.element.onMouseMove.listen(_dragMove).resume();
+    this.stage.element.onMouseUp.listen(_dragEnd).resume();
   }
 
   void _dragMove(DOM.MouseEvent e) {
@@ -137,18 +147,19 @@ abstract class SvgNode extends NodeImpl {
         fire('dragstart', e);
         _dragStarted = true;
       }
-      var pointerPosition = this.canvas.getPointerPosition();
+      var pointerPosition = this.stage.pointerPosition;
       num x = pointerPosition.x - this._dragOffsetX;
       num y = pointerPosition.y - this._dragOffsetY;
       this._element.setAttribute('transform', 'translate($x, $y)');
+      fire('dragmove', e);
     }
   }
 
   void _dragEnd(DOM.MouseEvent e) {
     e.preventDefault();
     _dragging = false;
-    this.canvas.element.onMouseMove.listen(_dragMove).cancel();
-    this.canvas.element.onMouseUp.listen(_dragEnd).cancel();
+    this.stage.element.onMouseMove.listen(_dragMove).cancel();
+    this.stage.element.onMouseUp.listen(_dragEnd).cancel();
   }
 
   void _onMouseMove(DOM.MouseEvent e) {
@@ -159,7 +170,9 @@ abstract class SvgNode extends NodeImpl {
     }
   }
 
-  void on(String event, Function handler, [String id]) {
+  NodeBase on(String event, Function handler, [String id]) {
+    super.on(event, handler, id);
     _registerDOMEvent(event);
+    return this;
   }
 }

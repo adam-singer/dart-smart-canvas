@@ -7,7 +7,7 @@ import '../../smartcanvas.dart';
 
 part 'svg_node.dart';
 part 'svg_group.dart';
-part 'svg_canvas.dart';
+//part 'svg_canvas.dart';
 part 'svg_layer.dart';
 
 part 'shapes/svg_circle.dart';

@@ -13,10 +13,10 @@ class Stage extends NodeBase implements Container<Node> {
     _populateConfig(config);
     _createElement();
 
-    if (this._container == null) {
+    if (_container == null) {
       throw "container doesn't exit";
     }
-    this._container.nodes.add(this._element);
+    _container.nodes.add(this._element);
 
     _reflectionLayer = new Layer(svg, {
       'id': '__reflectionLayer',
@@ -29,11 +29,11 @@ class Stage extends NodeBase implements Container<Node> {
     _children.add(_reflectionLayer);
     _element.nodes.add(_reflectionLayer._impl.element);
 
-    this._element.onMouseDown.listen(_setPointerPosition);
-    this._element.onMouseMove.listen(_setPointerPosition);
-    this._element.onMouseUp.listen(_setPointerPosition);
-    this._element.onMouseEnter.listen(_setPointerPosition);
-    this._element.onMouseLeave.listen(_setPointerPosition);
+    _element.onMouseDown.listen(_setPointerPosition);
+    _element.onMouseMove.listen(_setPointerPosition);
+    _element.onMouseUp.listen(_setPointerPosition);
+    _element.onMouseEnter.listen(_setPointerPosition);
+    _element.onMouseLeave.listen(_setPointerPosition);
   }
 
   void _createElement() {
@@ -98,50 +98,53 @@ class Stage extends NodeBase implements Container<Node> {
         add(_defaultLayer);
       }
       _defaultLayer.add(node);
-      _reflect(node);
     }
   }
 
   void _reflect(Node node) {
-    void __reflect (Node node) {
-
-      // only node which is draggable or listening
-      if (!node.draggable && !node.isListening) {
-        return;
-      }
-
-      assert(node.layer != null);
-      if (node.layer != null) {
-        var topLayerIndex = _children.length - 1;
-        if (topLayerIndex >= 0 && _children.indexOf(node.layer) < topLayerIndex) {
-          // the node isn't on top layer
-          // insert the node before the first node of
-          // to layer
-
-          // get top layer
-          var topLayer = _children[topLayerIndex];
-
-          // find the position of the first node
-          var index = _reflectionLayer._children.indexOf(topLayer._children[0]._reflection);
-
-          if (index != -1) {
-            _reflectionLayer.insert(index, new _ReflectionNode(node));
-          } else {
-            // top layer doesn't have any node yet, just add the node
-            _reflectionLayer.add(new _ReflectionNode(node));
-          }
-        } else {
-          _reflectionLayer.add(new _ReflectionNode(node));
-        }
-      }
-    }
-
     if (node is Layer) {
       node.children.forEach((child) {
         __reflect(child);
       });
     } else {
       __reflect(node);
+    }
+  }
+
+  void __reflect (Node node) {
+    // only node which is draggable or listening
+    if (!node.draggable && !node.isListening) {
+      if (node is Container) {
+        node.children.forEach((child){
+          __reflect(child);
+        });
+      }
+      return;
+    }
+
+    assert(node.layer != null);
+    if (node.layer != null) {
+      var topLayerIndex = _children.length - 1;
+      if (topLayerIndex >= 0 && _children.indexOf(node.layer) < topLayerIndex) {
+        // the node isn't on top layer
+        // insert the node before the first node of
+        // to layer
+
+        // get top layer
+        var topLayer = _children[topLayerIndex];
+
+        // find the position of the first node
+        var index = _reflectionLayer._children.indexOf(topLayer._children[0]._reflection);
+
+        if (index != -1) {
+          _reflectionLayer.insert(index, new _ReflectionNode(node));
+        } else {
+          // top layer doesn't have any node yet, just add the node
+          _reflectionLayer.add(new _ReflectionNode(node));
+        }
+      } else {
+        _reflectionLayer.add(new _ReflectionNode(node));
+      }
     }
   }
 
@@ -169,6 +172,13 @@ class Stage extends NodeBase implements Container<Node> {
     }
   }
 
+  void _resizeLayers() {
+    _children.forEach((layer) {
+      layer.width = width;
+      layer.height = height;
+    });
+  }
+
   List<Node> get children => _children;
 
   DOM.Element get element => _element;
@@ -176,10 +186,16 @@ class Stage extends NodeBase implements Container<Node> {
   void set id(String value) => setAttribute('id', value);
   String get id => getAttribute('id');
 
-  void set width(num value) => setAttribute('width', value);
+  void set width(num value) {
+    setAttribute('width', value);
+    _resizeLayers();
+  }
   num get width => getAttribute('width');
 
-  void set height(num value) => setAttribute('height', value);
+  void set height(num value) {
+    setAttribute('height', value);
+    _resizeLayers();
+  }
   num get height => getAttribute('height');
 }
 

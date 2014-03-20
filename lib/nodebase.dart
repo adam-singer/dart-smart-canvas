@@ -34,8 +34,9 @@ class NodeBase {
     }
   }
 
-  dynamic getAttribute(String attr) {
-    return _attrs[attr];
+  dynamic getAttribute(String attr, [dynamic defaultValue = null]) {
+    dynamic rt = _attrs[attr];
+    return rt == null ? defaultValue : rt;
   }
 
   String getAttributeString(String attr) {

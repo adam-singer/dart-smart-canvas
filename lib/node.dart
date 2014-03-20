@@ -16,9 +16,6 @@ abstract class Node extends NodeBase {
 
   void populateConfig(Map<String, dynamic> config) {
     _attrs.addAll(config);
-    if (_attrs['fill'] == null) {
-      _attrs['fill'] = 'transparent';
-    }
   }
 
   void remove() {
@@ -132,14 +129,6 @@ abstract class Node extends NodeBase {
     return clone;
   }
 
-//  void set stage(Stage stage) {
-//    _stage = stage;
-//    if (_impl != null) {
-//      _impl.stage = stage;
-//    }
-//  }
-//  Stage get stage => _stage;
-
   Layer get layer {
     Node parent = this._parent;
     while(parent._parent != null) {
@@ -152,10 +141,16 @@ abstract class Node extends NodeBase {
   String get id => getAttribute('id');
 
   void set x(num value) => setAttribute('x', value);
-  num get x => getAttribute('x');
+  num get x => getAttribute('x', 0);
 
   void set y(num value) => setAttribute('y', value);
-  num get y => getAttribute('y');
+  num get y => getAttribute('y', 0);
+
+  void set width(num value) => setAttribute('width', value);
+  num get width => getAttribute('width', 0);
+
+  void set height(num value) => setAttribute('height', value);
+  num get height => getAttribute('height', 0);
 
   void set stroke(String value) => setAttribute('stroke', value);
   String get stroke => getAttribute('stroke');
@@ -170,23 +165,11 @@ abstract class Node extends NodeBase {
   String get fill => getAttribute('fill');
 
   void set opacity(int value) => setAttribute('opacity', value);
-  int get opacity {
-    int o = getAttribute('opacity');
-    if (o == null) {
-      return 1;
-    }
-    return o;
-  }
+  int get opacity => getAttribute('opacity', 1);
 
   void set draggalbe(bool value) => setAttribute('draggable', value);
-  bool get draggable {
-    bool b = getAttribute('draggable');
-    return (b != null) && b;
-  }
+  bool get draggable => getAttribute('draggable', false);
 
   void set isListening(bool value) => setAttribute('listening', value);
-  bool get isListening {
-    bool b = getAttribute('listening');
-    return (b != null) && b;
-  }
+  bool get isListening => getAttribute('listening', false);
 }

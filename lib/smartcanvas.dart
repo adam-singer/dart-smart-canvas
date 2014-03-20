@@ -14,17 +14,19 @@ part 'container.dart';
 part 'stage.dart';
 part 'group.dart';
 part 'layer.dart';
-part 'reflectionLayer.dart';
 
 part 'utils/position.dart';
 part 'utils/constants.dart';
+part 'utils/size.dart';
 
-part 'shape/circle.dart';
-part 'shape/ellipse.dart';
-part 'shape/rect.dart';
-part 'shape/line.dart';
+part 'shapes/circle.dart';
+part 'shapes/ellipse.dart';
+part 'shapes/rect.dart';
+part 'shapes/line.dart';
+part 'shapes/text.dart';
+part 'shapes/polygon.dart';
+part 'shapes/path.dart';
 
-//part 'impl/stage_impl.dart';
 part 'impl/node_impl.dart';
 part 'impl/layer_impl.dart';
 part 'impl/reflection_node.dart';

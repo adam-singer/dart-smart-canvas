@@ -20,6 +20,8 @@ void main() {
       'listening': true
     });
 
+    circle.on('click', (e) {print ("circle clicked");});
+
     Rect rect = new Rect({
       'x': 30,
       'y': 30,
@@ -53,8 +55,8 @@ void main() {
     });
 
     Group g = new Group({
-      'draggable': true,
-      'listening': true,
+//      'draggable': true,
+//      'listening': true,
       'name': 'group'
     });
     g.add(circle);
@@ -100,6 +102,29 @@ void main() {
     stage.add(layer2);
 
     stage.add(ellipse);
+
+    var txt = new Text({
+      'text': 'A',
+      'x': 100,
+      'y': 100,
+      'fill': 'red',
+      'font-size': 32
+    });
+
+    stage.add(txt);
+
+    Polygon p = new Polygon({
+      'points': "220,10 300,210 170,250 123,234",
+      'fill': 'lime',
+      'draggable': true
+    });
+    layer2.add(p);
+
+    Path path = new Path({
+      'd': "M150 0 L75 200 L225 200 Z",
+      'draggable': true
+    });
+    stage.add(path);
 
 //    var c = c2.clone({'fill': 'red'});
 //    canvas2.add(c);

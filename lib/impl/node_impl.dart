@@ -41,4 +41,7 @@ abstract class NodeImpl extends NodeBase {
     }
     return null;
   }
+
+  num get width => getAttribute('width');
+  num get height => getAttribute('height');
 }

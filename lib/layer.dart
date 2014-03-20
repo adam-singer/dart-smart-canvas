@@ -44,6 +44,9 @@ class Layer extends Group {
         child._impl = child.createImpl(_impl.type);
       }
       _impl.add(child._impl);
+      if (_stage != null) {
+        _stage._reflect(child);
+      }
     }
   }
 

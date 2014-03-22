@@ -6,4 +6,10 @@ class SvgRect extends SvgNode {
   SVG.SvgElement _createElement() {
     return new SVG.RectElement();
   }
+
+  Set<String> _getElementAttributeNames() {
+      var attrs = super._getElementAttributeNames();
+      attrs.addAll(['x', 'y', 'width', 'height']);
+      return attrs;
+    }
 }

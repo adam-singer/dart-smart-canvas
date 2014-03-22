@@ -126,6 +126,11 @@ void main() {
     });
     stage.add(path);
 
+    p.x = p.x + 200;
+    p.y = p.y + 100;
+
+    g.x = 100;
+
 //    var c = c2.clone({'fill': 'red'});
 //    canvas2.add(c);
 //    Layer layer = new Layer({

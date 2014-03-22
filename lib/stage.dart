@@ -16,7 +16,8 @@ class Stage extends NodeBase implements Container<Node> {
     if (_container == null) {
       throw "container doesn't exit";
     }
-    _container.nodes.add(this._element);
+    _container.createShadowRoot().append(this._element);
+//    _container.nodes.add(this._element);
 
     _reflectionLayer = new Layer(svg, {
       'id': '__reflectionLayer',
@@ -115,7 +116,7 @@ class Stage extends NodeBase implements Container<Node> {
     // only node which is draggable or listening
     if (!node.draggable && !node.isListening) {
       if (node is Container) {
-        node.children.forEach((child){
+        (node as Container).children.forEach((child){
           __reflect(child);
         });
       }

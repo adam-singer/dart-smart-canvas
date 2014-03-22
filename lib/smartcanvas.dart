@@ -18,6 +18,7 @@ part 'layer.dart';
 part 'utils/position.dart';
 part 'utils/constants.dart';
 part 'utils/size.dart';
+part 'utils/util.dart';
 
 part 'shapes/circle.dart';
 part 'shapes/ellipse.dart';

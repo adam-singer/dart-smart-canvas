@@ -16,14 +16,14 @@ class SvgEllipse extends SvgNode{
     return attrs;
   }
 
-  dynamic getAttribute(String attr) {
+  dynamic getAttribute(String attr, [dynamic defaultValue = null]) {
     switch (attr) {
       case 'cx':
-        return super.getAttribute('x');
+        return super.getAttribute('x', defaultValue);
       case 'cy':
-        return super.getAttribute('y');
+        return super.getAttribute('y', defaultValue);
       default:
-        return super.getAttribute(attr);
+        return super.getAttribute(attr, defaultValue);
     }
   }
 }

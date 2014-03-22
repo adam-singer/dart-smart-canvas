@@ -5,7 +5,8 @@ class SvgLayer extends SvgGroup implements LayerImpl {
     shell
       .on('widthChanged', _onWidthChanged)
       .on('heightChanged', _onHeightChanged)
-      .on('opacityChanged', _onOpacityChanged);
+      .on('opacityChanged', _onOpacityChanged)
+      .on('scaleChanged', _onScaleChanged);
   }
 
   DOM.Element _createElement() {
@@ -43,5 +44,9 @@ class SvgLayer extends SvgGroup implements LayerImpl {
 
   void _onOpacityChanged(int oldValue, int newValue) {
     _element.style.opacity = '$newValue';
+  }
+
+  void _onScaleChanged(int oldValue, int newValue) {
+
   }
 }

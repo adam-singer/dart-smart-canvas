@@ -30,7 +30,12 @@ class NodeBase {
     var oldValue = _attrs[attr];
     _attrs[attr] = value;
     if (oldValue != value) {
-      fire(attr + 'Changed', oldValue, value);
+      var event = attr + 'Changed';
+      if (hasListener(event)) {
+        fire(event, oldValue, value);
+      } else{
+        fire('*Changed', attr, oldValue, value);
+      }
     }
   }
 
@@ -96,6 +101,10 @@ class NodeBase {
         }
       }
     }
+  }
+
+  bool hasListener(String event) {
+    return _eventListeners[event] != null;
   }
 
   Map<String, dynamic> get attrs => _attrs;

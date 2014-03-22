@@ -15,14 +15,14 @@ class SvgCircle extends SvgNode{
     return attrs;
   }
 
-  dynamic getAttribute(attr) {
+  dynamic getAttribute(attr, [dynamic defaultValue = null]) {
     switch (attr) {
       case 'cx':
-        return super.getAttribute('x');
+        return super.getAttribute('x', defaultValue);
       case 'cy':
-        return super.getAttribute('y');
+        return super.getAttribute('y', defaultValue);
       default:
-        return super.getAttribute(attr);
+        return super.getAttribute(attr, defaultValue);
     }
   }
 }

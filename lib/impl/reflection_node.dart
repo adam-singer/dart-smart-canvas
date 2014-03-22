@@ -13,7 +13,7 @@ class _ReflectionNode extends Node {
   NodeImpl _createSvgImpl() {
     assert(_node._impl != null);
     SvgNode impl = _node.createImpl(svg);
-    (impl as NodeBase).on('dragmove', _onDragMove);
+    impl.on('dragmove', _onDragMove);
     return impl;
   }
 

@@ -24,13 +24,15 @@ abstract class SvgNode extends NodeImpl {
       });
     }
 
-    this.shell.on('draggableChanged', (oldValue, newValue) {
+    this.shell
+    .on('draggableChanged', (oldValue, newValue) {
       if (newValue) {
         _startDragHandling();
       } else {
         _stopDragHandling();
       }
-    });
+    })
+    .on('*Changed', _handleAttrChange);
   }
 
   String get type => svg;
@@ -48,8 +50,7 @@ abstract class SvgNode extends NodeImpl {
   }
 
   Set<String> _getElementAttributeNames() {
-    return new Set<String>.from(['id', 'class', 'name', 'x', 'y', 'width',
-                                 'height', 'stroke', 'stroke-width',
+    return new Set<String>.from(['id', 'class', 'name', 'stroke', 'stroke-width',
                                  'stroke-opacity', 'fill', 'opacity']);
   }
 
@@ -174,5 +175,36 @@ abstract class SvgNode extends NodeImpl {
     super.on(event, handler, id);
     _registerDOMEvent(event);
     return this;
+  }
+
+  void _handleAttrChange(String attr, oldValue, newValue) {
+    // apply attribute change to svg element
+    if (_getElementAttributeNames().contains(attr)) {
+      _element.setAttribute(attr, '$newValue');
+    } else {
+      // nodes which didn't have x/y attribute,
+      // treat original x/y as 0 and apply the change
+      // as a translate
+      switch(attr) {
+        case 'x':
+            if (oldValue == null) {
+              oldValue = 0;
+            }
+            num diff = newValue - oldValue;
+            _element.setAttribute('transform', 'translate($diff, ${getAttribute('y', 0)})');
+            // cache x change
+            setAttribute('x', diff);
+          break;
+        case 'y':
+          if (oldValue == null) {
+            oldValue = 0;
+          }
+          num diff = newValue - oldValue;
+          _element.setAttribute('transform', 'translate(${getAttribute('x', 0)}, $diff)');
+          // cache y change
+          setAttribute('y', diff);
+          break;
+      }
+    }
   }
 }

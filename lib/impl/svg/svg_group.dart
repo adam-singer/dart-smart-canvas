@@ -30,5 +30,12 @@ class SvgGroup extends SvgNode implements Container<SvgNode> {
     this._element.nodes.insert(index, node._element);
   }
 
+  void _setElementAttribute(String attr) {
+    super._setElementAttribute(attr);
+    if (attrs['x'] != null || attrs['y'] != null) {
+      _element.setAttribute('transform', 'translate(${getAttribute('x', 0)}, ${getAttribute('y', 0)})');
+    }
+  }
+
   List<SvgNode> get children => _children;
 }

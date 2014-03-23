@@ -1,6 +1,7 @@
 part of smartcanvas;
 
 int _guid = 0;
+
 class _EventListener {
   String id;
   Function handler;
@@ -8,6 +9,9 @@ class _EventListener {
   _EventListener(this.id, this.handler);
 }
 
+/**
+ *
+ */
 class NodeBase {
   int _uid;
   Map<String, dynamic> _attrs = {};
@@ -47,6 +51,10 @@ class NodeBase {
   String getAttributeString(String attr) {
     var value = getAttribute(attr);
     return '$value';
+  }
+
+  bool hasAttribute(String attr){
+    return _attrs[attr] != null;
   }
 
   NodeBase on(String events, Function handler, [String id]) {

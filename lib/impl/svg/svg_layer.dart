@@ -19,7 +19,10 @@ class SvgLayer extends SvgGroup implements LayerImpl {
 
   void _setElementAttributes() {
     super._setElementAttributes();
-    _setElementStyle({
+  }
+
+  Map<String, dynamic> _getStyles() {
+    return {
       'position': 'absolute',
       'top': 0,
       'left': 0,
@@ -28,7 +31,7 @@ class SvgLayer extends SvgGroup implements LayerImpl {
       'opacity': shell.opacity,
       'width': getAttribute("width"),
       'height': getAttribute("height"),
-    });
+    };
   }
 
   void resume() {}

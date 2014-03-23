@@ -113,6 +113,10 @@ abstract class Node extends NodeBase {
     return this;
   }
 
+  NodeImpl reflect() {
+    return _createSvgImpl();
+  }
+
   Node clone([Map<String, dynamic> config]) {
     ClassMirror cm = reflectClass(this.runtimeType);
     Map<String, dynamic> cnfg;

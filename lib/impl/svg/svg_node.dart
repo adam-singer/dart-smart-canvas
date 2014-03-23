@@ -12,7 +12,8 @@ abstract class SvgNode extends NodeImpl {
 //    this.stage = shell.stage;
     _element = _createElement();
     _setElementAttributes();
-//    _setStyles();
+    _setElementStyles();
+//    _applyOffset();
 
     if (getAttribute('draggable') == true) {
       _startDragHandling();
@@ -54,6 +55,21 @@ abstract class SvgNode extends NodeImpl {
                                  'stroke-opacity', 'fill', 'opacity']);
   }
 
+  Map<String, dynamic> _getStyles() {
+    return _createStyles(['stroke', 'stroke-width', 'stroke-opacity',
+     'fill', 'opacity']);
+  }
+
+  Map<String, dynamic> _createStyles(List<String> styleNames) {
+    var rt = new Map<String, dynamic>();
+    styleNames.forEach((name) {
+      if (hasAttribute(name)) {
+        rt[name] = getAttribute(name);
+      }
+    });
+    return rt;
+  }
+
   void _setElementAttributes() {
     var attrs = _getElementAttributeNames();
     attrs.forEach(_setElementAttribute);
@@ -68,23 +84,18 @@ abstract class SvgNode extends NodeImpl {
     }
   }
 
-  void _setElementStyle(Map<String, dynamic> styles) {
+  void _setElementStyles() {
+    Map<String, dynamic> styles = _getStyles();
     List<String> strStyles = [];
     styles.forEach((k, v) {
       if (v != null) {
         strStyles.add(k + ':' + '$v');
       }
     });
-    _element.setAttribute('style', strStyles.join(';'));
+    if (styles.length > 0) {
+      _element.setAttribute('style', strStyles.join(';'));
+    }
   }
-
-//  void _setStyles() {
-//    String style = 'stroke:' + this.stroke
-//        + ';stroke-width:' + '$this.strokeWidth'
-//        + ';stroke-opacity:' + '$this.strokeOpacity'
-//        + ';fill:' + this.fill;
-//    _element.setAttribute('style', style);
-//  }
 
   void remove() {
     _element.remove();
@@ -179,8 +190,9 @@ abstract class SvgNode extends NodeImpl {
 
   void _handleAttrChange(String attr, oldValue, newValue) {
     // apply attribute change to svg element
-    if (_getElementAttributeNames().contains(attr)) {
-      _element.setAttribute(attr, '$newValue');
+    var elementAttr = _mapToElementAttr(attr);
+    if (elementAttr != null) {
+      _element.setAttribute(elementAttr, '$newValue');
     } else {
       // nodes which didn't have x/y attribute,
       // treat original x/y as 0 and apply the change
@@ -192,8 +204,6 @@ abstract class SvgNode extends NodeImpl {
             }
             num diff = newValue - oldValue;
             _element.setAttribute('transform', 'translate($diff, ${getAttribute('y', 0)})');
-            // cache x change
-            setAttribute('x', diff);
           break;
         case 'y':
           if (oldValue == null) {
@@ -201,10 +211,15 @@ abstract class SvgNode extends NodeImpl {
           }
           num diff = newValue - oldValue;
           _element.setAttribute('transform', 'translate(${getAttribute('x', 0)}, $diff)');
-          // cache y change
-          setAttribute('y', diff);
           break;
       }
     }
+  }
+
+  String _mapToElementAttr(String attr) {
+    if (_getElementAttributeNames().contains(attr)) {
+      return attr;
+    }
+    return null;
   }
 }

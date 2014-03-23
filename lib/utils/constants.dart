@@ -4,6 +4,8 @@ part of smartcanvas;
 const String svg = 'svg';
 const String canvas = 'canvas';
 
+const String SPACE = ' ';
+
 // events
 const String mousemove = 'mousemove';
 const String mousedown = 'mousedown';

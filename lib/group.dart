@@ -5,11 +5,34 @@ class Group extends Node implements Container<Node> {
 
   Group([Map<String, dynamic> config = null]): super(config) {}
 
-  NodeImpl _createSvgImpl() {
+  NodeImpl _createSvgImpl([bool isReflect = false]) {
     SvgGroup impl = new SvgGroup(this);
     _children.forEach((node) {
-      node._impl = node.createImpl(svg);
-      impl.add(node._impl);
+      if (isReflect && !node.draggable &&
+          !node.isListening && !(node is Container)) {
+        return;
+      }
+      node._impl = isReflect ? node.reflect() : node.createImpl(svg);
+      if (!(node is Container) ||
+          node.children.length > 0) {
+        impl.add(node._impl);
+      }
+    });
+    return impl;
+  }
+
+  NodeImpl reflect() {
+    SvgGroup impl = new SvgGroup(this);
+    _children.forEach((node) {
+      if (!node.draggable && !node.isListening &&
+          !(node is Container)) {
+        return;
+      }
+      node._impl = node.reflect();
+      if (!(node is Container) ||
+          node.children.length > 0) {
+        impl.add(node._impl);
+      }
     });
     return impl;
   }

@@ -12,7 +12,7 @@ void main() {
       'x': 50,
       'y': 50,
       'r': 40,
-    'stroke': 'green',
+      'stroke': 'green',
 //    'strokeWidth': 4,
       'fill': 'yellow',
 //      'draggable': true,
@@ -55,7 +55,7 @@ void main() {
     });
 
     Group g = new Group({
-//      'draggable': true,
+      'draggable': true,
 //      'listening': true,
       'name': 'group'
     });
@@ -129,7 +129,7 @@ void main() {
     p.x = p.x + 200;
     p.y = p.y + 100;
 
-    g.x = 100;
+//    g.x = 100;
 
 //    var c = c2.clone({'fill': 'red'});
 //    canvas2.add(c);

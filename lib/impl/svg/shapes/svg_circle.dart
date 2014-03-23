@@ -15,7 +15,7 @@ class SvgCircle extends SvgNode{
     return attrs;
   }
 
-  dynamic getAttribute(attr, [dynamic defaultValue = null]) {
+  dynamic getAttribute(String attr, [dynamic defaultValue = null]) {
     switch (attr) {
       case 'cx':
         return super.getAttribute('x', defaultValue);
@@ -23,6 +23,22 @@ class SvgCircle extends SvgNode{
         return super.getAttribute('y', defaultValue);
       default:
         return super.getAttribute(attr, defaultValue);
+    }
+  }
+
+//  void _internalApplyOffset() {
+//    setAttribute('x', getAttribute('x', 0) - getAttribute('offsetX', 0));
+//    setAttribute('y', getAttribute('y', 0) - getAttribute('offsetY', 0));
+//  }
+
+  String _mapToElementAttr(String attr) {
+    switch (attr) {
+      case 'x':
+        return 'cx';
+      case 'y':
+        return 'cy';
+      default:
+        return super._mapToElementAttr(attr);
     }
   }
 }

@@ -38,4 +38,6 @@ class SvgGroup extends SvgNode implements Container<SvgNode> {
   }
 
   List<SvgNode> get children => _children;
+
+  String get _nodeName => '__sc_group';
 }

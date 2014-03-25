@@ -26,4 +26,6 @@ class SvgEllipse extends SvgNode{
         return super.getAttribute(attr, defaultValue);
     }
   }
+
+  String get _nodeName => '__sc_ellipse';
 }

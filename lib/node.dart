@@ -34,7 +34,6 @@ abstract class Node extends NodeBase {
     switch (type) {
       case svg:
         return _createSvgImpl();
-        break;
       default:
         return _createCanvasImpl();
     }
@@ -108,6 +107,10 @@ abstract class Node extends NodeBase {
 
       if (_impl != null) {
         _impl.on(event, handler, id);
+      }
+
+      if (_reflection != null) {
+        _reflection.on(event, handler, id);
       }
     });
     return this;

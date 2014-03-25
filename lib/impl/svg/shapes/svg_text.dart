@@ -18,9 +18,19 @@ class SvgText extends SvgNode{
   Map<String, dynamic> _getStyles() {
     var styles = super._getStyles();
     styles.addAll({
-      'font-size': shell.fontSize,
-      'font-family': shell.fontFamily
+      'font-size': (shell as Text).fontSize,
+      'font-family': (shell as Text).fontFamily
     });
     return styles;
   }
+
+  bool _isStyle(String attr) {
+    if (attr == 'font-size' ||
+        attr == 'font-family') {
+      return true;
+    }
+    return super._isStyle(attr);
+  }
+
+  String get _nodeName => '__sc_text';
 }

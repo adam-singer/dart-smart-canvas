@@ -41,4 +41,6 @@ class SvgCircle extends SvgNode{
         return super._mapToElementAttr(attr);
     }
   }
+
+  String get _nodeName => '__sc_circle';
 }

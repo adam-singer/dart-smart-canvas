@@ -1,6 +1,8 @@
 part of smartcanvas.svg;
 
-class SvgLayer extends SvgGroup implements LayerImpl {
+class SvgLayer extends SvgNode implements LayerImpl {
+  List<SvgNode> _children = new List<SvgNode>();
+
   SvgLayer(shell): super(shell) {
     shell
       .on('widthChanged', _onWidthChanged)
@@ -34,6 +36,28 @@ class SvgLayer extends SvgGroup implements LayerImpl {
     };
   }
 
+  void add(SvgNode child) {
+    _children.add(child);
+    child.parent = this;
+//    child.stage = this.stage;
+    this._element.append(child._element);
+  }
+
+  void removeChild(SvgNode node) {
+    node.parent = null;
+    node.remove();
+  }
+
+  void removeChildren() {
+    _children.forEach((child) => child.remove());
+  }
+
+  void insert(int index, SvgNode node) {
+    node.parent = this;
+    _children.insert(index, node);
+    this._element.nodes.insert(index, node._element);
+  }
+
   void resume() {}
   void suspend() {}
 
@@ -52,4 +76,8 @@ class SvgLayer extends SvgGroup implements LayerImpl {
   void _onScaleChanged(int oldValue, int newValue) {
 
   }
+
+  List<SvgNode> get children => _children;
+
+  String get _nodeName => '__sc_layer';
 }

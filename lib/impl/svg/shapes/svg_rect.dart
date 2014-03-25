@@ -8,8 +8,10 @@ class SvgRect extends SvgNode {
   }
 
   Set<String> _getElementAttributeNames() {
-      var attrs = super._getElementAttributeNames();
-      attrs.addAll(['x', 'y', 'rx', 'ry', 'width', 'height']);
-      return attrs;
-    }
+    var attrs = super._getElementAttributeNames();
+    attrs.addAll(['x', 'y', 'rx', 'ry', 'width', 'height']);
+    return attrs;
+  }
+
+  String get _nodeName => '__sc_rect';
 }

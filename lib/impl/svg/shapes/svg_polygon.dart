@@ -12,4 +12,6 @@ class SvgPolygon extends SvgNode {
     attrs.addAll(['points']);
     return attrs;
   }
+
+  String get _nodeName => '__sc_polygon';
 }

@@ -8,8 +8,11 @@ abstract class SvgNode extends NodeImpl {
   num _dragOffsetX;
   num _dragOffsetY;
 
+  Set<String> _classNames = new Set<String>();
+
   SvgNode(Node shell) : super(shell) {
 //    this.stage = shell.stage;
+    _setClassName();
     _element = _createElement();
     _setElementAttributes();
     _setElementStyles();
@@ -42,6 +45,14 @@ abstract class SvgNode extends NodeImpl {
 
   SVG.SvgElement _createElement();
 
+  void _setClassName() {
+    _classNames.add(_nodeName);
+    if (hasAttribute('class')) {
+      _classNames.add(getAttribute('class'));
+    }
+    setAttribute('class', _classNames.join(' '));
+  }
+
   void _startDragHandling() {
     _element.onMouseDown.listen(_dragStart).resume();
   }
@@ -51,13 +62,16 @@ abstract class SvgNode extends NodeImpl {
   }
 
   Set<String> _getElementAttributeNames() {
-    return new Set<String>.from(['id', 'class', 'name', 'stroke', 'stroke-width',
-                                 'stroke-opacity', 'fill', 'opacity']);
+    return new Set<String>.from(['id', 'class']);
   }
 
   Map<String, dynamic> _getStyles() {
-    return _createStyles(['stroke', 'stroke-width', 'stroke-opacity',
-     'fill', 'opacity']);
+    return _createStyles(_getStyleNames());
+  }
+
+  List<String> _getStyleNames() {
+    return ['stroke', 'stroke-width', 'stroke-opacity',
+            'fill', 'opacity'];
   }
 
   Map<String, dynamic> _createStyles(List<String> styleNames) {
@@ -183,37 +197,36 @@ abstract class SvgNode extends NodeImpl {
   }
 
   NodeBase on(String event, Function handler, [String id]) {
-    super.on(event, handler, id);
     _registerDOMEvent(event);
     return this;
   }
 
   void _handleAttrChange(String attr, oldValue, newValue) {
-    // apply attribute change to svg element
-    var elementAttr = _mapToElementAttr(attr);
-    if (elementAttr != null) {
-      _element.setAttribute(elementAttr, '$newValue');
+    // apply translate to position changes
+    if (attr == 'x' || attr == 'y') {
+      if (oldValue == null) {
+        oldValue = 0;
+      }
+      num diff = newValue - oldValue;
+
+      if (attr == 'x') {
+        _element.setAttribute('transform', 'translate($diff, ${getAttribute('y', 0)})');
+      } else {
+        _element.setAttribute('transform', 'translate(${getAttribute('x', 0)}, $diff)');
+      }
+    } else if (_isStyle(attr)) {
+      _setElementStyles();
     } else {
-      // nodes which didn't have x/y attribute,
-      // treat original x/y as 0 and apply the change
-      // as a translate
-      switch(attr) {
-        case 'x':
-            if (oldValue == null) {
-              oldValue = 0;
-            }
-            num diff = newValue - oldValue;
-            _element.setAttribute('transform', 'translate($diff, ${getAttribute('y', 0)})');
-          break;
-        case 'y':
-          if (oldValue == null) {
-            oldValue = 0;
-          }
-          num diff = newValue - oldValue;
-          _element.setAttribute('transform', 'translate(${getAttribute('x', 0)}, $diff)');
-          break;
+      // apply attribute change to svg element
+      var elementAttr = _mapToElementAttr(attr);
+      if (elementAttr != null) {
+        _element.setAttribute(elementAttr, '$newValue');
       }
     }
+  }
+
+  bool _isStyle(String attr) {
+    return _getStyleNames().contains(attr);
   }
 
   String _mapToElementAttr(String attr) {
@@ -222,4 +235,6 @@ abstract class SvgNode extends NodeImpl {
     }
     return null;
   }
+
+  String get _nodeName;
 }

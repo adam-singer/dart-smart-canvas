@@ -12,4 +12,6 @@ class SvgPath extends SvgNode {
     attrs.addAll(['d']);
     return attrs;
   }
+
+  String get _nodeName => '__sc_path';
 }

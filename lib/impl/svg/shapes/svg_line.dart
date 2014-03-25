@@ -12,4 +12,6 @@ class SvgLine extends SvgNode {
     attrs.addAll(['x1', 'y1', 'x2', 'y2']);
     return attrs;
   }
+
+  String get _nodeName => '__sc_line';
 }

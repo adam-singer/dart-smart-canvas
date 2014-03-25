@@ -5,7 +5,7 @@ class CanvasNode extends NodeImpl {
   CanvasNode(Node shell): super(shell) {}
 
   void remove() {
-    throw 'not implemented';
+    throw ExpNotImplemented;
   }
   String get type => canvas;
 

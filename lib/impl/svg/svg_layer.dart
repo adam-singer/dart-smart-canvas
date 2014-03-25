@@ -16,7 +16,7 @@ class SvgLayer extends SvgNode implements LayerImpl {
   }
 
   Set<String> _getElementAttributeNames() {
-    return new Set<String>.from(['id', 'class']);
+    return new Set<String>.from([ID, CLASS]);
   }
 
   void _setElementAttributes() {
@@ -25,14 +25,14 @@ class SvgLayer extends SvgNode implements LayerImpl {
 
   Map<String, dynamic> _getStyles() {
     return {
-      'position': 'absolute',
-      'top': 0,
-      'left': 0,
-      'margin': 0,
-      'padding': 0,
-      'opacity': shell.opacity,
-      'width': getAttribute("width"),
-      'height': getAttribute("height"),
+      POSITION: 'absolute',
+      TOP: 0,
+      LEFT: 0,
+      MARGIN: 0,
+      PADDING: 0,
+      OPACITY: shell.opacity,
+      WIDTH: getAttribute(WIDTH),
+      HEIGHT: getAttribute(HEIGHT),
     };
   }
 
@@ -79,5 +79,5 @@ class SvgLayer extends SvgNode implements LayerImpl {
 
   List<SvgNode> get children => _children;
 
-  String get _nodeName => '__sc_layer';
+  String get _nodeName => SC_LAYER;
 }

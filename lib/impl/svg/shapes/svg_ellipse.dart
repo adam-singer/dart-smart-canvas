@@ -12,20 +12,20 @@ class SvgEllipse extends SvgNode{
 
   Set<String> _getElementAttributeNames() {
     var attrs = super._getElementAttributeNames();
-    attrs.addAll(['cx', 'cy', 'rx', 'ry']);
+    attrs.addAll([CX, CY, RX, RY]);
     return attrs;
   }
 
   dynamic getAttribute(String attr, [dynamic defaultValue = null]) {
     switch (attr) {
-      case 'cx':
-        return super.getAttribute('x', defaultValue);
-      case 'cy':
-        return super.getAttribute('y', defaultValue);
+      case CX:
+        return super.getAttribute(X, defaultValue);
+      case CY:
+        return super.getAttribute(Y, defaultValue);
       default:
         return super.getAttribute(attr, defaultValue);
     }
   }
 
-  String get _nodeName => '__sc_ellipse';
+  String get _nodeName => SC_ELLIPSE;
 }

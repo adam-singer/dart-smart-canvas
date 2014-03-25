@@ -3,18 +3,18 @@ import '../lib/smartcanvas.dart';
 
 void main() {
   dom.Element container = dom.document.querySelector('#smartCanvas');
-  Stage stage = new Stage(container, 'svg', {
-      'width': 600,
-      'height': 600
+  Stage stage = new Stage(container, svg, {
+      WIDTH: 600,
+      HEIGHT: 600
     });
 
     Circle circle = new Circle({
-      'x': 50,
-      'y': 50,
-      'r': 40,
-      'stroke': 'green',
-      'fill': 'yellow',
-      'listening': true
+      X: 50,
+      Y: 50,
+      R: 40,
+      STROKE: 'green',
+      FILL: 'yellow',
+      LISTENING: true
     });
 
     Rect rect = new Rect({
@@ -78,7 +78,7 @@ void main() {
 //      }
 //
 //    });
-    g.on(click, (e) => print('group clicked'));
+    g.on(CLICK, (e) => print('group clicked'));
 //    g.on(dblclick, (e) => print('group double clicked'));
 
 //  canvas.add(rect);

@@ -9,12 +9,12 @@ class Ellipse extends Node {
   }
 
   NodeImpl _createCanvasImpl() {
-    throw 'Not implemented';
+    throw ExpNotImplemented;
   }
 
-  void set rx(num value) => setAttribute('rx', value);
-  num get rx => getAttribute('rx');
+  void set rx(num value) => setAttribute(RX, value);
+  num get rx => getAttribute(RX);
 
-  void set ry(num value) => setAttribute('ry', value);
-  num get ry => getAttribute('ry');
+  void set ry(num value) => setAttribute(RY, value);
+  num get ry => getAttribute(RY);
 }

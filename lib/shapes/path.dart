@@ -8,6 +8,6 @@ class Path extends Node {
   }
 
   NodeImpl _createCanvasImpl() {
-    throw 'Not implemented';
+    throw ExpNotImplemented;
   }
 }

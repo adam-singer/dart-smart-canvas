@@ -9,9 +9,9 @@ class SvgLine extends SvgNode {
 
   Set<String> _getElementAttributeNames() {
     var attrs = super._getElementAttributeNames();
-    attrs.addAll(['x1', 'y1', 'x2', 'y2']);
+    attrs.addAll([X1, Y1, X2, Y2]);
     return attrs;
   }
 
-  String get _nodeName => '__sc_line';
+  String get _nodeName => SC_LINE;
 }

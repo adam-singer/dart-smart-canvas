@@ -8,15 +8,15 @@ class Polygon extends Node{
   }
 
   NodeImpl _createCanvasImpl() {
-    throw 'Not implemented';
+    throw ExpNotImplemented;
   }
 
 
-  void set points(String value) => setAttribute('points', value);
+  void set points(String value) => setAttribute(POINTS, value);
   List<num> getPsoints() {
     List<num> toReturn = [];
-    String ps = getAttribute('points');
-    ps.split(',').forEach((sNumber) {
+    String ps = getAttribute(POINTS);
+    ps.split(COMMA).forEach((sNumber) {
       num p = double.parse(sNumber);
       toReturn.add(p);
     });

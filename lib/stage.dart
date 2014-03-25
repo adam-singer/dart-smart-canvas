@@ -20,11 +20,10 @@ class Stage extends NodeBase implements Container<Node> {
 //    _container.nodes.add(this._element);
 
     _reflectionLayer = new Layer(svg, {
-      'id': '__reflectionLayer',
-      'opacity': 0,
-      'visible': false,
-      'width': this.width,
-      'height': this.height
+      ID: '__reflectionLayer',
+      OPACITY: 0,
+      WIDTH: this.width,
+      HEIGHT: this.height
     });
     _reflectionLayer._stage = this;
     _children.add(_reflectionLayer);
@@ -38,35 +37,35 @@ class Stage extends NodeBase implements Container<Node> {
   }
 
   void _createElement() {
-    String c = getAttribute('class');
+    String c = getAttribute(CLASS);
     _element = new DOM.DivElement();
     if (id != null && !id.isEmpty) {
       _element.id = id;
     }
     _element.classes.add('smartcanvas-stage');
     if (c != null) {
-      _element.classes.addAll(c.split(' '));
+      _element.classes.addAll(c.split(SPACE));
     }
     _element.setAttribute('role', 'presentation');
     _element.style
       ..display = 'inline-block'
-      ..width = '${getAttribute('width')}'
-      ..height = '${getAttribute('height')}';
+      ..width = '${getAttribute(WIDTH)}'
+      ..height = '${getAttribute(HEIGHT)}';
   }
 
   void _populateConfig(Map<String, dynamic> config) {
     _attrs.addAll(config);
-    if (getAttribute('width') == null) {
-      setAttribute('width', _container.clientWidth);
+    if (getAttribute(WIDTH) == null) {
+      setAttribute(WIDTH, _container.clientWidth);
     }
 
-    if (getAttribute('height') == null) {
-      setAttribute('height', _container.clientHeight);
+    if (getAttribute(HEIGHT) == null) {
+      setAttribute(HEIGHT, _container.clientHeight);
     }
   }
 
   void _setPointerPosition(e) {
-    var scale = getAttribute('scale');
+    var scale = getAttribute(SCALE);
     if (scale == null) {
       scale = 1;
     }
@@ -93,7 +92,7 @@ class Stage extends NodeBase implements Container<Node> {
     } else {
       if (_defaultLayer == null) {
         _defaultLayer = new Layer(this._defualtLayerType, {
-          'id': '__default_layer',
+          ID: '__default_layer',
         });
         add(_defaultLayer);
       }
@@ -183,19 +182,19 @@ class Stage extends NodeBase implements Container<Node> {
 
   DOM.Element get element => _element;
 
-  void set id(String value) => setAttribute('id', value);
-  String get id => getAttribute('id');
+  void set id(String value) => setAttribute(ID, value);
+  String get id => getAttribute(ID);
 
   void set width(num value) {
-    setAttribute('width', value);
+    setAttribute(WIDTH, value);
     _resizeLayers();
   }
-  num get width => getAttribute('width');
+  num get width => getAttribute(WIDTH);
 
   void set height(num value) {
-    setAttribute('height', value);
+    setAttribute(HEIGHT, value);
     _resizeLayers();
   }
-  num get height => getAttribute('height');
+  num get height => getAttribute(HEIGHT);
 }
 

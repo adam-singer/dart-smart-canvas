@@ -8,6 +8,6 @@ class Line extends Node {
   }
 
   NodeImpl _createCanvasImpl() {
-    throw 'Not Implemented';
+    throw ExpNotImplemented;
   }
 }

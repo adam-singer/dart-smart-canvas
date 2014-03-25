@@ -13,5 +13,5 @@ class SvgRect extends SvgNode {
     return attrs;
   }
 
-  String get _nodeName => '__sc_rect';
+  String get _nodeName => SC_RECT;
 }

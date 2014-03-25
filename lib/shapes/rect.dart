@@ -8,6 +8,6 @@ class Rect extends Node {
   }
 
   NodeImpl _createCanvasImpl() {
-    throw 'Not implemented';
+    throw ExpNotImplemented;
   }
 }

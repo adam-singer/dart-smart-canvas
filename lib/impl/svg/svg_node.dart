@@ -18,11 +18,11 @@ abstract class SvgNode extends NodeImpl {
     _setElementStyles();
 //    _applyOffset();
 
-    if (getAttribute('draggable') == true) {
+    if (getAttribute(DRAGGABLE) == true) {
       _startDragHandling();
     }
 
-    if(getAttribute('listening') == true) {
+    if(getAttribute(LISTENING) == true) {
       this.eventListeners.forEach((k, v) {
         _registerDOMEvent(k);
       });
@@ -36,7 +36,7 @@ abstract class SvgNode extends NodeImpl {
         _stopDragHandling();
       }
     })
-    .on('*Changed', _handleAttrChange);
+    .on(ANY_CHANGED, _handleAttrChange);
   }
 
   String get type => svg;
@@ -47,10 +47,10 @@ abstract class SvgNode extends NodeImpl {
 
   void _setClassName() {
     _classNames.add(_nodeName);
-    if (hasAttribute('class')) {
-      _classNames.add(getAttribute('class'));
+    if (hasAttribute(CLASS)) {
+      _classNames.add(getAttribute(CLASS));
     }
-    setAttribute('class', _classNames.join(' '));
+    setAttribute(CLASS, _classNames.join(SPACE));
   }
 
   void _startDragHandling() {
@@ -62,7 +62,7 @@ abstract class SvgNode extends NodeImpl {
   }
 
   Set<String> _getElementAttributeNames() {
-    return new Set<String>.from(['id', 'class']);
+    return new Set<String>.from([ID, CLASS]);
   }
 
   Map<String, dynamic> _getStyles() {
@@ -70,8 +70,8 @@ abstract class SvgNode extends NodeImpl {
   }
 
   List<String> _getStyleNames() {
-    return ['stroke', 'stroke-width', 'stroke-opacity',
-            'fill', 'opacity'];
+    return [STROKE, STROKE_WIDTH, STROKE_OPACITY,
+            FILL, OPACITY];
   }
 
   Map<String, dynamic> _createStyles(List<String> styleNames) {
@@ -176,8 +176,8 @@ abstract class SvgNode extends NodeImpl {
       var pointerPosition = this.stage.pointerPosition;
       num x = pointerPosition.x - this._dragOffsetX;
       num y = pointerPosition.y - this._dragOffsetY;
-      this._element.setAttribute('transform', 'translate($x, $y)');
-      fire('dragmove', e);
+      this._element.setAttribute(TRANSFORM, 'translate($x, $y)');
+      fire(DRAGMOVE, e);
     }
   }
 
@@ -190,29 +190,30 @@ abstract class SvgNode extends NodeImpl {
 
   void _onMouseMove(DOM.MouseEvent e) {
     if (!_dragging) {
-      fire('mousemove', e);
-      var name = getAttribute('name');
-      print (name + ' mousemove');
+      fire(MOUSEMOVE, e);
     }
   }
 
   NodeBase on(String event, Function handler, [String id]) {
-    _registerDOMEvent(event);
+    super.on(event, handler, id);
+    if(getAttribute(LISTENING) == true) {
+      _registerDOMEvent(event);
+    }
     return this;
   }
 
   void _handleAttrChange(String attr, oldValue, newValue) {
     // apply translate to position changes
-    if (attr == 'x' || attr == 'y') {
+    if (attr == X || attr == Y) {
       if (oldValue == null) {
         oldValue = 0;
       }
       num diff = newValue - oldValue;
 
-      if (attr == 'x') {
-        _element.setAttribute('transform', 'translate($diff, ${getAttribute('y', 0)})');
+      if (attr == X) {
+        _element.setAttribute(TRANSFORM, 'translate($diff, ${getAttribute(Y, 0)})');
       } else {
-        _element.setAttribute('transform', 'translate(${getAttribute('x', 0)}, $diff)');
+        _element.setAttribute(TRANSFORM, 'translate(${getAttribute(X, 0)}, $diff)');
       }
     } else if (_isStyle(attr)) {
       _setElementStyles();

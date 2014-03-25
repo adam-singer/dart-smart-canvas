@@ -6,13 +6,13 @@ class Circle extends Node {
 
   void populateConfig(Map<String, dynamic> config) {
     super.populateConfig(config);
-    num r = _attrs['r'];
+    num r = _attrs[R];
     if (r == null) {
-      r = _attrs['r'] = 0;
+      r = _attrs[R] = 0;
     }
     var width = r * 2;
-    setAttribute('width', width);
-    setAttribute('height', width);
+    setAttribute(WIDTH, width);
+    setAttribute(HEIGHT, width);
   }
 
   NodeImpl _createSvgImpl() {
@@ -20,9 +20,9 @@ class Circle extends Node {
   }
 
   NodeImpl _createCanvasImpl() {
-    throw 'Not implemented';
+    throw ExpNotImplemented;
   }
 
-  void set r(num value) => setAttribute('r', value);
-  num get r => getAttribute('r');
+  void set r(num value) => setAttribute(R, value);
+  num get r => getAttribute(R);
 }

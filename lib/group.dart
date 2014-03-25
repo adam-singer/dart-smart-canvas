@@ -31,7 +31,7 @@ class Group extends Node implements Container<Node> {
   }
 
   NodeImpl _createCanvasImpl() {
-    throw 'Not implemented';
+    throw ExpNotImplemented;
   }
 
   void add(Node child) {
@@ -81,7 +81,7 @@ class Group extends Node implements Container<Node> {
     } else {
       cnfg = _attrs;
     }
-    Node clone = cm.newInstance(const Symbol(''), [cnfg]).reflectee;
+    Node clone = cm.newInstance(const Symbol(EMPTY), [cnfg]).reflectee;
 
     _children.forEach((child) {
       (clone as Container).add(child.clone());

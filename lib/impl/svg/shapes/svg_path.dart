@@ -9,9 +9,9 @@ class SvgPath extends SvgNode {
 
   Set<String> _getElementAttributeNames() {
     var attrs = super._getElementAttributeNames();
-    attrs.addAll(['d']);
+    attrs.addAll([D]);
     return attrs;
   }
 
-  String get _nodeName => '__sc_path';
+  String get _nodeName => SC_PATH;
 }

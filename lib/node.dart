@@ -98,7 +98,7 @@ abstract class Node extends NodeBase {
   }
 
   NodeBase on(String events, Function handler, [String id]) {
-    List<String> ss = events.split(' ');
+    List<String> ss = events.split(SPACE);
     ss.forEach((event) {
       if (_eventListeners[event] == null) {
         _eventListeners[event] = new List<_EventListener>();
@@ -129,7 +129,7 @@ abstract class Node extends NodeBase {
     } else {
       cnfg = _attrs;
     }
-    Node clone = cm.newInstance(const Symbol(''), [cnfg]).reflectee;
+    Node clone = cm.newInstance(const Symbol(EMPTY), [cnfg]).reflectee;
     if (_impl != null) {
       clone._impl = clone.createImpl(_impl.type);
     }
@@ -144,39 +144,39 @@ abstract class Node extends NodeBase {
     return (parent is Layer) ? parent : null;
   }
 
-  void set id(String value) => setAttribute('id', value);
-  String get id => getAttribute('id');
+  void set id(String value) => setAttribute(ID, value);
+  String get id => getAttribute(ID);
 
-  void set x(num value) => setAttribute('x', value);
-  num get x => getAttribute('x', 0);
+  void set x(num value) => setAttribute(X, value);
+  num get x => getAttribute(X, 0);
 
-  void set y(num value) => setAttribute('y', value);
-  num get y => getAttribute('y', 0);
+  void set y(num value) => setAttribute(Y, value);
+  num get y => getAttribute(Y, 0);
 
-  void set width(num value) => setAttribute('width', value);
-  num get width => getAttribute('width', 0);
+  void set width(num value) => setAttribute(WIDTH, value);
+  num get width => getAttribute(WIDTH, 0);
 
-  void set height(num value) => setAttribute('height', value);
-  num get height => getAttribute('height', 0);
+  void set height(num value) => setAttribute(HEIGHT, value);
+  num get height => getAttribute(HEIGHT, 0);
 
-  void set stroke(String value) => setAttribute('stroke', value);
-  String get stroke => getAttribute('stroke');
+  void set stroke(String value) => setAttribute(STROKE, value);
+  String get stroke => getAttribute(STROKE);
 
-  void set strokeWidth(num value) => setAttribute('stroke-width', value);
-  num get strokeWidth => getAttribute('stroke-width');
+  void set strokeWidth(num value) => setAttribute(STROKE_WIDTH, value);
+  num get strokeWidth => getAttribute(STROKE_WIDTH);
 
-  void set strokeOpacity(num value) => setAttribute('stroke-opacity', value);
-  num get strokeOpacity => getAttribute('stroke-opacity');
+  void set strokeOpacity(num value) => setAttribute(STROKE_OPACITY, value);
+  num get strokeOpacity => getAttribute(STROKE_OPACITY);
 
-  void set fill(String value) => setAttribute('fill', value);
-  String get fill => getAttribute('fill');
+  void set fill(String value) => setAttribute(FILL, value);
+  String get fill => getAttribute(FILL);
 
-  void set opacity(int value) => setAttribute('opacity', value);
-  int get opacity => getAttribute('opacity', 1);
+  void set opacity(int value) => setAttribute(OPACITY, value);
+  int get opacity => getAttribute(OPACITY, 1);
 
-  void set draggalbe(bool value) => setAttribute('draggable', value);
-  bool get draggable => getAttribute('draggable', false);
+  void set draggalbe(bool value) => setAttribute(DRAGGABLE, value);
+  bool get draggable => getAttribute(DRAGGABLE, false);
 
-  void set isListening(bool value) => setAttribute('listening', value);
-  bool get isListening => getAttribute('listening', false);
+  void set isListening(bool value) => setAttribute(LISTENING, value);
+  bool get isListening => getAttribute(LISTENING, false);
 }

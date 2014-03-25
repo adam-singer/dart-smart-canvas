@@ -8,7 +8,6 @@ abstract class NodeImpl extends NodeBase {
   NodeImpl(this._shell): super() {
 //    this._stage = _shell._stage;
     this._attrs = _shell._attrs;
-    this._eventListeners = _shell._eventListeners;
   }
 
   String get type;
@@ -17,7 +16,7 @@ abstract class NodeImpl extends NodeBase {
 
   NodeImpl clone() {
     ClassMirror cm = reflectClass(this.runtimeType);
-    NodeImpl clone = cm.newInstance(const Symbol(''), [_attrs]).reflectee;
+    NodeImpl clone = cm.newInstance(const Symbol(EMPTY), [_attrs]).reflectee;
     return clone;
   }
 
@@ -42,6 +41,6 @@ abstract class NodeImpl extends NodeBase {
     return null;
   }
 
-  num get width => getAttribute('width');
-  num get height => getAttribute('height');
+  num get width => getAttribute(WIDTH);
+  num get height => getAttribute(HEIGHT);
 }

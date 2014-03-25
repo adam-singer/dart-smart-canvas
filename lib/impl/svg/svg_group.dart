@@ -32,12 +32,12 @@ class SvgGroup extends SvgNode implements Container<SvgNode> {
 
   void _setElementAttribute(String attr) {
     super._setElementAttribute(attr);
-    if (attrs['x'] != null || attrs['y'] != null) {
-      _element.setAttribute('transform', 'translate(${getAttribute('x', 0)}, ${getAttribute('y', 0)})');
+    if (attrs[X] != null || attrs[Y] != null) {
+      _element.setAttribute(TRANSFORM, 'translate(${getAttribute('x', 0)}, ${getAttribute('y', 0)})');
     }
   }
 
   List<SvgNode> get children => _children;
 
-  String get _nodeName => '__sc_group';
+  String get _nodeName => SC_GROUP;
 }

@@ -14,7 +14,7 @@ class Layer extends Group {
   }
 
   NodeImpl _createCanvasImpl() {
-    throw 'Not implemented';
+    throw ExpNotImplemented;
   }
 
   Layer _clone() {
@@ -61,9 +61,9 @@ class Layer extends Group {
 
   String get type => _impl.type;
 
-  void set width(num value) => setAttribute('width', value);
-  num get width => getAttribute('width');
+  void set width(num value) => setAttribute(WIDTH, value);
+  num get width => getAttribute(WIDTH);
 
-  void set height(num value) => setAttribute('height', value);
-  num get height => getAttribute('height');
+  void set height(num value) => setAttribute(HEIGHT, value);
+  num get height => getAttribute(HEIGHT);
 }

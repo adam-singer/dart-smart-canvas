@@ -9,9 +9,9 @@ class SvgPolygon extends SvgNode {
 
   Set<String> _getElementAttributeNames() {
     var attrs = super._getElementAttributeNames();
-    attrs.addAll(['points']);
+    attrs.addAll([POINTS]);
     return attrs;
   }
 
-  String get _nodeName => '__sc_polygon';
+  String get _nodeName => SC_POLYGON;
 }

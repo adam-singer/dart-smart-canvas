@@ -34,11 +34,11 @@ class NodeBase {
     var oldValue = _attrs[attr];
     _attrs[attr] = value;
     if (oldValue != value) {
-      var event = attr + 'Changed';
+      var event = attr + CHANGED;
       if (hasListener(event)) {
         fire(event, oldValue, value);
       } else{
-        fire('*Changed', attr, oldValue, value);
+        fire(ANY_CHANGED, attr, oldValue, value);
       }
     }
   }

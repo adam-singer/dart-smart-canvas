@@ -23,7 +23,11 @@ abstract class SvgNode extends NodeImpl {
     }
 
     if(getAttribute(LISTENING) == true) {
-      this.eventListeners.forEach((k, v) {
+      shell.eventListeners.forEach((k, v) {
+        if (eventListeners[k] == null) {
+          eventListeners[k] = new List<_EventListener>();
+        }
+        this.eventListeners[k].addAll(v);
         _registerDOMEvent(k);
       });
     }
@@ -48,7 +52,7 @@ abstract class SvgNode extends NodeImpl {
   void _setClassName() {
     _classNames.add(_nodeName);
     if (hasAttribute(CLASS)) {
-      _classNames.add(getAttribute(CLASS));
+      _classNames.addAll(getAttribute(CLASS).split(SPACE));
     }
     setAttribute(CLASS, _classNames.join(SPACE));
   }

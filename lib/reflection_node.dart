@@ -7,6 +7,15 @@ class _ReflectionNode extends Node {
 
   NodeImpl _createSvgImpl() {
     assert(_node._impl != null);
+//    NodeImpl reflectionImpl;
+//    if (_node._reflection != null) {
+//      reflectionImpl = _node._reflection._impl;
+//    } else {
+//      reflectionImpl = _node.reflect();
+//      reflectionImpl.on(DRAGMOVE, _onDragMove);
+//    }
+//    _node._reflection = this;
+//    return reflectionImpl;
     if (_node._reflection == null) {
       _node._reflection = _node.reflect();
       _node._reflection.on(DRAGMOVE, _onDragMove);

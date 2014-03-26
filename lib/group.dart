@@ -96,6 +96,23 @@ class Group extends Node implements Container<Node> {
     return clone;
   }
 
+  Node firstReflectableNode({int startIndex: 0, bool excludeChild: false}) {
+    for (int i = startIndex, len = _children.length; i < len; i++) {
+      Node node = _children[i];
+      if (node.reflectable) {
+        return node;
+      } else if (node is Group) {
+        if (!excludeChild) {
+          Node child = (node as Group).firstReflectableNode();
+          if (child != null) {
+            return child;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
 //  void set stage(Stage stage) {
 //    super.stage = stage;
 //    _children.forEach((node) {

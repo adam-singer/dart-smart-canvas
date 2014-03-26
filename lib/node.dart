@@ -26,8 +26,10 @@ abstract class Node extends NodeBase {
       }
 
       if (_reflection != null) {
-        _reflection.remove();
+        _reflection.shell.remove();
       }
+
+      container.children.remove(this);
       _parent = null;
     }
   }
@@ -57,7 +59,7 @@ abstract class Node extends NodeBase {
     if (container != null) {
       index = container.children.indexOf(this);
       if (index != container.children.length - 1) {
-        container.removeChild(this);
+        remove();
         container.insert(index + 1, this);
       }
     }
@@ -69,7 +71,7 @@ abstract class Node extends NodeBase {
     if (container != null) {
       index = container.children.indexOf(this);
       if (index > 0) {
-        container.removeChild(this);
+        remove();
         container.insert(index - 1, this);
       }
     }
@@ -135,6 +137,10 @@ abstract class Node extends NodeBase {
       clone._impl = clone.createImpl(_impl.type);
     }
     return clone;
+  }
+
+  bool get reflectable {
+    return draggable || listening;
   }
 
   Layer get layer {

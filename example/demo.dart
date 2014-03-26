@@ -69,17 +69,17 @@ void main() {
 
 //  canvas.add(circle);
     stage.add(g);
-//    int i = 0;
-//    g.on('mousedown', (e){
-//      if (i < 2) {
-//        g.moveUp();
-//        ++i;
-//      } else {
-//        g.moveDown();
-//        --i;
-//      }
-//
-//    });
+    int i = 0;
+    g.on('mousedown', (e){
+      if (i < 2) {
+        g.moveUp();
+        ++i;
+      } else {
+        g.moveDown();
+        --i;
+      }
+
+    });
     g.on(CLICK, (e) => print('group clicked'));
 //    g.on(dblclick, (e) => print('group double clicked'));
 

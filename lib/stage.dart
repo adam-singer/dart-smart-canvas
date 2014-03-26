@@ -121,27 +121,7 @@ class Stage extends NodeBase implements Container<Node> {
 
     assert(node.layer != null);
     if (node.layer != null) {
-      var topLayerIndex = _children.length - 1;
-      if (topLayerIndex >= 0 && _children.indexOf(node.layer) < topLayerIndex) {
-        // the node isn't on top layer
-        // insert the node before the first node of
-        // to layer
-
-        // get top layer
-        var topLayer = _children[topLayerIndex];
-
-        // find the reflection position of the first node in top layer
-        var index = _reflectionLayer._children.indexOf(topLayer._children[0]._reflection.shell);
-
-        if (index != -1) {
-          _reflectionLayer.insert(index, new _ReflectionNode(node));
-        } else {
-          // top layer doesn't have any node yet, just add the node
-          _reflectionLayer.add(new _ReflectionNode(node));
-        }
-      } else {
-        _reflectionLayer.add(new _ReflectionNode(node));
-      }
+      _reflectionLayer.reflectNode(node);
     }
   }
 

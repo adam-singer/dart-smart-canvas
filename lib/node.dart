@@ -20,12 +20,14 @@ abstract class Node extends NodeBase {
 
   void remove() {
     var container = _parent as Container;
-    if (container) {
+    if (container != null) {
       if (_impl != null) {
         _impl.remove();
       }
 
-      container.children.remove(this);
+      if (_reflection != null) {
+        _reflection.remove();
+      }
       _parent = null;
     }
   }
@@ -74,12 +76,11 @@ abstract class Node extends NodeBase {
   }
 
   void moveToTop() {
-    int index;
     Container container = _parent as Container;
     if (container != null) {
-      index = container.children.indexOf(this);
+      int index = container.children.indexOf(this);
       if (index != container.children.length - 1) {
-        container.removeChild(this);
+        this.remove();
         container.add(this);
       }
     }

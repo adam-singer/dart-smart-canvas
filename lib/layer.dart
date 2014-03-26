@@ -41,18 +41,12 @@ class Layer extends Group {
       child._parent = this;
       child._layer = this._layer;
 
-      if (this.id == '__reflection_layer') {
-        if (child._reflection == null) {
-
-        }
-      } else {
-        if (child._impl == null) {
-          child._impl = child.createImpl(_impl.type);
-        }
-        _impl.add(child._impl);
-        if (_stage != null) {
-          _stage._reflect(child);
-        }
+      if (child._impl == null) {
+        child._impl = child.createImpl(_impl.type);
+      }
+      _impl.add(child._impl);
+      if (_stage != null) {
+        _stage._reflect(child);
       }
     }
   }

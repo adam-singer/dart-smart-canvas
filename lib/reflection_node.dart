@@ -7,8 +7,11 @@ class _ReflectionNode extends Node {
 
   NodeImpl _createSvgImpl() {
     assert(_node._impl != null);
-    _node._reflection = _node.reflect();
-    _node._reflection.on(DRAGMOVE, _onDragMove);
+    if (_node._reflection == null) {
+      _node._reflection = _node.reflect();
+      _node._reflection.on(DRAGMOVE, _onDragMove);
+    }
+    _node._reflection._shell = this;
     return _node._reflection;
   }
 
@@ -18,6 +21,6 @@ class _ReflectionNode extends Node {
 
   void _onDragMove(DOM.MouseEvent e) {
     (_node._impl as SvgNode).element.setAttribute(TRANSFORM,
-        (_reflection as SvgNode).element.attributes[TRANSFORM]);
+        (_impl as SvgNode).element.attributes[TRANSFORM]);
   }
 }

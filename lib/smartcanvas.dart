@@ -17,6 +17,7 @@ part 'group.dart';
 part 'layer.dart';
 part 'pattern.dart';
 part 'reflection_node.dart';
+part 'reflection_layer.dart';
 
 part 'utils/position.dart';
 part 'utils/constants.dart';
@@ -31,6 +32,7 @@ part 'shapes/line.dart';
 part 'shapes/text.dart';
 part 'shapes/polygon.dart';
 part 'shapes/path.dart';
+part 'shapes/poly_line.dart';
 
 part 'impl/node_impl.dart';
 part 'impl/layer_impl.dart';

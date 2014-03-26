@@ -118,6 +118,7 @@ abstract class SvgNode extends NodeImpl {
   void remove() {
     _element.remove();
     (parent as Container).children.remove(this);
+//    parent._element.nodes.remove(_element);
     parent = null;
   }
 
@@ -188,8 +189,11 @@ abstract class SvgNode extends NodeImpl {
   void _dragEnd(DOM.MouseEvent e) {
     e.preventDefault();
     _dragging = false;
-    this.stage.element.onMouseMove.listen(_dragMove).cancel();
-    this.stage.element.onMouseUp.listen(_dragEnd).cancel();
+
+    if (stage != null) {
+      this.stage.element.onMouseMove.listen(_dragMove).cancel();
+      this.stage.element.onMouseUp.listen(_dragEnd).cancel();
+    }
   }
 
   void _onMouseMove(DOM.MouseEvent e) {

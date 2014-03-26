@@ -16,3 +16,4 @@ part 'shapes/svg_line.dart';
 part 'shapes/svg_text.dart';
 part 'shapes/svg_polygon.dart';
 part 'shapes/svg_path.dart';
+part 'shapes/svg_poly_line.dart';

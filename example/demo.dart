@@ -37,7 +37,9 @@ void main() {
       'listening': true,
       'draggable': true
     });
-//    ellipse.on(mousedown, (e){ ellipse.moveToTop(); });
+    ellipse.on(MOUSEDOWN, (e){
+      ellipse.moveToTop();
+    });
 
     Line line = new Line({
       'x1': 100,
@@ -98,7 +100,7 @@ void main() {
 //      'id': 'two'
 //    });
 //
-//    c2.on(mousedown, (e) => print('c2 clicked'));
+//    c2.on(MOUSEDOWN, (e) => print('c2 clicked'));
 //    layer2.add(c2);
 //    stage.add(layer2);
 
@@ -121,11 +123,11 @@ void main() {
 //    });
 //    layer2.add(p);
 
-//    Path path = new Path({
-//      'd': "M150 0 L75 200 L225 200 Z",
-//      'draggable': true
-//    });
-//    stage.add(path);
+    Path path = new Path({
+      'd': "M150 0 L75 200 L225 200 Z",
+      'draggable': true
+    });
+    stage.add(path);
 //
 //    p.x = p.x + 200;
 //    p.y = p.y + 100;

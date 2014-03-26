@@ -23,11 +23,11 @@ abstract class SvgNode extends NodeImpl {
     }
 
     if(getAttribute(LISTENING) == true) {
-      shell.eventListeners.forEach((k, v) {
-        if (eventListeners[k] == null) {
-          eventListeners[k] = new List<_EventListener>();
-        }
-        this.eventListeners[k].addAll(v);
+      this.eventListeners.forEach((k, v) {
+//        if (eventListeners[k] == null) {
+//          eventListeners[k] = [];
+//        }
+//        this.eventListeners[k].addAll(v);
         _registerDOMEvent(k);
       });
     }

@@ -21,10 +21,10 @@ class Group extends Node implements Container<Node> {
           !(node is Container)) {
         return;
       }
-      node._impl = node.reflect();
+      node._reflection = node.reflect();
       if (!(node is Container) ||
           node.children.length > 0) {
-        impl.add(node._impl);
+        impl.add(node._reflection);
       }
     });
     return impl;
@@ -43,10 +43,17 @@ class Group extends Node implements Container<Node> {
 //      child.stage = this.stage;
       child._layer = this._layer;
       if (_impl != null ) {
+        // re-create impl if child switched to different type of layer
         if (child._impl == null || child._impl.type != _impl.type) {
           child._impl = child.createImpl(_impl.type);
         }
         (_impl as Container).add(child._impl);
+      }
+
+      if (_reflection != null) {
+        if (child._reflection == null) {
+          child._reflection = child.reflect();
+        }
       }
     }
   }

@@ -5,7 +5,7 @@ abstract class Node extends NodeBase {
   Layer _layer;
   NodeImpl _impl;
   Node _parent;
-  _ReflectionNode _reflection;
+  NodeImpl _reflection;
 
   Node([Map<String, dynamic> config = null]): super() {
     if (config == null) {

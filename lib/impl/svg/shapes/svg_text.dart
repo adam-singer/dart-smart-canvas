@@ -1,7 +1,9 @@
 part of smartcanvas.svg;
 
 class SvgText extends SvgNode{
-  SvgText(Text shell): super(shell) {}
+  SvgText(Text shell): super(shell) {
+    this.on('textChanged', _handleTextChange);
+  }
 
   SVG.SvgElement _createElement() {
     SVG.SvgElement text = new SVG.TextElement();
@@ -30,6 +32,14 @@ class SvgText extends SvgNode{
       return true;
     }
     return super._isStyle(attr);
+  }
+
+  void _handleTextChange(oldValue, newValue) {
+    _element.text = newValue;
+  }
+
+  num get width {
+    return _element.getBBox().width;
   }
 
   String get _nodeName => SC_TEXT;

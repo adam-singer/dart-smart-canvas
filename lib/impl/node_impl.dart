@@ -6,8 +6,8 @@ abstract class NodeImpl extends NodeBase {
   Node _shell;
 
   NodeImpl(this._shell): super() {
-//    this._stage = _shell._stage;
     this._attrs = _shell._attrs;
+    this._eventListeners = _shell._eventListeners;
   }
 
   String get type;

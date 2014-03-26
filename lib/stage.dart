@@ -19,9 +19,7 @@ class Stage extends NodeBase implements Container<Node> {
     _container.createShadowRoot().append(this._element);
 //    _container.nodes.add(this._element);
 
-    _reflectionLayer = new Layer(svg, {
-      ID: '__reflectionLayer',
-      OPACITY: 0,
+    _reflectionLayer = new _ReflectionLayer({
       WIDTH: this.width,
       HEIGHT: this.height
     });

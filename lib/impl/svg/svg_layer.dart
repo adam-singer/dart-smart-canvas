@@ -39,7 +39,6 @@ class SvgLayer extends SvgNode implements LayerImpl {
   void add(SvgNode child) {
     _children.add(child);
     child.parent = this;
-//    child.stage = this.stage;
     this._element.append(child._element);
   }
 

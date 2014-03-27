@@ -192,4 +192,13 @@ abstract class Node extends NodeBase {
 
   void set listening(bool value) => setAttribute(LISTENING, value);
   bool get listening => getAttribute(LISTENING, false);
+
+  void set visible(bool value) {
+    if (!value) {
+      setAttribute(DISPLAY, 'none');
+    } else {
+      removeAttribute(DISPLAY);
+    }
+  }
+  bool get visible => !hasAttribute(DISPLAY);
 }

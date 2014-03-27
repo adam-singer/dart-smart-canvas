@@ -41,6 +41,10 @@ class NodeBase {
     return rt == null ? defaultValue : rt;
   }
 
+  void removeAttribute(String attr) {
+    _attrs.remove(attr);
+  }
+
   String getAttributeString(String attr) {
     var value = getAttribute(attr);
     return '$value';
@@ -86,26 +90,6 @@ class NodeBase {
     if (listeners != null) {
       listeners(arg0, arg1, arg2, arg3, arg4, arg5);
     }
-//    if (listeners != null) {
-//      listenrs(arg0, arg1, arg2, arg3, arg4, arg5);
-//      for (var i = 0; i < listeners.length; i++) {
-//        if (arg5 != null) {
-//          listeners[i].handler(arg0, arg1, arg2, arg3, arg4, arg5);
-//        } else if (arg4 != null) {
-//          listeners[i].handler(arg0, arg1, arg2, arg3, arg4);
-//        } else if (arg3 != null) {
-//          listeners[i].handler(arg0, arg1, arg2, arg3);
-//        } else if (arg2 != null) {
-//          listeners[i].handler(arg0, arg1, arg2);
-//        } else if (arg1 != null) {
-//          listeners[i].handler(arg0, arg1);
-//        } else if (arg0 != null) {
-//          listeners[i].handler(arg0);
-//        } else {
-//          listeners[i].handler();
-//        }
-//      }
-//    }
   }
 
   bool hasListener(String event) {

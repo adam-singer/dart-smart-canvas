@@ -12,12 +12,10 @@ abstract class SvgNode extends NodeImpl {
   Set<String> _registeredDOMEvents = new Set<String>();
 
   SvgNode(Node shell) : super(shell) {
-//    this.stage = shell.stage;
     _setClassName();
     _element = _createElement();
     _setElementAttributes();
     _setElementStyles();
-//    _applyOffset();
 
     if (getAttribute(DRAGGABLE) == true) {
       _startDragHandling();
@@ -25,10 +23,6 @@ abstract class SvgNode extends NodeImpl {
 
     if(getAttribute(LISTENING) == true) {
       this.eventListeners.forEach((k, v) {
-//        if (eventListeners[k] == null) {
-//          eventListeners[k] = [];
-//        }
-//        this.eventListeners[k].addAll(v);
         _registerDOMEvent(k, v);
       });
     }
@@ -76,7 +70,7 @@ abstract class SvgNode extends NodeImpl {
 
   List<String> _getStyleNames() {
     return [STROKE, STROKE_WIDTH, STROKE_OPACITY,
-            FILL, OPACITY];
+            FILL, OPACITY, DISPLAY];
   }
 
   Map<String, dynamic> _createStyles(List<String> styleNames) {
@@ -119,7 +113,6 @@ abstract class SvgNode extends NodeImpl {
   void remove() {
     _element.remove();
     (parent as Container).children.remove(this);
-//    parent._element.nodes.remove(_element);
     parent = null;
   }
 

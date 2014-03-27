@@ -9,6 +9,7 @@ abstract class SvgNode extends NodeImpl {
   num _dragOffsetY;
 
   Set<String> _classNames = new Set<String>();
+  Set<String> _registeredDOMEvents = new Set<String>();
 
   SvgNode(Node shell) : super(shell) {
 //    this.stage = shell.stage;
@@ -28,7 +29,7 @@ abstract class SvgNode extends NodeImpl {
 //          eventListeners[k] = [];
 //        }
 //        this.eventListeners[k].addAll(v);
-        _registerDOMEvent(k);
+        _registerDOMEvent(k, v);
       });
     }
 
@@ -122,41 +123,53 @@ abstract class SvgNode extends NodeImpl {
     parent = null;
   }
 
-  void _registerDOMEvent(String event) {
-    Function eventHandler = fireEvent(event);
+  void _registerDOMEvent(String event, EventHandlers handler) {
+    Function eventHandler = fireEvent(handler);
     switch (event) {
-      case 'mousedown':
+      case MOUSEDOWN:
+        _registeredDOMEvents.add(MOUSEDOWN);
         _element.onMouseDown.listen(eventHandler);
         break;
-      case 'mouseup':
+      case MOUSEUP:
+        _registeredDOMEvents.add(MOUSEUP);
         _element.onMouseUp.listen(eventHandler);
         break;
-      case 'mouseenter':
+      case MOUSEENTER:
+        _registeredDOMEvents.add(MOUSEENTER);
         _element.onMouseEnter.listen(eventHandler);
         break;
-      case 'mouseleave':
+      case MOUSELEAVE:
+        _registeredDOMEvents.add(MOUSELEAVE);
         _element.onMouseLeave.listen(eventHandler);
         break;
-      case 'mouseover':
+      case MOUSEOVER:
+        _registeredDOMEvents.add(MOUSEOVER);
         _element.onMouseOver.listen(eventHandler);
         break;
-      case 'mouseout':
+      case MOUSEOUT:
+        _registeredDOMEvents.add(MOUSEOUT);
         _element.onMouseOut.listen(eventHandler);
         break;
-      case 'mousemove':
+      case MOUSEMOVE:
+        _registeredDOMEvents.add(MOUSEMOVE);
         _element.onMouseMove.listen(_onMouseMove);
         break;
-      case 'click':
+      case CLICK:
+        _registeredDOMEvents.add(CLICK);
         _element.onClick.listen(eventHandler);
         break;
-      case 'dblclick':
+      case DBLCLICK:
+        _registeredDOMEvents.add(DBLCLICK);
         _element.onDoubleClick.listen(eventHandler);
         break;
      }
   }
 
-  Function fireEvent(String event) {
-    return (e) => fire(event, e);
+  Function fireEvent(EventHandlers handlers) {
+    return (e){
+      print(e);
+      handlers(e);
+    };
   }
 
   void _dragStart(DOM.MouseEvent e) {
@@ -205,7 +218,9 @@ abstract class SvgNode extends NodeImpl {
   NodeBase on(String event, Function handler, [String id]) {
     super.on(event, handler, id);
     if(getAttribute(LISTENING) == true) {
-      _registerDOMEvent(event);
+      if (!_registeredDOMEvents.contains(event)) {
+        _registerDOMEvent(event, eventListeners[event]);
+      }
     }
     return this;
   }

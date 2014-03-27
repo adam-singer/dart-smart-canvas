@@ -1,6 +1,11 @@
 part of smartcanvas;
 
-class _ReflectionLayer extends Layer {
+class _ReflectionLayer extends Layer implements _I_Reflection {
+
+  Node _node;
+  Container _parent;
+  _ReflectionLayer _layer;
+  SvgLayer _impl;
 
   _ReflectionLayer(Map<String, dynamic> config)
     :super(svg, merge(config, {
@@ -10,64 +15,80 @@ class _ReflectionLayer extends Layer {
   {}
 
   void add(Node child) {
-    if (!(child is _ReflectionNode)) {
+    if (!(child is _I_Reflection)) {
       throw 'Reflection Layer can only add reflection node';
     }
 
-    _children.add(child);
-    child._parent = this;
-    child._layer = this._layer;
+    super.add(child);
 
-    if (child._impl == null) {
-      child._impl = child.createImpl(svg);
-    }
-    _impl.add(child._impl);
+//    _children.add(child);
+//    child._parent = this;
+//    child._layer = this._layer;
+//
+//    if (child._impl == null) {
+//      child._impl = child.createImpl(svg);
+//    }
+//    _impl.add(child._impl);
   }
 
   void insert(int index, Node node) {
-    if (!(node is _ReflectionNode)) {
+    if (!(node is _I_Reflection)) {
       throw 'Reflection Layer can only add reflection node';
     }
 
-    node._parent = this;
-    _children.insert(index, node);
-    if (node._impl == null) {
-      node._impl = node.createImpl(svg);
-    }
-    _impl.add(node._impl);
+    super.insert(index, node);
+//    node._parent = this;
+//    _children.insert(index, node);
+//    if (node._impl == null) {
+//      node._impl = node.createImpl(svg);
+//    }
+//    _impl.add(node._impl);
   }
 
   void insertNode(Node node) {
-    if (!(node is _ReflectionNode)) {
+    if (!(node is _I_Reflection)) {
       throw 'Reflection Layer can only add reflection node';
     }
 
     // find next reflectable node in the same layer
-    Node realNode = node._node;
+    Node realNode = (node as _I_Reflection)._node;
     Node nextReflectableNode = realNode.layer.firstReflectableNode(startIndex:realNode.layer._children.indexOf(realNode) + 1);
     if (nextReflectableNode != null) {
-      //
-      insert(_children.indexOf(nextReflectableNode._reflection.shell), node);
+      insert(_children.indexOf(nextReflectableNode._reflection), node);
     } else {
-      _stage._reflect(realNode);
+      reflectNode(realNode);
     }
   }
 
   void reflectNode(Node node) {
-    _ReflectionNode reflection;
-    Node realNode = node;
-    if (node is _ReflectionNode) {
-      reflection = node;
-      realNode = node._node;
-    } else {
-      reflection = new _ReflectionNode(node);
+    if (node.layer == null) {
+      return;
     }
+
+    if (!node.reflectable) {
+      // if group wasn't reflectable, reflect its children
+      if (node is Container) {
+        (node as Container).children.forEach((child){
+          reflectNode(child);
+        });
+      }
+      return;
+    }
+
+    var reflection = _createReflection(node);
+//    Node realNode = node;
+//    if (node is _ReflectionNode) {
+//      reflection = node;
+//      realNode = node._node;
+//    } else {
+//      reflection = (node is Group) ? new _ReflectionGroup(node) : new _ReflectionNode(node);
+//    }
 
     // find top layer
     var topLayerIndex = _stage._children.length - 1;
 
     // check if the node is on top layer
-    if (topLayerIndex >= 0 && _stage._children.indexOf(realNode.layer) < topLayerIndex) {
+    if (topLayerIndex >= 0 && _stage._children.indexOf(node.layer) < topLayerIndex) {
       // the node isn't on top layer
       // insert the node before the first node of the top layer
 

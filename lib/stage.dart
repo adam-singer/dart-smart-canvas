@@ -4,7 +4,7 @@ class Stage extends NodeBase implements Container<Node> {
   DOM.Element _container;
   DOM.Element _element;
   Layer _defaultLayer;
-  Layer _reflectionLayer;
+  _ReflectionLayer _reflectionLayer;
   String _defualtLayerType;
   List<Node> _children = new List<Node>();
   Position _pointerPosition;
@@ -78,15 +78,21 @@ class Stage extends NodeBase implements Container<Node> {
   void add(Node node) {
     if (node is Layer) {
       node._stage = this;
+      node._reflection = _reflectionLayer;
+
       if (node.width == null) {
         node.width = this.width;
         node.height = this.height;
       }
-//      node.createImpl(node.type);
+
       int index = _element.nodes.indexOf(_reflectionLayer._impl.element);
       _element.nodes.insert(index, node._impl.element);
       _children.add(node);
-      _reflect(node);
+
+      node.children.forEach((child) {
+        _reflectionLayer.reflectNode(child);
+      });
+
     } else {
       if (_defaultLayer == null) {
         _defaultLayer = new Layer(this._defualtLayerType, {
@@ -98,32 +104,30 @@ class Stage extends NodeBase implements Container<Node> {
     }
   }
 
-  void _reflect(Node node) {
-    if (node is Layer) {
-      node.children.forEach((child) {
-        __reflect(child);
-      });
-    } else {
-      __reflect(node);
-    }
-  }
+//  void _reflect(Node node) {
+//    if (node is Layer) {
+//
+//    } else {
+//      _reflectionLayer.reflectNode(node);
+//    }
+//  }
 
-  void __reflect (Node node) {
-    // only node which is draggable or listening
-    if (!node.draggable && !node.isListening) {
-      if (node is Container) {
-        (node as Container).children.forEach((child){
-          __reflect(child);
-        });
-      }
-      return;
-    }
-
-    assert(node.layer != null);
-    if (node.layer != null) {
-      _reflectionLayer.reflectNode(node);
-    }
-  }
+//  void __reflect (Node node) {
+//    // only node which is draggable or listening
+//    if (!node.reflectable) {
+//      if (node is Container) {
+//        (node as Container).children.forEach((child){
+//          __reflect(child);
+//        });
+//      }
+//      return;
+//    }
+//
+//    assert(node.layer != null);
+//    if (node.layer != null) {
+//      _reflectionLayer.reflectNode(node);
+//    }
+//  }
 
   void removeChild(Node node) {
     if (node is Layer) {

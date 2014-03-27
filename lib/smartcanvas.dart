@@ -16,8 +16,13 @@ part 'stage.dart';
 part 'group.dart';
 part 'layer.dart';
 part 'pattern.dart';
-part 'reflection_node.dart';
-part 'reflection_layer.dart';
+
+part 'event/event_handler.dart';
+
+part 'reflection/reflection_node.dart';
+part 'reflection/reflection_layer.dart';
+part 'reflection/reflection_group.dart';
+part 'reflection/reflection_if.dart';
 
 part 'utils/position.dart';
 part 'utils/constants.dart';

@@ -14,47 +14,53 @@ class Group extends Node implements Container<Node> {
     return impl;
   }
 
-  NodeImpl reflect() {
-    SvgGroup impl = new SvgGroup(this);
-    _children.forEach((node) {
-      if (!node.draggable && !node.isListening &&
-          !(node is Container)) {
-        return;
-      }
-      node._reflection = node.reflect();
-      if (!(node is Container) ||
-          node.children.length > 0) {
-        impl.add(node._reflection);
-      }
-    });
-    return impl;
-  }
-
   NodeImpl _createCanvasImpl() {
     throw ExpNotImplemented;
   }
 
   void add(Node child) {
     if (child._parent != null) {
-      child.moveTo(this);
-    } else {
-      _children.add(child);
-      child._parent = this;
-//      child.stage = this.stage;
-      child._layer = this._layer;
-      if (_impl != null ) {
-        // re-create impl if child switched to different type of layer
-        if (child._impl == null || child._impl.type != _impl.type) {
-          child._impl = child.createImpl(_impl.type);
+      child.remove();
+    }
+
+    _children.add(child);
+    child._parent = this;
+    child._layer = this._layer;
+
+    if (_impl != null ) {
+      // re-create impl if child switched to different type of layer
+      if (child._impl == null || child._impl.type != _impl.type) {
+        child._impl = child.createImpl(_impl.type);
+      }
+      (_impl as Container).add(child._impl);
+    }
+
+
+    if (stage != null && !(this is _I_Reflection)) {
+      // only reflect reflectable node
+      if (!child.reflectable) {
+        // if group wasn't reflectable, reflect its children.
+        if (child is Container) {
+          (child as Container).children.forEach((node) {
+            _reflectionAdd(node);
+          });
         }
-        (_impl as Container).add(child._impl);
+        return;
       }
 
-      if (_reflection != null) {
-        if (child._reflection == null) {
-          child._reflection = child.reflect();
-        }
-      }
+      // add child to reflection
+      _reflectionAdd(child);
+    }
+  }
+
+  void _reflectionAdd(Node child) {
+    // if the group already reflected, add children to its reflecton
+    if (this._reflection != null) {
+      this._reflection.add(_createReflection(child));
+    }
+    // otherwise, reflect the child on its reflectable parent
+    else if (_parent != null) {
+      _parent._reflectionAdd(child);
     }
   }
 
@@ -64,12 +70,43 @@ class Group extends Node implements Container<Node> {
   }
 
   void insert(int index, Node node) {
+    if (node._parent != null) {
+      node.remove();
+    }
+
     _children.insert(index, node);
+    node._parent = this;
+    node._layer = this._layer;
     if (_impl != null) {
       if (node._impl == null || node._impl.type != _impl.type) {
         node._impl = node.createImpl(_impl.type);
       }
       (_impl as Container).insert(index, node._impl);
+    }
+
+    if (stage != null && !(this is _I_Reflection)) {
+      // only reflect reflectable node
+      if (!node.reflectable) {
+        // if group wasn't reflectable, reflect its children.
+        if (node is Container) {
+          node.children.forEach((node) {
+            _reflectionInsert(node);
+          });
+        }
+        return;
+      }
+      _reflectionInsert(node);
+    }
+  }
+
+  void _reflectionInsert(Node child) {
+    // if the group already reflected, insert children to its reflecton
+    if (this._reflection != null) {
+      this._reflection.insertNode(_createReflection(child));
+    }
+    // otherwise, insert the child to its nearest reflectable parent
+    else if (_parent){
+      _parent.insertNode(_createReflection(child));
     }
   }
 
@@ -112,11 +149,4 @@ class Group extends Node implements Container<Node> {
     }
     return null;
   }
-
-//  void set stage(Stage stage) {
-//    super.stage = stage;
-//    _children.forEach((node) {
-//      node.stage = stage;
-//    });
-//  }
 }

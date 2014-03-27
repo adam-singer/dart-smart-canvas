@@ -1,11 +1,10 @@
 part of smartcanvas;
 
 abstract class Node extends NodeBase {
-  Stage _stage;
   Layer _layer;
   NodeImpl _impl;
-  Node _parent;
-  NodeImpl _reflection;
+  Container _parent;
+  _I_Reflection _reflection;
 
   Node([Map<String, dynamic> config = null]): super() {
     if (config == null) {
@@ -26,7 +25,7 @@ abstract class Node extends NodeBase {
       }
 
       if (_reflection != null) {
-        _reflection.shell.remove();
+        _reflection.remove();
       }
 
       container.children.remove(this);
@@ -94,7 +93,7 @@ abstract class Node extends NodeBase {
     if (container != null) {
       index = container.children.indexOf(this);
       if (index > 0) {
-        container.removeChild(this);
+        this.remove();
         container.insert(0, this);
       }
     }
@@ -104,9 +103,9 @@ abstract class Node extends NodeBase {
     List<String> ss = events.split(SPACE);
     ss.forEach((event) {
       if (_eventListeners[event] == null) {
-        _eventListeners[event] = new List<_EventListener>();
+        _eventListeners[event] = new EventHandlers();
       }
-      _eventListeners[event].add(new _EventListener(id, handler));
+      _eventListeners[event].add(new EventHandler(id, handler));
 
       if (_impl != null) {
         _impl.on(event, handler, id);
@@ -119,9 +118,9 @@ abstract class Node extends NodeBase {
     return this;
   }
 
-  NodeImpl reflect() {
-    return _createSvgImpl();
-  }
+//  NodeImpl reflect() {
+//    return _createSvgImpl();
+//  }
 
   Node clone([Map<String, dynamic> config]) {
     ClassMirror cm = reflectClass(this.runtimeType);
@@ -145,10 +144,14 @@ abstract class Node extends NodeBase {
 
   Layer get layer {
     Node parent = this._parent;
-    while(parent._parent != null) {
+    while(parent != null && parent._parent != null) {
       parent = parent._parent;
     }
     return (parent is Layer) ? parent : null;
+  }
+
+  Stage get stage {
+    return layer == null ? null : layer._stage;
   }
 
   void set id(String value) => setAttribute(ID, value);
@@ -184,6 +187,6 @@ abstract class Node extends NodeBase {
   void set draggalbe(bool value) => setAttribute(DRAGGABLE, value);
   bool get draggable => getAttribute(DRAGGABLE, false);
 
-  void set isListening(bool value) => setAttribute(LISTENING, value);
-  bool get isListening => getAttribute(LISTENING, false);
+  void set listening(bool value) => setAttribute(LISTENING, value);
+  bool get listening => getAttribute(LISTENING, false);
 }

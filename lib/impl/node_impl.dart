@@ -7,7 +7,7 @@ abstract class NodeImpl extends NodeBase {
 
   NodeImpl(this._shell): super() {
     this._attrs = _shell._attrs;
-    this._eventListeners = _shell._eventListeners;
+    this._eventListeners.addAll(_shell._eventListeners);
   }
 
   String get type;
@@ -36,7 +36,7 @@ abstract class NodeImpl extends NodeBase {
   Stage get stage {
     LayerImpl layer = this.layer;
     if (layer != null) {
-      return layer.shell._stage;
+      return (layer.shell as Layer)._stage;
     }
     return null;
   }

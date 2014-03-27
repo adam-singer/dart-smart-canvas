@@ -41,14 +41,14 @@ void main() {
       ellipse.moveToTop();
     });
 
-    Line line = new Line({
-      'x1': 100,
-      'y1': 100,
-      'x2': 150,
-      'y2': 150,
-      'stroke': 'powderblue',
-      'stroke-width': 4
-    });
+//    Line line = new Line({
+//      'x1': 100,
+//      'y1': 100,
+//      'x2': 150,
+//      'y2': 150,
+//      'stroke': 'powderblue',
+//      'stroke-width': 4
+//    });
 
     Group g = new Group({
       'draggable': true,
@@ -69,6 +69,9 @@ void main() {
 
 //  canvas.add(circle);
     stage.add(g);
+//    g.on('mousedown', (e) {
+//      print('group mousedown');}
+//    );
     int i = 0;
     g.on('mousedown', (e){
       if (i < 2) {
@@ -80,12 +83,16 @@ void main() {
       }
 
     });
-    g.on(CLICK, (e) => print('group clicked'));
+//    g.on(CLICK, (e) => print('group clicked'));
 //    g.on(dblclick, (e) => print('group double clicked'));
 
 //  canvas.add(rect);
 //    stage.add(ellipse);
-    stage.add(line);
+//    stage.add(line);
+
+//    g.add(line);
+//    g.add(circle);
+//    circle.moveToBottom();
 
 //    Circle c2 = new Circle({
 //      'x': 100,

@@ -10,7 +10,7 @@ class _ReflectionLayer extends Layer implements _I_Reflection {
   _ReflectionLayer(Map<String, dynamic> config)
     :super(svg, merge(config, {
       ID: '__reflection_layer',
-      OPACITY: 0
+      OPACITY: 0.2
     }))
   {}
 
@@ -20,15 +20,6 @@ class _ReflectionLayer extends Layer implements _I_Reflection {
     }
 
     super.add(child);
-
-//    _children.add(child);
-//    child._parent = this;
-//    child._layer = this._layer;
-//
-//    if (child._impl == null) {
-//      child._impl = child.createImpl(svg);
-//    }
-//    _impl.add(child._impl);
   }
 
   void insert(int index, Node node) {
@@ -37,12 +28,6 @@ class _ReflectionLayer extends Layer implements _I_Reflection {
     }
 
     super.insert(index, node);
-//    node._parent = this;
-//    _children.insert(index, node);
-//    if (node._impl == null) {
-//      node._impl = node.createImpl(svg);
-//    }
-//    _impl.add(node._impl);
   }
 
   void insertNode(Node node) {
@@ -76,13 +61,6 @@ class _ReflectionLayer extends Layer implements _I_Reflection {
     }
 
     var reflection = _createReflection(node);
-//    Node realNode = node;
-//    if (node is _ReflectionNode) {
-//      reflection = node;
-//      realNode = node._node;
-//    } else {
-//      reflection = (node is Group) ? new _ReflectionGroup(node) : new _ReflectionNode(node);
-//    }
 
     // find top layer
     var topLayerIndex = _stage._children.length - 1;

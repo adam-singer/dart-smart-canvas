@@ -47,23 +47,6 @@ class _ReflectionGroup extends Group implements _I_Reflection {
     }
     super.add(child);
   }
-//    assert (child._node.reflectable);
-//
-//    super.add(child);
-//    if (child._parent != null) {
-//      child.remove();
-//    }
-//
-//    _children.add(child);
-//    child._parent = this;
-//    child._layer = this._layer;
-//    if (_impl != null ) {
-//      if (child._impl == null) {
-//        child._impl = child._createSvgImpl();
-//      }
-//      (_impl as Container).add(child._impl);
-//    }
-//  }
 
   void insert(int index, _I_Reflection node) {
     if (!(node is _I_Reflection)) {
@@ -71,22 +54,6 @@ class _ReflectionGroup extends Group implements _I_Reflection {
     }
     super.insert(index, node);
   }
-//    if (!child._node.reflectable) {
-//      return;
-//    }
-//
-//    if (node._parent != null) {
-//      node.remove();
-//    }
-//
-//    _children.insert(index, node);
-//    if (_impl != null) {
-//      if (node._impl == null || node._impl.type != _impl.type) {
-//        node._impl = node.createImpl(_impl.type);
-//      }
-//      (_impl as Container).insert(index, node._impl);
-//    }
-//  }
 
   void insertNode(Node node) {
     if (!(node is _I_Reflection)) {

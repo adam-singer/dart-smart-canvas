@@ -181,8 +181,11 @@ abstract class Node extends NodeBase {
   void set fill(String value) => setAttribute(FILL, value);
   String get fill => getAttribute(FILL);
 
-  void set opacity(int value) => setAttribute(OPACITY, value);
-  int get opacity => getAttribute(OPACITY, 1);
+  void set fillOpacity(num value) => setAttribute(FILL_OPACITY, value);
+  num get fillOpacity => getAttribute(FILL_OPACITY);
+
+  void set opacity(num value) => setAttribute(OPACITY, value);
+  num get opacity => getAttribute(OPACITY, 1);
 
   void set draggalbe(bool value) => setAttribute(DRAGGABLE, value);
   bool get draggable => getAttribute(DRAGGABLE, false);

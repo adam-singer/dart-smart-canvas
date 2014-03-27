@@ -149,4 +149,17 @@ class Group extends Node implements Container<Node> {
     }
     return null;
   }
+
+  bool get reflectable {
+    bool rt = super.reflectable;
+    if (!rt) {
+      for (int i = 0; i < _children.length; i++) {
+        if (_children[i].reflectable) {
+          rt = true;
+          break;
+        }
+      }
+    }
+    return rt;
+  }
 }

@@ -2,7 +2,7 @@ part of smartcanvas.svg;
 
 class SvgText extends SvgNode{
   SvgText(Text shell): super(shell) {
-    this.on('textChanged', _handleTextChange);
+    shell.on('textChanged', _handleTextChange);
   }
 
   SVG.SvgElement _createElement() {

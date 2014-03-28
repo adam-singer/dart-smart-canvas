@@ -40,6 +40,10 @@ class EventHandlers {
     _handlers.removeAt(index);
   }
 
+  operator[](int index) {
+    return _handlers[index];
+  }
+
   num get length => _handlers.length;
 
   bool get isEmpty => _handlers.isEmpty;

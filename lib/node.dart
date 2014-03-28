@@ -138,10 +138,32 @@ abstract class Node extends NodeBase {
     return clone;
   }
 
+  /**
+   * Show the node
+   */
+  void show() {
+    visible = true;
+  }
+
+  /**
+   * Hide the node
+   */
+  void hide() {
+    visible = false;
+  }
+
+  /**
+   * Where or not the node if reflectable
+   *
+   * A node is reflectable if the node was draggable or listening
+   */
   bool get reflectable {
     return draggable || listening;
   }
 
+  /**
+   * Get the layer of the node
+   */
   Layer get layer {
     Node parent = this._parent;
     while(parent != null && parent._parent != null) {
@@ -150,6 +172,9 @@ abstract class Node extends NodeBase {
     return (parent is Layer) ? parent : null;
   }
 
+  /**
+   * Get the stage
+   */
   Stage get stage {
     return layer == null ? null : layer._stage;
   }
@@ -201,4 +226,11 @@ abstract class Node extends NodeBase {
     }
   }
   bool get visible => !hasAttribute(DISPLAY);
+
+  bool get isDragging {
+    if (_impl != null) {
+      return _impl.isDragging;
+    }
+    return false;
+  }
 }

@@ -18,6 +18,7 @@ part 'layer.dart';
 part 'pattern.dart';
 
 part 'event/event_handler.dart';
+part 'event/event_bus.dart';
 
 part 'reflection/reflection_node.dart';
 part 'reflection/reflection_layer.dart';

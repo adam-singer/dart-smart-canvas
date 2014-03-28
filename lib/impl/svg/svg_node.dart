@@ -159,10 +159,7 @@ abstract class SvgNode extends NodeImpl {
   }
 
   Function fireEvent(EventHandlers handlers) {
-    return (e){
-      print(e);
-      handlers(e);
-    };
+    return (e) => handlers(e);
   }
 
   void _dragStart(DOM.MouseEvent e) {
@@ -254,4 +251,6 @@ abstract class SvgNode extends NodeImpl {
   }
 
   String get _nodeName;
+
+  bool get isDragging => _dragging;
 }

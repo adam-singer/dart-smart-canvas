@@ -1,10 +1,10 @@
 part of smartcanvas;
 
-class PolyLine extends Node {
-  PolyLine(Map<String, dynamic> config): super(config) {}
+class Polyline extends Node {
+  Polyline(Map<String, dynamic> config): super(config) {}
 
   NodeImpl _createSvgImpl() {
-    return new SvgPolyLine(this);
+    return new SvgPolyline(this);
   }
 
   NodeImpl _createCanvasImpl() {

@@ -18,8 +18,7 @@ abstract class Node extends NodeBase {
   }
 
   void remove() {
-    var container = _parent as Container;
-    if (container != null) {
+    if (_parent != null) {
       if (_impl != null) {
         _impl.remove();
       }
@@ -28,7 +27,7 @@ abstract class Node extends NodeBase {
         _reflection.remove();
       }
 
-      container.children.remove(this);
+      _parent.children.remove(this);
       _parent = null;
     }
   }

@@ -59,10 +59,10 @@ class Group extends Node implements Container<Node> {
     if (this._reflection != null) {
       this._reflection.add(_createReflection(child));
     }
-    // otherwise, reflect the child on its reflectable parent
-    else if (_parent != null) {
-      _parent._reflectionAdd(child);
-    }
+//    // otherwise, reflect the child on its reflectable parent
+//    else if (_parent != null) {
+//      (_parent as Node)._reflectionAdd(child);
+//    }
   }
 
   void removeChild(Node node) {
@@ -141,7 +141,7 @@ class Group extends Node implements Container<Node> {
         return node;
       } else if (node is Group) {
         if (!excludeChild) {
-          Node child = (node as Group).firstReflectableNode();
+          Node child = node.firstReflectableNode();
           if (child != null) {
             return child;
           }

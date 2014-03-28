@@ -41,14 +41,15 @@ void main() {
       ellipse.moveToTop();
     });
 
-//    Line line = new Line({
-//      'x1': 100,
-//      'y1': 100,
-//      'x2': 150,
-//      'y2': 150,
-//      'stroke': 'powderblue',
-//      'stroke-width': 4
-//    });
+    Line line = new Line({
+      'x1': 100,
+      'y1': 100,
+      'x2': 150,
+      'y2': 150,
+      'stroke': 'powderblue',
+      'stroke-width': 20,
+      'fill': 'none'
+    });
 
     Group g = new Group({
       'draggable': true,
@@ -88,9 +89,9 @@ void main() {
 
 //  canvas.add(rect);
 //    stage.add(ellipse);
-//    stage.add(line);
+    stage.add(line);
 
-//    g.add(line);
+    g.add(line);
 //    g.add(circle);
 //    circle.moveToBottom();
 
@@ -151,4 +152,12 @@ void main() {
 //    canvas.defaultLayer.moveUp();
 ////    c2.moveTo(canvas.defaultLayer);
 //    layer.draggalbe = true;
+
+    var polyline = new Polyline({
+      'points': [100, 100, 200, 100, 200, 200, 300, 200],
+      'stroke': 'red',
+      'stroke-width': 5,
+      'fill': 'none'
+    });
+    stage.add(polyline);
 }

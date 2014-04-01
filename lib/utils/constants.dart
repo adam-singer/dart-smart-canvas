@@ -65,6 +65,7 @@ const String DISPLAY = 'display';
 const String TEXT_ANCHOR = 'text-anchor';
 const String ABSOLUTE = 'absolute';
 const String ZERO = '0';
+const String VIEWBOX = 'viewBox';
 
 // svg node names
 const String SC_LAYER = '__sc_layer';

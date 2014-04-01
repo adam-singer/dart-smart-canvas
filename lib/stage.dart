@@ -103,6 +103,8 @@ class Stage extends NodeBase implements Container<Node> {
       if (_defaultLayer == null) {
         _defaultLayer = new Layer(this._defualtLayerType, {
           ID: '__default_layer',
+          WIDTH: width,
+          HEIGHT: height
         });
         add(_defaultLayer);
       }

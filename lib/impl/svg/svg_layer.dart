@@ -16,20 +16,31 @@ class SvgLayer extends SvgNode implements LayerImpl {
   }
 
   Set<String> _getElementAttributeNames() {
-    return new Set<String>.from([ID, CLASS]);
+    return new Set<String>.from([ID, CLASS, WIDTH, HEIGHT, VIEWBOX]);
   }
 
-  void _setElementAttributes() {
-    super._setElementAttributes();
+  void _setElementAttribute(String attr) {
+    if (attr == 'viewBox') {
+      (_element as SVG.SvgSvgElement).viewBox.baseVal
+      ..x = getAttribute(X, 0)
+      ..y = getAttribute(Y, 0)
+      ..width = getAttribute(WIDTH)
+      ..height = getAttribute(HEIGHT);
+
+    } else {
+      super._setElementAttribute(attr);
+    }
   }
+
 
   void _setElementStyles() {
     super._setElementStyles();
-    _element.style.setProperty(POSITION, ABSOLUTE);
-    _element.style.setProperty(TOP, ZERO);
-    _element.style.setProperty(LEFT, ZERO);
-    _element.style.setProperty(MARGIN, ZERO);
-    _element.style.setProperty(PADDING, ZERO);
+    _element.style
+    ..position = ABSOLUTE
+    ..top = ZERO
+    ..left = ZERO
+    ..margin = ZERO
+    ..padding = ZERO;
   }
 
   void add(SvgNode child) {

@@ -161,5 +161,5 @@ void main() {
     });
     stage.add(polyline);
 
-    stage.scale = 2;
+    stage.scaleY = 0.5;
 }

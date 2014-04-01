@@ -23,6 +23,7 @@ class SvgLayer extends SvgNode implements LayerImpl {
   void _setElementAttribute(String attr) {
     if (attr == 'viewBox') {
       _setViewBox();
+      _element.setAttribute('preserveAspectRatio', 'none');
     } else {
       super._setElementAttribute(attr);
     }

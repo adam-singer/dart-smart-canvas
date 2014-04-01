@@ -5,7 +5,8 @@ void main() {
   dom.Element container = dom.document.querySelector('#smartCanvas');
   Stage stage = new Stage(container, svg, {
       WIDTH: 600,
-      HEIGHT: 600
+      HEIGHT: 600,
+//      DRAGGABLE: true
     });
 
     Circle circle = new Circle({

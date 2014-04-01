@@ -9,6 +9,12 @@ class Stage extends NodeBase implements Container<Node> {
   List<Node> _children = new List<Node>();
   Position _pointerPosition;
 
+  bool _dragging = false;
+  bool _dragStarted = false;
+  num _dragOffsetX = 0;
+  num _dragOffsetY = 0;
+  TransformMatrix _transformMatrix = new TransformMatrix();
+
   Stage(this._container, String this._defualtLayerType, Map<String, dynamic> config): super(){
     _populateConfig(config);
     _createElement();
@@ -29,7 +35,7 @@ class Stage extends NodeBase implements Container<Node> {
 
     _element.onMouseDown.listen(_onMouseDown);
     _element.onMouseMove.listen(_onMouseMove);
-    _element.onMouseUp.listen(_setPointerPosition);
+    _element.onMouseUp.listen(_onMouseUp);
     _element.onMouseEnter.listen(_setPointerPosition);
     _element.onMouseLeave.listen(_setPointerPosition);
   }
@@ -60,22 +66,52 @@ class Stage extends NodeBase implements Container<Node> {
     if (getAttribute(HEIGHT) == null) {
       setAttribute(HEIGHT, _container.clientHeight);
     }
+
+    num scale = getAttribute(SCALE_X);
+    if (scale != null) {
+      scaleX = scale;
+    }
+
+    scale = getAttribute(SCALE_Y);
+    if (scale != null) {
+      scaleY = scale;
+    }
+
+    scale = getAttribute(SCALE);
+    if (scale != null) {
+      scaleX = scale;
+      scaleY = scale;
+    }
   }
 
   void _onMouseDown(e) {
     _setPointerPosition(e);
     fire('contentMouseDown', e);
+    if (draggable) {
+      _dragStart(e);
+    }
   }
 
   void _onMouseMove(e) {
     _setPointerPosition(e);
     fire('contentMouseMove', e);
+    if (_dragging) {
+      _dragMove(e);
+    }
+  }
+
+  void _onMouseUp(e) {
+    _setPointerPosition(e);
+    fire('contentMouseUp', e);
+    if (_dragging) {
+      _dragEnd(e);
+    }
   }
 
   void _setPointerPosition(e) {
-    num scale = getAttribute(SCALE, 1);
-    num x = (e.client.x /*- canvas.currentTranslate.x*/) / scale;
-    num y = (e.client.y /*- canvas.currentTranslate.y*/) / scale;
+    num x = (e.client.x - _transformMatrix.tx) / _transformMatrix.sx;
+    num y = (e.client.y - _transformMatrix.ty) / _transformMatrix.sy;
+    print('cx: ${e.client.x}, ${e.client.y} - t: ${_transformMatrix.tx}, ${_transformMatrix.ty} - pp: $x, $y');
     this._pointerPosition = new Position(x: x, y: y);
   }
 
@@ -136,12 +172,32 @@ class Stage extends NodeBase implements Container<Node> {
     }
   }
 
-  void _resizeLayers() {
-    _children.forEach((layer) {
-      layer.width = width;
-      layer.height = height;
-    });
+  void _dragStart(DOM.MouseEvent e) {
+    e.preventDefault();
+    this._dragging = true;
+
+    this._dragOffsetX = _pointerPosition.x - _transformMatrix.tx / _transformMatrix.sx;
+    this._dragOffsetY = _pointerPosition.y - _transformMatrix.ty / _transformMatrix.sy;
+
+    _element.onMouseUp.listen(_dragEnd).resume();
   }
+
+  void _dragMove(DOM.MouseEvent e) {
+    e.preventDefault();
+    if (!_dragStarted) {
+      fire('dragstart', e);
+      _dragStarted = true;
+    }
+    _transformMatrix.tx = _pointerPosition.x - _dragOffsetX;
+    _transformMatrix.ty = _pointerPosition.y - _dragOffsetY;
+    fire(DRAGMOVE, e);
+  }
+
+  void _dragEnd(DOM.MouseEvent e) {
+    e.preventDefault();
+    _dragging = false;
+  }
+
 
   List<Node> get children => _children;
 
@@ -159,8 +215,20 @@ class Stage extends NodeBase implements Container<Node> {
   void set height(num value) => setAttribute(HEIGHT, value);
   num get height => getAttribute(HEIGHT);
 
-  void set scaleX(num x) => setAttribute(SCALE_X, x);
-  void set scaleY(num y) => setAttribute(SCALE_Y, y);
+  void set scaleX(num x) {
+    num oldValue = _transformMatrix.sx;
+    _transformMatrix.sx = x;
+    if (oldValue != x) {
+      fire('scaleXChanged', oldValue, x);
+    }
+  }
+  void set scaleY(num y) {
+    num oldValue = _transformMatrix.sy;
+    _transformMatrix.sy = y;
+    if (oldValue != y) {
+      fire('scaleYChanged', oldValue, y);
+    }
+  }
   void set scale(scale) {
     num x, y;
     if (scale is num) {
@@ -178,13 +246,34 @@ class Stage extends NodeBase implements Container<Node> {
       }
     }
 
-    setAttribute(SCALE_X, x);
-    setAttribute(SCALE_Y, y);
+    scaleX = x;
+    scaleY = y;
   }
 
-  num get scaleX => getAttribute(SCALE_X, 1);
-  num get scaleY => getAttribute(SCALE_Y, 1);
+  num get scaleX => _transformMatrix.sx;
+  num get scaleY => _transformMatrix.sy;
+
+//  void set(num tx) {
+//    var oldValue = _transformMatrix.tx;
+//    _transformMatrix.tx = tx;
+//    if (oldValue != tx) {
+//      fire('translateXChanged', oldValue, tx);
+//    }
+//  }
+//  num get tx => _transformMatrix.tx;
+//
+//  void set ty(num ty) {
+//    var oldValue = _transformMatrix.ty;
+//    _transformMatrix.ty = ty;
+//    if (oldValue != ty) {
+//      fire('translateYChanged', oldValue, ty);
+//    }
+//  }
+//  num get ty => _transformMatrix.ty;
 
   DOM.Element get container => _container;
+
+  void set draggable(bool value) => setAttribute(DRAGGABLE, value);
+  bool get draggable => getAttribute(DRAGGABLE, false);
 }
 

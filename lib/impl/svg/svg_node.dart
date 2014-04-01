@@ -2,6 +2,7 @@ part of smartcanvas.svg;
 
 abstract class SvgNode extends NodeImpl {
   SVG.SvgElement _element;
+  SVG.Matrix _elMatrix = new SVG.SvgSvgElement().createSvgMatrix();
 
   bool _dragging = false;
   bool _dragStarted = false;
@@ -148,8 +149,9 @@ abstract class SvgNode extends NodeImpl {
     this._dragging = true;
 
     var pointerPosition = this.stage.pointerPosition;
-    this._dragOffsetX = pointerPosition.x - (this._element as SVG.GraphicsElement).getCtm().e;
-    this._dragOffsetY = pointerPosition.y - (this._element as SVG.GraphicsElement).getCtm().f;
+    var m = (_element as SVG.GraphicsElement).getCtm();
+    this._dragOffsetX = pointerPosition.x - m.e / m.a;
+    this._dragOffsetY = pointerPosition.y - m.f / m.d;
 
     this.stage.element.onMouseMove.listen(_dragMove).resume();
     this.stage.element.onMouseUp.listen(_dragEnd).resume();
@@ -158,14 +160,18 @@ abstract class SvgNode extends NodeImpl {
   void _dragMove(DOM.MouseEvent e) {
     if (_dragging) {
       e.preventDefault();
+      e.stopPropagation();
+
       if (!_dragStarted) {
         fire('dragstart', e);
         _dragStarted = true;
       }
       var pointerPosition = this.stage.pointerPosition;
-      num x = pointerPosition.x - this._dragOffsetX;
-      num y = pointerPosition.y - this._dragOffsetY;
-      this._element.setAttribute(TRANSFORM, 'translate($x, $y)');
+      transformMatrix.tx = pointerPosition.x - this._dragOffsetX;
+      transformMatrix.ty = pointerPosition.y - this._dragOffsetY;
+
+      translate();
+//      this._element.setAttribute(TRANSFORM, 'translate(${transformMatrix.tx}, ${transformMatrix.ty})');
       fire(DRAGMOVE, e);
     }
   }
@@ -205,10 +211,13 @@ abstract class SvgNode extends NodeImpl {
       num diff = newValue - oldValue;
 
       if (attr == X) {
-        _element.setAttribute(TRANSFORM, 'translate($diff, ${getAttribute(Y, 0)})');
+        transformMatrix.tx = diff;
+//        _element.setAttribute(TRANSFORM, 'translate($diff, ${getAttribute(Y, 0)})');
       } else {
-        _element.setAttribute(TRANSFORM, 'translate(${getAttribute(X, 0)}, $diff)');
+        transformMatrix.ty = diff;
+//        _element.setAttribute(TRANSFORM, 'translate(${getAttribute(X, 0)}, $diff)');
       }
+      translate();
     } else if (_isStyle(attr)) {
       _setElementStyles();
     } else {
@@ -229,6 +238,28 @@ abstract class SvgNode extends NodeImpl {
       return attr;
     }
     return null;
+  }
+
+  void scale() {
+    _elMatrix.a = transformMatrix.sx;
+    _elMatrix.d = transformMatrix.sy;
+    _setTransform();
+  }
+
+  void translate() {
+    _elMatrix.e = transformMatrix.tx;
+    _elMatrix.f = transformMatrix.ty;
+    _setTransform();
+  }
+
+  void _setTransform() {
+    SVG.GraphicsElement el = _element as SVG.GraphicsElement;
+    SVG.Transform tr = el.transform.baseVal.createSvgTransformFromMatrix(_elMatrix);
+    if (el.transform.baseVal.length == 0) {
+      el.transform.baseVal.appendItem(tr);
+    } else {
+      el.transform.baseVal.replaceItem(tr, 0);
+    }
   }
 
   String get _nodeName;

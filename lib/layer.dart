@@ -3,10 +3,11 @@ part of smartcanvas;
 class Layer extends Group {
   Stage _stage;
   LayerImpl _impl;
+  String _type;
 
-  Layer(String type, Map<String, dynamic> config) : super(config) {
+  Layer(this._type, Map<String, dynamic> config) : super(config) {
     _layer = this;
-    _impl = createImpl(type);
+    _impl = createImpl(_type);
   }
 
   NodeImpl _createSvgImpl() {
@@ -18,7 +19,7 @@ class Layer extends Group {
   }
 
   Layer _clone() {
-     return new Layer(_impl.type, _attrs);
+     return new Layer(_type, _attrs);
   }
 
   void suspend() {
@@ -33,29 +34,29 @@ class Layer extends Group {
     }
   }
 
+  void _handleStageDragMove(e) {
+    _transformMatrix.tx = _stage._transformMatrix.tx;
+    _transformMatrix.ty = _stage._transformMatrix.ty;
+    fire('translateChanged');
+  }
+
   Layer get layer => this;
 
-  String get type => _impl.type;
+  String get type => _type;
 
   void set stage(Stage value) {
     _stage = value;
+//    _transformMatrix = _stage._transformMatrix;
     _stage
     .on('widthChanged', (oldValue, newValue) { width = newValue; })
     .on('heightChanged', (oldValue, newValue) { height = newValue; })
     .on('scaleXChanged', (oldValue, newValue) { scaleX = newValue; })
-    .on('scaleYChanged', (oldValue, newValue) { scaleY = newValue; });
+    .on('scaleYChanged', (oldValue, newValue) { scaleY = newValue; })
+//    .on(DRAGMOVE, _handleStageDragMove);
+    ;
   }
   Stage get stage => _stage;
 
-  void set width(num value) => setAttribute(WIDTH, value);
   num get width => getAttribute(WIDTH);
-
-  void set height(num value) => setAttribute(HEIGHT, value);
   num get height => getAttribute(HEIGHT);
-
-  void set scaleX(num value) => setAttribute(SCALE_X, value);
-  num get scaleX => getAttribute(SCALE_X, 1);
-
-  void set scaleY(num value) => setAttribute(SCALE_Y, value);
-  num get scaleY => getAttribute(SCALE_Y, 1);
 }

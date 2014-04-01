@@ -36,6 +36,7 @@ part 'utils/size.dart';
 part 'utils/util.dart';
 part 'utils/text_measure.dart';
 part 'utils/bbox.dart';
+part 'utils/transform_matrix.dart';
 
 part 'shapes/circle.dart';
 part 'shapes/ellipse.dart';

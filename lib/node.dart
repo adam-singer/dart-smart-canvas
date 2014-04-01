@@ -5,6 +5,7 @@ abstract class Node extends NodeBase {
   NodeImpl _impl;
   Container<Node> _parent;
   _I_Reflection _reflection;
+  TransformMatrix _transformMatrix = new TransformMatrix();
 
   Node([Map<String, dynamic> config = null]): super() {
     if (config == null) {
@@ -242,6 +243,24 @@ abstract class Node extends NodeBase {
     }
     return false;
   }
+
+  void set scaleX(num x) {
+    num oldValue = _transformMatrix.sx;
+    _transformMatrix.sx = x;
+    if (oldValue != x) {
+      fire('scaleXChanged', oldValue, x);
+    }
+  }
+  num get scaleX => _transformMatrix.sx;
+
+  void set scaleY(num y) {
+    num oldValue = _transformMatrix.sy;
+    _transformMatrix.sy = y;
+    if (oldValue != y) {
+      fire('scaleYChanged', oldValue, y);
+    }
+  }
+  num get scaleY => _transformMatrix.sy;
 
   num get absolutePosition {
     if (_impl != null) {

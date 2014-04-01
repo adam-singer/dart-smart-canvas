@@ -9,7 +9,9 @@ class SvgLayer extends SvgNode implements LayerImpl {
       .on('heightChanged', _onHeightChanged)
       .on('opacityChanged', _onOpacityChanged)
       .on('scaleXChanged', _onScaleXChanged)
-      .on('scaleYChanged', _onScaleYChanged);
+      .on('scaleYChanged', _onScaleYChanged)
+      .on('translateXChanged', _onTranslateXChanged)
+      .on('translateYChanged', _onTranslateYChanged);
   }
 
   DOM.Element _createElement() {
@@ -33,8 +35,8 @@ class SvgLayer extends SvgNode implements LayerImpl {
     (_element as SVG.SvgSvgElement).viewBox.baseVal
     ..x = getAttribute(X, 0)
     ..y = getAttribute(Y, 0)
-    ..width = getAttribute(WIDTH) / getAttribute(SCALE_X, 1)
-    ..height = getAttribute(HEIGHT) / getAttribute(SCALE_Y, 1);
+    ..width = getAttribute(WIDTH, 0) / getAttribute(SCALE_X, 1)
+    ..height = getAttribute(HEIGHT, 0) / getAttribute(SCALE_Y, 1);
   }
 
   void _setElementStyles() {
@@ -73,10 +75,14 @@ class SvgLayer extends SvgNode implements LayerImpl {
 
   void _onWidthChanged(oldValue, newValue) {
     _element.setAttribute(WIDTH, '$newValue');
+    (_element as SVG.SvgSvgElement).viewBox.baseVal
+    ..width = newValue / getAttribute(SCALE_Y, 1);
   }
 
   void _onHeightChanged(oldValue, newValue) {
     _element.setAttribute(HEIGHT, '$newValue');
+    (_element as SVG.SvgSvgElement).viewBox.baseVal
+    ..height = newValue / getAttribute(SCALE_Y, 1);
   }
 
   void _onOpacityChanged(num oldValue, num newValue) {
@@ -88,7 +94,7 @@ class SvgLayer extends SvgNode implements LayerImpl {
       newValue = 0.0000001;
     }
     (_element as SVG.SvgSvgElement).viewBox.baseVal
-    ..width = getAttribute(WIDTH) / newValue;
+    ..width = getAttribute(WIDTH, 0) / newValue;
   }
 
   void _onScaleYChanged(num oldValue, num newValue) {
@@ -96,7 +102,29 @@ class SvgLayer extends SvgNode implements LayerImpl {
       newValue = 0.0000001;
     }
     (_element as SVG.SvgSvgElement).viewBox.baseVal
-    ..height = getAttribute(HEIGHT) / newValue;
+    ..height = getAttribute(HEIGHT, 0) / newValue;
+  }
+
+  void _onTranslateXChanged(oldValue, newValue) {
+    _elMatrix
+    ..a = transformMatrix.sx
+    ..b = transformMatrix.rx
+    ..c = transformMatrix.ry
+    ..d = transformMatrix.sy;
+
+    SVG.Matrix m = _elMatrix.translate(transformMatrix.tx, transformMatrix.ty);
+    (_element as SVG.SvgSvgElement).viewBox.baseVal.x = -m.e;
+  }
+
+  void _onTranslateYChanged(oldValue, newValue) {
+    _elMatrix
+    ..a = transformMatrix.sx
+    ..b = transformMatrix.rx
+    ..c = transformMatrix.ry
+    ..d = transformMatrix.sy;
+
+    SVG.Matrix m = _elMatrix.translate(transformMatrix.tx, transformMatrix.ty);
+    (_element as SVG.SvgSvgElement).viewBox.baseVal.y = -m.f;
   }
 
   List<SvgNode> get children => _children;

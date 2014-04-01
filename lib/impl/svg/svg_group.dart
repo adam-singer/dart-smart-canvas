@@ -11,7 +11,6 @@ class SvgGroup extends SvgNode implements Container<SvgNode> {
   void add(SvgNode child) {
     _children.add(child);
     child.parent = this;
-//    child.stage = this.stage;
     this._element.append(child._element);
   }
 
@@ -32,8 +31,21 @@ class SvgGroup extends SvgNode implements Container<SvgNode> {
 
   void _setElementAttribute(String attr) {
     super._setElementAttribute(attr);
-    if (attrs[X] != null || attrs[Y] != null) {
-//      _element.setAttribute(TRANSFORM, 'translate(${getAttribute('x', 0)}, ${getAttribute('y', 0)})');
+    num x = attrs[X];
+    num y = attrs[Y];
+    bool b = false;
+    if (x != null) {
+      transformMatrix.tx = x;
+      b = true;
+    }
+
+    if (y != null) {
+      transformMatrix.ty = y;
+      b = true;
+    }
+
+    if (b) {
+      translate();
     }
   }
 

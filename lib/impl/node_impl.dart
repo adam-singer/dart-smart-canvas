@@ -44,4 +44,5 @@ abstract class NodeImpl extends NodeBase {
   num get width => getAttribute(WIDTH);
   num get height => getAttribute(HEIGHT);
   bool get isDragging;
+  num get absolutePosition;
 }

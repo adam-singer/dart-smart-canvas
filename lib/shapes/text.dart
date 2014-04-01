@@ -66,5 +66,8 @@ class Text extends Node {
     }
   }
 
+  void set textAnchor(String value) => setAttribute(TEXT_ANCHOR, value);
+  String get textAnchor => getAttribute(TEXT_ANCHOR);
+
   num get height => fontSize;
 }

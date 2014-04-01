@@ -91,7 +91,7 @@ void main() {
 //    stage.add(ellipse);
     stage.add(line);
 
-    g.add(line);
+//    g.add(line);
 //    g.add(circle);
 //    circle.moveToBottom();
 

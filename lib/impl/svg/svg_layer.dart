@@ -23,17 +23,13 @@ class SvgLayer extends SvgNode implements LayerImpl {
     super._setElementAttributes();
   }
 
-  Map<String, dynamic> _getStyles() {
-    return {
-      POSITION: 'absolute',
-      TOP: 0,
-      LEFT: 0,
-      MARGIN: 0,
-      PADDING: 0,
-      OPACITY: shell.opacity,
-      WIDTH: getAttribute(WIDTH),
-      HEIGHT: getAttribute(HEIGHT),
-    };
+  void _setElementStyles() {
+    super._setElementStyles();
+    _element.style.setProperty(POSITION, ABSOLUTE);
+    _element.style.setProperty(TOP, ZERO);
+    _element.style.setProperty(LEFT, ZERO);
+    _element.style.setProperty(MARGIN, ZERO);
+    _element.style.setProperty(PADDING, ZERO);
   }
 
   void add(SvgNode child) {
@@ -79,4 +75,6 @@ class SvgLayer extends SvgNode implements LayerImpl {
   List<SvgNode> get children => _children;
 
   String get _nodeName => SC_LAYER;
+
+  num get absolutePosition => 0;
 }

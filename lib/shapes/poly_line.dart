@@ -10,4 +10,7 @@ class Polyline extends Node {
   NodeImpl _createCanvasImpl() {
     throw ExpNotImplemented;
   }
+
+  void set points(List<num> value) => setAttribute(POINTS, value);
+  List<num> get points => getAttribute(POINTS, []);
 }

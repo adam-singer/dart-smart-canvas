@@ -1,13 +1,16 @@
 part of smartcanvas;
 
-class _I_Reflection {
+abstract class _I_Reflection {
   Node _node;
-  Node _parent;
+}
+
+abstract class _I_Container_Reflection extends _I_Reflection {
+  void insertNode(_I_Reflection node);
 }
 
 _I_Reflection _createReflection(Node node) {
   if (node._reflection != null) {
     return node._reflection;
   }
-  return (node is Group) ? new _ReflectionGroup(node) : new _ReflectionNode(node);
+  return (node is Group ? new _ReflectionGroup(node): new _ReflectionNode(node)) as _I_Reflection;
 }

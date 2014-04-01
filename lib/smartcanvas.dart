@@ -2,8 +2,13 @@ library smartcanvas;
 
 // external dependencies
 import 'dart:html' as DOM;
-import 'dart:svg' as SVG;
-@MirrorsUsed(symbols: const ['Layer', 'Group', 'Circle', 'Ellipse', 'Line', 'Rect'])
+//
+//@MirrorsUsed(metaTargets: const [Group, SvgGroup, Circle, SvgCircle,
+//                                 Ellipse, SvgEllipse, Line, SvgLine,
+//                                 Path, SvgPath, Polygon, SvgPolygon,
+//                                 Polyline, SvgPolyline, Rect, SvgRect,
+//                                 Text, SvgText])
+@MirrorsUsed(targets: const ['smartcanvas', 'smartcanvas.svg'])
 import 'dart:mirrors';
 
 import 'impl/svg/svg.dart';
@@ -30,6 +35,7 @@ part 'utils/constants.dart';
 part 'utils/size.dart';
 part 'utils/util.dart';
 part 'utils/text_measure.dart';
+part 'utils/bbox.dart';
 
 part 'shapes/circle.dart';
 part 'shapes/ellipse.dart';

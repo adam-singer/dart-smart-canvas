@@ -3,7 +3,7 @@ part of smartcanvas;
 abstract class Node extends NodeBase {
   Layer _layer;
   NodeImpl _impl;
-  Container _parent;
+  Container<Node> _parent;
   _I_Reflection _reflection;
 
   Node([Map<String, dynamic> config = null]): super() {
@@ -24,7 +24,7 @@ abstract class Node extends NodeBase {
       }
 
       if (_reflection != null) {
-        _reflection.remove();
+        (_reflection as Node).remove();
       }
 
       _parent.children.remove(this);
@@ -46,14 +46,14 @@ abstract class Node extends NodeBase {
 
   void moveTo(Container parent) {
     if (_parent != null) {
-      (_parent as Container).removeChild(this);
+      _parent.removeChild(this);
     }
     parent.add(this);
   }
 
   void moveUp() {
     int index;
-    Container container = _parent as Container;
+    Container container = _parent;
     if (container != null) {
       index = container.children.indexOf(this);
       if (index != container.children.length - 1) {
@@ -65,7 +65,7 @@ abstract class Node extends NodeBase {
 
   void moveDown() {
     int index;
-    Container container = _parent as Container;
+    Container container = _parent;
     if (container != null) {
       index = container.children.indexOf(this);
       if (index > 0) {
@@ -76,7 +76,7 @@ abstract class Node extends NodeBase {
   }
 
   void moveToTop() {
-    Container container = _parent as Container;
+    Container container = _parent;
     if (container != null) {
       int index = container.children.indexOf(this);
       if (index != container.children.length - 1) {
@@ -88,7 +88,7 @@ abstract class Node extends NodeBase {
 
   void moveToBottom() {
     int index;
-    Container container = _parent as Container;
+    Container container = _parent;
     if (container != null) {
       index = container.children.indexOf(this);
       if (index > 0) {
@@ -111,15 +111,12 @@ abstract class Node extends NodeBase {
       }
 
       if (_reflection != null) {
-        _reflection.on(event, handler, id);
+        (_reflection as Node).on(event, handler, id);
       }
     });
     return this;
   }
 
-//  NodeImpl reflect() {
-//    return _createSvgImpl();
-//  }
 
   Node clone([Map<String, dynamic> config]) {
     ClassMirror cm = reflectClass(this.runtimeType);
@@ -137,6 +134,14 @@ abstract class Node extends NodeBase {
     return clone;
   }
 
+  BBox getBBox() {
+    return new BBox();
+  }
+
+  Position getAbsolutePosition() {
+    return new Position();
+  }
+
   /**
    * Show the node
    */
@@ -152,6 +157,11 @@ abstract class Node extends NodeBase {
   }
 
   /**
+   * Get parent of this node
+   */
+  Container<Node> get parent => _parent;
+
+  /**
    * Where or not the node if reflectable
    *
    * A node is reflectable if the node was draggable or listening
@@ -164,9 +174,9 @@ abstract class Node extends NodeBase {
    * Get the layer of the node
    */
   Layer get layer {
-    Node parent = this._parent;
+    Node parent = this._parent as Node;
     while(parent != null && parent._parent != null) {
-      parent = parent._parent;
+      parent = parent._parent as Node;
     }
     return (parent is Layer) ? parent : null;
   }
@@ -231,5 +241,13 @@ abstract class Node extends NodeBase {
       return _impl.isDragging;
     }
     return false;
+  }
+
+  num get absolutePosition {
+    if (_impl != null) {
+      return _impl.absolutePosition;
+    } else {
+      return 0;
+    }
   }
 }

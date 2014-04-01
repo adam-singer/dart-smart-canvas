@@ -1,6 +1,6 @@
 part of smartcanvas;
 
-class _ReflectionGroup extends Group implements _I_Reflection {
+class _ReflectionGroup extends Group implements _I_Container_Reflection {
   Group _node;
 
   _ReflectionGroup(Node node): super(node._attrs) {
@@ -19,7 +19,7 @@ class _ReflectionGroup extends Group implements _I_Reflection {
         return;
       }
 
-      _I_Reflection _reflectionChild = (child is Group) ? new _ReflectionGroup(child) : new _ReflectionNode(child);
+      Node _reflectionChild = (child is Group) ? new _ReflectionGroup(child) : new _ReflectionNode(child);
       add(_reflectionChild);
     });
   }
@@ -48,25 +48,22 @@ class _ReflectionGroup extends Group implements _I_Reflection {
     super.add(child);
   }
 
-  void insert(int index, _I_Reflection node) {
+  void insert(int index, Node node) {
     if (!(node is _I_Reflection)) {
       throw 'Reflection Layer can only add reflection node';
     }
     super.insert(index, node);
   }
 
-  void insertNode(Node node) {
-    if (!(node is _I_Reflection)) {
-      throw 'Reflection Layer can only add reflection node';
-    }
+  void insertNode(_I_Reflection node) {
 
     // find next reflectable node in the same group
-    Node realNode = (node as _I_Reflection)._node;
+    Node realNode = node._node;
     Node nextReflectableNode = _node.firstReflectableNode(startIndex:_node._children.indexOf(realNode) + 1);
     if (nextReflectableNode != null) {
-      insert(_children.indexOf(nextReflectableNode._reflection), node);
+      insert(_children.indexOf(nextReflectableNode._reflection as Node), node as Node);
     } else {
-      add(node);
+      add(node as Node);
     }
   }
 

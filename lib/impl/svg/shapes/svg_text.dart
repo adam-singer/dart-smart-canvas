@@ -7,7 +7,7 @@ class SvgText extends SvgNode{
 
   SVG.SvgElement _createElement() {
     SVG.SvgElement text = new SVG.TextElement();
-    text.text = getAttribute(TEXT);
+    text.text = getAttribute(TEXT, EMPTY);
     return text;
   }
 
@@ -17,18 +17,18 @@ class SvgText extends SvgNode{
     return attrs;
   }
 
-  Map<String, dynamic> _getStyles() {
-    var styles = super._getStyles();
-    styles.addAll({
-      FONT_SIZE: (shell as Text).fontSize,
-      FONT_FAMILY: (shell as Text).fontFamily
-    });
-    return styles;
+  void _setElementStyles() {
+    super._setElementStyles();
+    Text txt = shell as Text;
+    _element.style.setProperty(FONT_SIZE, '${txt.fontSize}');
+    _element.style.setProperty(FONT_FAMILY, '${txt.fontFamily}');
+    _element.style.setProperty(TEXT_ANCHOR, '${txt.textAnchor}');
   }
 
   bool _isStyle(String attr) {
     if (attr == FONT_SIZE ||
-        attr == FONT_FAMILY) {
+        attr == FONT_FAMILY ||
+        attr == TEXT_ANCHOR) {
       return true;
     }
     return super._isStyle(attr);
@@ -39,7 +39,7 @@ class SvgText extends SvgNode{
   }
 
   num get width {
-    return _element.getBBox().width;
+    return (_element as SVG.TextElement).getBBox().width;
   }
 
   String get _nodeName => SC_TEXT;

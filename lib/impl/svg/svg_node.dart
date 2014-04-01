@@ -64,23 +64,9 @@ abstract class SvgNode extends NodeImpl {
     return new Set<String>.from([ID, CLASS]);
   }
 
-  Map<String, dynamic> _getStyles() {
-    return _createStyles(_getStyleNames());
-  }
-
   List<String> _getStyleNames() {
     return [STROKE, STROKE_WIDTH, STROKE_OPACITY,
-            FILL, OPACITY, DISPLAY];
-  }
-
-  Map<String, dynamic> _createStyles(List<String> styleNames) {
-    var rt = new Map<String, dynamic>();
-    styleNames.forEach((name) {
-      if (hasAttribute(name)) {
-        rt[name] = getAttribute(name);
-      }
-    });
-    return rt;
+            FILL, OPACITY, DISPLAY, WIDTH, HEIGHT];
   }
 
   void _setElementAttributes() {
@@ -98,16 +84,11 @@ abstract class SvgNode extends NodeImpl {
   }
 
   void _setElementStyles() {
-    Map<String, dynamic> styles = _getStyles();
-    List<String> strStyles = [];
-    styles.forEach((k, v) {
-      if (v != null) {
-        strStyles.add(k + ':' + '$v');
+    _getStyleNames().forEach((name) {
+      if (hasAttribute(name)) {
+        _element.style.setProperty(name, '${getAttribute(name)}');
       }
     });
-    if (styles.length > 0) {
-      _element.setAttribute('style', strStyles.join(';'));
-    }
   }
 
   void remove() {
@@ -253,4 +234,6 @@ abstract class SvgNode extends NodeImpl {
   String get _nodeName;
 
   bool get isDragging => _dragging;
+
+  num get absolutePosition => 0;
 }

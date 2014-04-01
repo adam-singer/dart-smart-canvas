@@ -62,6 +62,9 @@ const String X2 = 'x2';
 const String Y1 = 'y1';
 const String Y2 = 'y2';
 const String DISPLAY = 'display';
+const String TEXT_ANCHOR = 'text-anchor';
+const String ABSOLUTE = 'absolute';
+const String ZERO = '0';
 
 // svg node names
 const String SC_LAYER = '__sc_layer';

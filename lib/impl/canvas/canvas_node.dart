@@ -1,6 +1,6 @@
 part of smartcanvas.canvas;
 
-class CanvasNode extends NodeImpl {
+abstract class CanvasNode extends NodeImpl {
 
   CanvasNode(Node shell): super(shell) {}
 

@@ -9,6 +9,10 @@ dynamic getValue(Map map, key, [defaultValue = null]) {
   return rt == null ? defaultValue : rt;
 }
 
+void setValue(Map map, key, value) {
+  map[key] = value;
+}
+
 Map merge(Map map1, Map map2, [Map map3 = null, Map map4 = null]) {
   Map rt = new Map.from(map1);
 

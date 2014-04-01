@@ -1,9 +1,8 @@
 part of smartcanvas;
 
-class _ReflectionLayer extends Layer implements _I_Reflection {
+class _ReflectionLayer extends Layer implements _I_Container_Reflection {
 
   Node _node;
-  Container _parent;
   _ReflectionLayer _layer;
   SvgLayer _impl;
 
@@ -30,16 +29,12 @@ class _ReflectionLayer extends Layer implements _I_Reflection {
     super.insert(index, node);
   }
 
-  void insertNode(Node node) {
-    if (!(node is _I_Reflection)) {
-      throw 'Reflection Layer can only add reflection node';
-    }
-
+  void insertNode(_I_Reflection node) {
     // find next reflectable node in the same layer
-    Node realNode = (node as _I_Reflection)._node;
+    Node realNode = node._node;
     Node nextReflectableNode = realNode.layer.firstReflectableNode(startIndex:realNode.layer._children.indexOf(realNode) + 1);
     if (nextReflectableNode != null) {
-      insert(_children.indexOf(nextReflectableNode._reflection), node);
+      insert(_children.indexOf(nextReflectableNode._reflection as Node), node as Node);
     } else {
       reflectNode(realNode);
     }
@@ -78,13 +73,13 @@ class _ReflectionLayer extends Layer implements _I_Reflection {
       var index = firstReflectableNode == null ? -1 : this._children.indexOf(firstReflectableNode._reflection.shell);
 
       if (index != -1) {
-        insert(index, reflection);
+        insert(index, reflection as Node);
       } else {
         // top layer doesn't have any reflectable node yet, just add the node
-        add(reflection);
+        add(reflection as Node);
       }
     } else {
-      add(reflection);
+      add(reflection as Node);
     }
   }
 }

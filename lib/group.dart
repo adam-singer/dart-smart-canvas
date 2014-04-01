@@ -56,8 +56,8 @@ class Group extends Node implements Container<Node> {
 
   void _reflectionAdd(Node child) {
     // if the group already reflected, add children to its reflecton
-    if (this._reflection != null) {
-      this._reflection.add(_createReflection(child));
+    if (_reflection != null) {
+      (_reflection as Container).add(_createReflection(child));
     }
 //    // otherwise, reflect the child on its reflectable parent
 //    else if (_parent != null) {
@@ -90,7 +90,7 @@ class Group extends Node implements Container<Node> {
       if (!node.reflectable) {
         // if group wasn't reflectable, reflect its children.
         if (node is Container) {
-          node.children.forEach((node) {
+          (node as Container).children.forEach((node) {
             _reflectionInsert(node);
           });
         }
@@ -103,12 +103,12 @@ class Group extends Node implements Container<Node> {
   void _reflectionInsert(Node child) {
     // if the group already reflected, insert children to its reflecton
     if (this._reflection != null) {
-      this._reflection.insertNode(_createReflection(child));
+      (this._reflection as _I_Container_Reflection).insertNode(_createReflection(child));
     }
     // otherwise, insert the child to its nearest reflectable parent
-    else if (_parent){
-      _parent.insertNode(_createReflection(child));
-    }
+//    else if (_parent != null){
+//      _parent.insertNode(_createReflection(child));
+//    }
   }
 
   List<Node> get children => _children;

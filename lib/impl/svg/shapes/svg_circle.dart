@@ -1,7 +1,6 @@
 part of smartcanvas.svg;
 
 class SvgCircle extends SvgNode{
-  double r;
 
   SvgCircle(Circle shell): super(shell) {}
 
@@ -25,11 +24,6 @@ class SvgCircle extends SvgNode{
         return super.getAttribute(attr, defaultValue);
     }
   }
-
-//  void _internalApplyOffset() {
-//    setAttribute('x', getAttribute('x', 0) - getAttribute('offsetX', 0));
-//    setAttribute('y', getAttribute('y', 0) - getAttribute('offsetY', 0));
-//  }
 
   String _mapToElementAttr(String attr) {
     switch (attr) {

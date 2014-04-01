@@ -27,8 +27,8 @@ class Stage extends NodeBase implements Container<Node> {
     _children.add(_reflectionLayer);
     _element.nodes.add(_reflectionLayer._impl.element);
 
-    _element.onMouseDown.listen(_setPointerPosition);
-    _element.onMouseMove.listen(_setPointerPosition);
+    _element.onMouseDown.listen(_onMouseDown);
+    _element.onMouseMove.listen(_onMouseMove);
     _element.onMouseUp.listen(_setPointerPosition);
     _element.onMouseEnter.listen(_setPointerPosition);
     _element.onMouseLeave.listen(_setPointerPosition);
@@ -62,15 +62,21 @@ class Stage extends NodeBase implements Container<Node> {
     }
   }
 
-  void _setPointerPosition(e) {
-    var scale = getAttribute(SCALE);
-    if (scale == null) {
-      scale = 1;
-    }
+  void _onMouseDown(e) {
+    _setPointerPosition(e);
+    fire('contentMouseDown', e);
+  }
 
+  void _onMouseMove(e) {
+    _setPointerPosition(e);
+    fire('contentMouseMove', e);
+  }
+
+  void _setPointerPosition(e) {
+    num scale = getAttribute(SCALE, 1);
     num x = (e.client.x /*- canvas.currentTranslate.x*/) / scale;
     num y = (e.client.y /*- canvas.currentTranslate.y*/) / scale;
-    this._pointerPosition = new Position(x, y);
+    this._pointerPosition = new Position(x: x, y: y);
   }
 
   Position get pointerPosition => _pointerPosition;
@@ -103,31 +109,6 @@ class Stage extends NodeBase implements Container<Node> {
       _defaultLayer.add(node);
     }
   }
-
-//  void _reflect(Node node) {
-//    if (node is Layer) {
-//
-//    } else {
-//      _reflectionLayer.reflectNode(node);
-//    }
-//  }
-
-//  void __reflect (Node node) {
-//    // only node which is draggable or listening
-//    if (!node.reflectable) {
-//      if (node is Container) {
-//        (node as Container).children.forEach((child){
-//          __reflect(child);
-//        });
-//      }
-//      return;
-//    }
-//
-//    assert(node.layer != null);
-//    if (node.layer != null) {
-//      _reflectionLayer.reflectNode(node);
-//    }
-//  }
 
   void removeChild(Node node) {
     if (node is Layer) {
@@ -167,6 +148,9 @@ class Stage extends NodeBase implements Container<Node> {
   void set id(String value) => setAttribute(ID, value);
   String get id => getAttribute(ID);
 
+  num get x => getAttribute(X, 0);
+  num get y => getAttribute(Y, 0);
+
   void set width(num value) {
     setAttribute(WIDTH, value);
     _resizeLayers();
@@ -178,5 +162,7 @@ class Stage extends NodeBase implements Container<Node> {
     _resizeLayers();
   }
   num get height => getAttribute(HEIGHT);
+
+  DOM.Element get container => _container;
 }
 

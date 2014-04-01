@@ -15,6 +15,7 @@ abstract class NodeImpl extends NodeBase {
   String get type;
 
   void remove();
+  void translate();
 
   NodeImpl clone() {
     ClassMirror cm = reflectClass(this.runtimeType);

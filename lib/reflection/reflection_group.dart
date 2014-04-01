@@ -26,7 +26,7 @@ class _ReflectionGroup extends Group implements _I_Container_Reflection {
 
   NodeImpl _createSvgImpl() {
     assert(_node._impl != null);
-    SvgGroup rt = super._createSvgImpl();
+    SvgGroup rt = _node._createSvgImpl();
     rt.on(DRAGMOVE, _onDragMove);
     return rt;
   }
@@ -37,8 +37,7 @@ class _ReflectionGroup extends Group implements _I_Container_Reflection {
   }
 
   void _onDragMove(DOM.MouseEvent e) {
-    (_node._impl as SvgNode).element.setAttribute(TRANSFORM,
-        (_impl as SvgNode).element.attributes[TRANSFORM]);
+    _node._impl.translate();
   }
 
   void add(Node child) {

@@ -96,22 +96,22 @@ void main() {
 //    g.add(circle);
 //    circle.moveToBottom();
 
-//    Circle c2 = new Circle({
-//      'x': 100,
-//      'y': 100,
-//      'r': 50,
-//      'fill': 'red',
-//      'listening': true,
-//      'draggable': true
-//    });
-//
-//    Layer layer2 = new Layer(svg, {
-//      'id': 'two'
-//    });
-//
-//    c2.on(MOUSEDOWN, (e) => print('c2 clicked'));
-//    layer2.add(c2);
-//    stage.add(layer2);
+    Circle c2 = new Circle({
+      'x': 100,
+      'y': 100,
+      'r': 50,
+      'fill': 'red',
+      'listening': true,
+      'draggable': true
+    });
+
+    Layer layer2 = new Layer(svg, {
+      'id': 'two'
+    });
+
+    c2.on(MOUSEDOWN, (e) => print('c2 clicked'));
+    layer2.add(c2);
+    stage.add(layer2);
 
     stage.add(ellipse);
 //
@@ -125,12 +125,12 @@ void main() {
 //
 //    stage.add(txt);
 
-//    Polygon p = new Polygon({
-//      'points': "220,10 300,210 170,250 123,234",
-//      'fill': 'lime',
-//      'draggable': true
-//    });
-//    layer2.add(p);
+    Polygon p = new Polygon({
+      'points': "220,10 300,210 170,250 123,234",
+      'fill': 'lime',
+      'draggable': true
+    });
+    layer2.add(p);
 
     Path path = new Path({
       'd': "M150 0 L75 200 L225 200 Z",
@@ -162,5 +162,6 @@ void main() {
     });
     stage.add(polyline);
 
-    stage.scaleY = 0.5;
+//    stage.scaleX = 1.67;
+//    stage.scaleY = 0.5;
 }

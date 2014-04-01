@@ -33,7 +33,7 @@ class SvgGroup extends SvgNode implements Container<SvgNode> {
   void _setElementAttribute(String attr) {
     super._setElementAttribute(attr);
     if (attrs[X] != null || attrs[Y] != null) {
-      _element.setAttribute(TRANSFORM, 'translate(${getAttribute('x', 0)}, ${getAttribute('y', 0)})');
+//      _element.setAttribute(TRANSFORM, 'translate(${getAttribute('x', 0)}, ${getAttribute('y', 0)})');
     }
   }
 

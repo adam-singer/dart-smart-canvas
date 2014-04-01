@@ -21,7 +21,6 @@ class _ReflectionNode extends Node implements _I_Reflection {
   }
 
   void _onDragMove(DOM.MouseEvent e) {
-    (_node._impl as SvgNode).element.setAttribute(TRANSFORM,
-        (_impl as SvgNode).element.attributes[TRANSFORM]);
+    _node._impl.translate();
   }
 }

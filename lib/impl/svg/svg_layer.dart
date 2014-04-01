@@ -8,7 +8,8 @@ class SvgLayer extends SvgNode implements LayerImpl {
       .on('widthChanged', _onWidthChanged)
       .on('heightChanged', _onHeightChanged)
       .on('opacityChanged', _onOpacityChanged)
-      .on('scaleChanged', _onScaleChanged);
+      .on('scaleXChanged', _onScaleXChanged)
+      .on('scaleYChanged', _onScaleYChanged);
   }
 
   DOM.Element _createElement() {
@@ -21,17 +22,19 @@ class SvgLayer extends SvgNode implements LayerImpl {
 
   void _setElementAttribute(String attr) {
     if (attr == 'viewBox') {
-      (_element as SVG.SvgSvgElement).viewBox.baseVal
-      ..x = getAttribute(X, 0)
-      ..y = getAttribute(Y, 0)
-      ..width = getAttribute(WIDTH)
-      ..height = getAttribute(HEIGHT);
-
+      _setViewBox();
     } else {
       super._setElementAttribute(attr);
     }
   }
 
+  void _setViewBox() {
+    (_element as SVG.SvgSvgElement).viewBox.baseVal
+    ..x = getAttribute(X, 0)
+    ..y = getAttribute(Y, 0)
+    ..width = getAttribute(WIDTH) / getAttribute(SCALE_X, 1)
+    ..height = getAttribute(HEIGHT) / getAttribute(SCALE_Y, 1);
+  }
 
   void _setElementStyles() {
     super._setElementStyles();
@@ -68,19 +71,31 @@ class SvgLayer extends SvgNode implements LayerImpl {
   void suspend() {}
 
   void _onWidthChanged(oldValue, newValue) {
-    _element.style.width = '$newValue';
+    _element.setAttribute(WIDTH, '$newValue');
   }
 
   void _onHeightChanged(oldValue, newValue) {
-    _element.style.height = '$newValue';
+    _element.setAttribute(HEIGHT, '$newValue');
   }
 
-  void _onOpacityChanged(int oldValue, int newValue) {
+  void _onOpacityChanged(num oldValue, num newValue) {
     _element.style.opacity = '$newValue';
   }
 
-  void _onScaleChanged(int oldValue, int newValue) {
+  void _onScaleXChanged(num oldValue, num newValue) {
+    if (newValue == 0) {
+      newValue = 0.0000001;
+    }
+    (_element as SVG.SvgSvgElement).viewBox.baseVal
+    ..width = getAttribute(WIDTH) / newValue;
+  }
 
+  void _onScaleYChanged(num oldValue, num newValue) {
+    if (newValue == 0) {
+      newValue = 0.0000001;
+    }
+    (_element as SVG.SvgSvgElement).viewBox.baseVal
+    ..height = getAttribute(HEIGHT) / newValue;
   }
 
   List<SvgNode> get children => _children;

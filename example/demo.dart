@@ -160,4 +160,6 @@ void main() {
       'fill': 'none'
     });
     stage.add(polyline);
+
+    stage.scale = 2;
 }

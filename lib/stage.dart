@@ -23,7 +23,7 @@ class Stage extends NodeBase implements Container<Node> {
       WIDTH: this.width,
       HEIGHT: this.height
     });
-    _reflectionLayer._stage = this;
+    _reflectionLayer.stage = this;
     _children.add(_reflectionLayer);
     _element.nodes.add(_reflectionLayer._impl.element);
 
@@ -83,7 +83,7 @@ class Stage extends NodeBase implements Container<Node> {
 
   void add(Node node) {
     if (node is Layer) {
-      node._stage = this;
+      node.stage = this;
       node._reflection = _reflectionLayer;
 
       if (node.width == null) {
@@ -123,7 +123,7 @@ class Stage extends NodeBase implements Container<Node> {
 
   void insert(int index, Node node) {
     if (node is Layer) {
-      node._stage = this;
+      node.stage = this;
       _children.insert(index, node);
       if (node.width == null) {
         node.width = this.width;
@@ -153,17 +153,37 @@ class Stage extends NodeBase implements Container<Node> {
   num get x => getAttribute(X, 0);
   num get y => getAttribute(Y, 0);
 
-  void set width(num value) {
-    setAttribute(WIDTH, value);
-    _resizeLayers();
-  }
+  void set width(num value) => setAttribute(WIDTH, value);
   num get width => getAttribute(WIDTH);
 
-  void set height(num value) {
-    setAttribute(HEIGHT, value);
-    _resizeLayers();
-  }
+  void set height(num value) => setAttribute(HEIGHT, value);
   num get height => getAttribute(HEIGHT);
+
+  void set scaleX(num x) => setAttribute(SCALE_X, x);
+  void set scaleY(num y) => setAttribute(SCALE_Y, y);
+  void set scale(scale) {
+    num x, y;
+    if (scale is num) {
+      x = scale;
+      y = scale;
+    } else if (scale is Map) {
+      x = getValue(scale, X);
+      y = getValue(scale, Y);
+      if (x == null && y == null) {
+        return;
+      } else if (x == null) {
+        x = y;
+      } else if (y == null){
+        y = x;
+      }
+    }
+
+    setAttribute(SCALE_X, x);
+    setAttribute(SCALE_Y, y);
+  }
+
+  num get scaleX => getAttribute(SCALE_X, 1);
+  num get scaleY => getAttribute(SCALE_Y, 1);
 
   DOM.Element get container => _container;
 }

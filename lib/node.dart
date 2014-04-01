@@ -185,7 +185,7 @@ abstract class Node extends NodeBase {
    * Get the stage
    */
   Stage get stage {
-    return layer == null ? null : layer._stage;
+    return layer == null ? null : layer.stage;
   }
 
   void set id(String value) => setAttribute(ID, value);

@@ -40,7 +40,7 @@ class _ReflectionLayer extends Layer implements _I_Container_Reflection {
     }
   }
 
-  void _reflectionAdd(Node child) {
+  void reflectionAdd(Node child) {
     reflectNode(child);
   }
 

@@ -145,14 +145,20 @@ abstract class SvgNode extends NodeImpl {
   }
 
   void _dragStart(DOM.MouseEvent e) {
+    if (stage.dragging) {
+      return;
+    }
+
     e.preventDefault();
+    e.stopPropagation();
     this._dragging = true;
 
     var pointerPosition = this.stage.pointerPosition;
     var m = (_element as SVG.GraphicsElement).getCtm();
-    this._dragOffsetX = pointerPosition.x - m.e / m.a;
-    this._dragOffsetY = pointerPosition.y - m.f / m.d;
+    this._dragOffsetX = pointerPosition.x - m.e / m.a + stage.tx;
+    this._dragOffsetY = pointerPosition.y - m.f / m.d + stage.ty;
 
+    print ('dragStart: ${_dragOffsetX}, ${_dragOffsetY}');
     this.stage.element.onMouseMove.listen(_dragMove).resume();
     this.stage.element.onMouseUp.listen(_dragEnd).resume();
   }
@@ -178,6 +184,7 @@ abstract class SvgNode extends NodeImpl {
 
   void _dragEnd(DOM.MouseEvent e) {
     e.preventDefault();
+    e.stopPropagation();
     _dragging = false;
 
     if (stage != null) {

@@ -8,10 +8,7 @@ class SvgLayer extends SvgNode implements LayerImpl {
       .on('widthChanged', _onWidthChanged)
       .on('heightChanged', _onHeightChanged)
       .on('opacityChanged', _onOpacityChanged)
-      .on('scaleXChanged', _onScaleXChanged)
-      .on('scaleYChanged', _onScaleYChanged)
-      .on('translateXChanged', _onTranslateXChanged)
-      .on('translateYChanged', _onTranslateYChanged);
+      .on('stageSet', _onStageSet);
   }
 
   DOM.Element _createElement() {
@@ -73,6 +70,14 @@ class SvgLayer extends SvgNode implements LayerImpl {
   void resume() {}
   void suspend() {}
 
+  void _onStageSet() {
+    shell.stage
+      .on('scaleXChanged', _onScaleXChanged)
+      .on('scaleYChanged', _onScaleYChanged)
+      .on('translateXChanged', _onTranslateXChanged)
+      .on('translateYChanged', _onTranslateYChanged);
+  }
+
   void _onWidthChanged(oldValue, newValue) {
     _element.setAttribute(WIDTH, '$newValue');
     (_element as SVG.SvgSvgElement).viewBox.baseVal
@@ -114,6 +119,7 @@ class SvgLayer extends SvgNode implements LayerImpl {
 
     SVG.Matrix m = _elMatrix.translate(transformMatrix.tx, transformMatrix.ty);
     (_element as SVG.SvgSvgElement).viewBox.baseVal.x = -m.e;
+    print('--${(_element as SVG.SvgSvgElement).viewBox.baseVal.x}');
   }
 
   void _onTranslateYChanged(oldValue, newValue) {

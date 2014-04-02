@@ -46,14 +46,15 @@ class Layer extends Group {
 
   void set stage(Stage value) {
     _stage = value;
-//    _transformMatrix = _stage._transformMatrix;
+    _transformMatrix = _stage._transformMatrix;
     _stage
     .on('widthChanged', (oldValue, newValue) { width = newValue; })
     .on('heightChanged', (oldValue, newValue) { height = newValue; })
-    .on('scaleXChanged', (oldValue, newValue) { scaleX = newValue; })
-    .on('scaleYChanged', (oldValue, newValue) { scaleY = newValue; })
+//    .on('scaleXChanged', (oldValue, newValue) { scaleX = newValue; })
+//    .on('scaleYChanged', (oldValue, newValue) { scaleY = newValue; })
 //    .on(DRAGMOVE, _handleStageDragMove);
     ;
+    fire('stageSet');
   }
   Stage get stage => _stage;
 

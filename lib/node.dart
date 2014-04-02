@@ -262,6 +262,26 @@ abstract class Node extends NodeBase {
   }
   num get scaleY => _transformMatrix.sy;
 
+  void set tx(num tx) {
+    var oldValue = _transformMatrix.tx;
+    _transformMatrix.tx = tx;
+    if (oldValue != tx) {
+      fire('translateXChanged', oldValue, tx);
+    }
+  }
+  num get tx => _transformMatrix.tx;
+
+  void set ty(num ty) {
+    var oldValue = _transformMatrix.ty;
+    _transformMatrix.ty = ty;
+    if (oldValue != ty) {
+      fire('translateYChanged', oldValue, ty);
+    }
+  }
+  num get ty => _transformMatrix.ty;
+
+  TransformMatrix get transformMatrix => _transformMatrix;
+
   num get absolutePosition {
     if (_impl != null) {
       return _impl.absolutePosition;

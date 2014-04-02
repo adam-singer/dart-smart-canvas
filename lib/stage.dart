@@ -109,9 +109,9 @@ class Stage extends NodeBase implements Container<Node> {
   }
 
   void _setPointerPosition(e) {
-    num x = (e.client.x - _transformMatrix.tx) / _transformMatrix.sx;
-    num y = (e.client.y - _transformMatrix.ty) / _transformMatrix.sy;
-    print('cx: ${e.client.x}, ${e.client.y} - t: ${_transformMatrix.tx}, ${_transformMatrix.ty} - pp: $x, $y');
+    num x = e.client.x; //(e.client.x - _transformMatrix.tx) / _transformMatrix.sx;
+    num y = e.client.y; //(e.client.y - _transformMatrix.ty) / _transformMatrix.sy;
+//    print('cx: ${e.client.x}, ${e.client.y} - t: ${_transformMatrix.tx}, ${_transformMatrix.ty} - pp: $x, $y');
     this._pointerPosition = new Position(x: x, y: y);
   }
 
@@ -174,27 +174,28 @@ class Stage extends NodeBase implements Container<Node> {
 
   void _dragStart(DOM.MouseEvent e) {
     e.preventDefault();
+    e.stopPropagation();
     this._dragging = true;
 
     this._dragOffsetX = _pointerPosition.x - _transformMatrix.tx / _transformMatrix.sx;
     this._dragOffsetY = _pointerPosition.y - _transformMatrix.ty / _transformMatrix.sy;
-
-    _element.onMouseUp.listen(_dragEnd).resume();
   }
 
   void _dragMove(DOM.MouseEvent e) {
     e.preventDefault();
+    e.stopPropagation();
     if (!_dragStarted) {
       fire('dragstart', e);
       _dragStarted = true;
     }
-    _transformMatrix.tx = _pointerPosition.x - _dragOffsetX;
-    _transformMatrix.ty = _pointerPosition.y - _dragOffsetY;
+    tx = _pointerPosition.x - _dragOffsetX;
+    ty = _pointerPosition.y - _dragOffsetY;
     fire(DRAGMOVE, e);
   }
 
   void _dragEnd(DOM.MouseEvent e) {
     e.preventDefault();
+    e.stopPropagation();
     _dragging = false;
   }
 
@@ -253,27 +254,29 @@ class Stage extends NodeBase implements Container<Node> {
   num get scaleX => _transformMatrix.sx;
   num get scaleY => _transformMatrix.sy;
 
-//  void set(num tx) {
-//    var oldValue = _transformMatrix.tx;
-//    _transformMatrix.tx = tx;
-//    if (oldValue != tx) {
-//      fire('translateXChanged', oldValue, tx);
-//    }
-//  }
-//  num get tx => _transformMatrix.tx;
-//
-//  void set ty(num ty) {
-//    var oldValue = _transformMatrix.ty;
-//    _transformMatrix.ty = ty;
-//    if (oldValue != ty) {
-//      fire('translateYChanged', oldValue, ty);
-//    }
-//  }
-//  num get ty => _transformMatrix.ty;
+  void set tx(num tx) {
+    var oldValue = _transformMatrix.tx;
+    _transformMatrix.tx = tx;
+    if (oldValue != tx) {
+      fire('translateXChanged', oldValue, tx);
+    }
+  }
+  num get tx => _transformMatrix.tx;
+
+  void set ty(num ty) {
+    var oldValue = _transformMatrix.ty;
+    _transformMatrix.ty = ty;
+    if (oldValue != ty) {
+      fire('translateYChanged', oldValue, ty);
+    }
+  }
+  num get ty => _transformMatrix.ty;
 
   DOM.Element get container => _container;
 
   void set draggable(bool value) => setAttribute(DRAGGABLE, value);
   bool get draggable => getAttribute(DRAGGABLE, false);
+
+  bool get dragging => _dragging;
 }
 

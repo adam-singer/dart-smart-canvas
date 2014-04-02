@@ -8,7 +8,6 @@ abstract class NodeImpl extends NodeBase {
 
   NodeImpl(this._shell): super() {
     this._attrs = _shell._attrs;
-    this._transformMatrix = _shell._transformMatrix;
     this._eventListeners.addAll(_shell._eventListeners);
   }
 
@@ -48,5 +47,5 @@ abstract class NodeImpl extends NodeBase {
   num get height => getAttribute(HEIGHT);
   bool get isDragging;
   num get absolutePosition;
-  TransformMatrix get transformMatrix => _transformMatrix;
+  TransformMatrix get transformMatrix => shell._transformMatrix;
 }

@@ -6,6 +6,7 @@ abstract class _I_Reflection {
 
 abstract class _I_Container_Reflection extends _I_Reflection {
   void insertNode(_I_Reflection node);
+  void reflectionAdd(Node node);
 }
 
 _I_Reflection _createReflection(Node node) {

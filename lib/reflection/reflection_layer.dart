@@ -9,7 +9,7 @@ class _ReflectionLayer extends Layer implements _I_Container_Reflection {
   _ReflectionLayer(Map<String, dynamic> config)
     :super(svg, merge(config, {
       ID: '__reflection_layer',
-      OPACITY: 0.5
+      OPACITY: 0
     }))
   {}
 
@@ -38,6 +38,10 @@ class _ReflectionLayer extends Layer implements _I_Container_Reflection {
     } else {
       reflectNode(realNode);
     }
+  }
+
+  void _reflectionAdd(Node child) {
+    reflectNode(child);
   }
 
   void reflectNode(Node node) {
@@ -70,7 +74,7 @@ class _ReflectionLayer extends Layer implements _I_Container_Reflection {
 
       // find the reflection index of the first node in top layer
       var firstReflectableNode = topLayer.firstReflectableNode(excludeChild: true);
-      var index = firstReflectableNode == null ? -1 : this._children.indexOf(firstReflectableNode._reflection.shell);
+      var index = firstReflectableNode == null ? -1 : this._children.indexOf(firstReflectableNode._reflection);
 
       if (index != -1) {
         insert(index, reflection as Node);

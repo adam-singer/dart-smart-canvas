@@ -54,8 +54,11 @@ class _ReflectionGroup extends Group implements _I_Container_Reflection {
     super.insert(index, node);
   }
 
-  void insertNode(_I_Reflection node) {
+  void reflectionAdd(Node child) {
+    add(_createReflection(child) as Node);
+  }
 
+  void insertNode(_I_Reflection node) {
     // find next reflectable node in the same group
     Node realNode = node._node;
     Node nextReflectableNode = _node.firstReflectableNode(startIndex:_node._children.indexOf(realNode) + 1);

@@ -163,5 +163,6 @@ void main() {
     stage.add(polyline);
 
 //    stage.scaleX = 1.67;
-//    stage.scaleY = 0.5;
+    stage.scaleX = 0.5;
+    stage.scaleY = 0.5;
 }

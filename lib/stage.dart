@@ -109,8 +109,8 @@ class Stage extends NodeBase implements Container<Node> {
   }
 
   void _setPointerPosition(e) {
-    num x = e.client.x; //(e.client.x - _transformMatrix.tx) / _transformMatrix.sx;
-    num y = e.client.y; //(e.client.y - _transformMatrix.ty) / _transformMatrix.sy;
+    num x = e.client.x / _transformMatrix.sx; //(e.client.x - _transformMatrix.tx) / _transformMatrix.sx;
+    num y = e.client.y / _transformMatrix.sy; //(e.client.y - _transformMatrix.ty) / _transformMatrix.sy;
 //    print('cx: ${e.client.x}, ${e.client.y} - t: ${_transformMatrix.tx}, ${_transformMatrix.ty} - pp: $x, $y');
     this._pointerPosition = new Position(x: x, y: y);
   }
@@ -177,8 +177,8 @@ class Stage extends NodeBase implements Container<Node> {
     e.stopPropagation();
     this._dragging = true;
 
-    this._dragOffsetX = _pointerPosition.x - _transformMatrix.tx / _transformMatrix.sx;
-    this._dragOffsetY = _pointerPosition.y - _transformMatrix.ty / _transformMatrix.sy;
+    this._dragOffsetX = _pointerPosition.x - _transformMatrix.tx;
+    this._dragOffsetY = _pointerPosition.y - _transformMatrix.ty;
   }
 
   void _dragMove(DOM.MouseEvent e) {

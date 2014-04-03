@@ -6,6 +6,7 @@ class _ReflectionGroup extends Group implements _I_Container_Reflection {
   _ReflectionGroup(Node node): super(node._attrs) {
     _node = node;
     _node._reflection = this;
+    this._transformMatrix = _node._transformMatrix;
     _eventListeners.addAll(_node._eventListeners);
     _buildReflectionGroup(_node._children);
   }
@@ -26,7 +27,7 @@ class _ReflectionGroup extends Group implements _I_Container_Reflection {
 
   NodeImpl _createSvgImpl() {
     assert(_node._impl != null);
-    SvgGroup rt = _node._createSvgImpl();
+    SvgGroup rt = super._createSvgImpl();
     rt.on(DRAGMOVE, _onDragMove);
     return rt;
   }

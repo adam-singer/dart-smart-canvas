@@ -6,6 +6,7 @@ class _ReflectionNode extends Node implements _I_Reflection {
   _ReflectionNode(Node node): super(node.attrs) {
     _node = node;
     _node._reflection = this;
+    this._transformMatrix = _node._transformMatrix;
     _eventListeners.addAll(_node._eventListeners);
   }
 

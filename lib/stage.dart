@@ -160,6 +160,7 @@ class Stage extends NodeBase implements Container<Node> {
   void insert(int index, Node node) {
     if (node is Layer) {
       node.stage = this;
+      node._reflection = _reflectionLayer;
       _children.insert(index, node);
       if (node.width == null) {
         node.width = this.width;

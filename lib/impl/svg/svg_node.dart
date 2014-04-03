@@ -19,6 +19,7 @@ abstract class SvgNode extends NodeImpl {
     _element = _createElement();
     _setElementAttributes();
     _setElementStyles();
+    translate();
 
     if (getAttribute(DRAGGABLE) == true) {
       _startDragHandling();
@@ -38,7 +39,9 @@ abstract class SvgNode extends NodeImpl {
         _stopDragHandling();
       }
     })
-    .on(ANY_CHANGED, _handleAttrChange);
+    .on(ANY_CHANGED, _handleAttrChange)
+    .on('translateXChanged', (oldValue, newValue) { translate(); })
+    .on('translateYChanged', (oldValue, newValue) { translate(); });
   }
 
   String get type => svg;
@@ -232,27 +235,29 @@ abstract class SvgNode extends NodeImpl {
 
   void _handleAttrChange(String attr, oldValue, newValue) {
     // apply translate to position changes
-    if (attr == X || attr == Y) {
-      if (oldValue == null) {
-        oldValue = 0;
-      }
-      num diff = newValue - oldValue;
-
-      if (attr == X) {
-        transformMatrix.tx = diff;
-//        _element.setAttribute(TRANSFORM, 'translate($diff, ${getAttribute(Y, 0)})');
-      } else {
-        transformMatrix.ty = diff;
-//        _element.setAttribute(TRANSFORM, 'translate(${getAttribute(X, 0)}, $diff)');
-      }
-      translate();
-    } else if (_isStyle(attr)) {
+//    if (attr == X || attr == Y) {
+//      if (oldValue == null) {
+//        oldValue = 0;
+//      }
+//      num diff = newValue - oldValue;
+//
+//      if (attr == X) {
+//        transformMatrix.tx = diff;
+////        _element.setAttribute(TRANSFORM, 'translate($diff, ${getAttribute(Y, 0)})');
+//      } else {
+//        transformMatrix.ty = diff;
+////        _element.setAttribute(TRANSFORM, 'translate(${getAttribute(X, 0)}, $diff)');
+//      }
+//      translate();
+//    } else
+    if (_isStyle(attr)) {
       _setElementStyles();
     } else {
       // apply attribute change to svg element
       var elementAttr = _mapToElementAttr(attr);
       if (elementAttr != null) {
-        _element.setAttribute(elementAttr, '$newValue');
+        _setElementAttribute(elementAttr);
+//        _element.setAttribute(elementAttr, '$newValue');
       }
     }
   }
@@ -294,5 +299,5 @@ abstract class SvgNode extends NodeImpl {
 
   bool get isDragging => _dragging;
 
-  num get absolutePosition => 0;
+  Position get absolutePosition => new Position();
 }

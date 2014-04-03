@@ -137,5 +137,9 @@ class SvgLayer extends SvgNode implements LayerImpl {
 
   String get _nodeName => SC_LAYER;
 
-  num get absolutePosition => 0;
+  Position get position {
+    var viewBox = (_element as SVG.SvgSvgElement).viewBox;
+    return new Position(x: -viewBox.baseVal.x, y: -viewBox.baseVal.y);
+  }
+  Position get absolutePosition => position;
 }

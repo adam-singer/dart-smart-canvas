@@ -46,6 +46,6 @@ abstract class NodeImpl extends NodeBase {
   num get width => getAttribute(WIDTH);
   num get height => getAttribute(HEIGHT);
   bool get isDragging;
-  num get absolutePosition;
+  Position get absolutePosition;
   TransformMatrix get transformMatrix => shell._transformMatrix;
 }

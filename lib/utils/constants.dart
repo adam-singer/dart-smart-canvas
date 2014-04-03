@@ -68,6 +68,11 @@ const String TEXT_ANCHOR = 'text-anchor';
 const String ABSOLUTE = 'absolute';
 const String ZERO = '0';
 const String VIEWBOX = 'viewBox';
+const String STAGE_MOUSE_DOWN = 'stageMouseDown';
+const String STAGE_MOUSE_UP = 'stageMouseUp';
+const String STAGE_MOUSE_MOVE = 'stageMouseMove';
+const String STAGE_DBLCLICK = 'stageDblClick';
+const String STAGE_CLICK = 'sstageClick';
 
 // svg node names
 const String SC_LAYER = '__sc_layer';

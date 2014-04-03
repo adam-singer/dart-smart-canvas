@@ -86,7 +86,7 @@ class Stage extends NodeBase implements Container<Node> {
 
   void _onMouseDown(e) {
     _setPointerPosition(e);
-    fire('contentMouseDown', e);
+    fire('stageMouseDown', e);
     if (draggable) {
       _dragStart(e);
     }
@@ -94,7 +94,7 @@ class Stage extends NodeBase implements Container<Node> {
 
   void _onMouseMove(e) {
     _setPointerPosition(e);
-    fire('contentMouseMove', e);
+    fire('stageMouseMove', e);
     if (_dragging) {
       _dragMove(e);
     }
@@ -102,7 +102,7 @@ class Stage extends NodeBase implements Container<Node> {
 
   void _onMouseUp(e) {
     _setPointerPosition(e);
-    fire('contentMouseUp', e);
+    fire('stageMouseUp', e);
     if (_dragging) {
       _dragEnd(e);
     }
@@ -166,7 +166,7 @@ class Stage extends NodeBase implements Container<Node> {
         node.height = this.height;
       }
       node.createImpl(node.type);
-      _element.nodes.add(node._impl.element);
+      _element.nodes.insert(index, node._impl.element);
     } else {
       _defaultLayer.insert(index, node);
     }

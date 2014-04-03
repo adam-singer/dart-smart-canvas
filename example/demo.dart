@@ -27,31 +27,31 @@ void main() {
       'strokeWidth': 2,
 //      'draggable': true,
     });
-
-    Ellipse ellipse = new Ellipse({
-      'x': 300,
-      'y': 200,
-      'rx': 100,
-      'ry': 50,
-      'fill': 'green',
-      'stroke': 'purple',
-      'listening': true,
-      'draggable': true
-    });
-    ellipse.on(MOUSEDOWN, (e){
-      ellipse.moveToTop();
-    });
-
-    Line line = new Line({
-      'x1': 100,
-      'y1': 100,
-      'x2': 150,
-      'y2': 150,
-      'stroke': 'powderblue',
-      'stroke-width': 20,
-      'fill': 'none'
-    });
-
+//
+//    Ellipse ellipse = new Ellipse({
+//      'x': 300,
+//      'y': 200,
+//      'rx': 100,
+//      'ry': 50,
+//      'fill': 'green',
+//      'stroke': 'purple',
+//      'listening': true,
+//      'draggable': true
+//    });
+//    ellipse.on(MOUSEDOWN, (e){
+//      ellipse.moveToTop();
+//    });
+//
+//    Line line = new Line({
+//      'x1': 100,
+//      'y1': 100,
+//      'x2': 150,
+//      'y2': 150,
+//      'stroke': 'powderblue',
+//      'stroke-width': 20,
+//      'fill': 'none'
+//    });
+//
     Group g = new Group({
       'draggable': true,
       'listening': true,
@@ -59,6 +59,30 @@ void main() {
     });
     g.add(circle);
     g.add(rect);
+
+    print('pos g - ${g.position.x}, ${g.position.y}');
+    print('pos rect - ${rect.position.x}, ${rect.position.y}');
+    print('abs g rect - ${g.absolutePosition.x}, ${g.absolutePosition.y}');
+    print('abs pos rect - ${rect.absolutePosition.x}, ${rect.absolutePosition.y}');
+    print('rect: ${rect.x}, ${rect.y}');
+
+    stage.add(g);
+
+    g.x = 100;
+    g.y = 100;
+
+    print('pos: g - ${g.position.x}, ${g.position.y}');
+    print('pos rect - ${rect.position.x}, ${rect.position.y}');
+    print('abs g rect - ${g.absolutePosition.x}, ${g.absolutePosition.y}');
+    print('abs pos rect - ${rect.absolutePosition.x}, ${rect.absolutePosition.y}');
+
+
+    stage.add(new Circle({
+      X: 130,
+      Y: 130,
+      FILL: 'blue',
+      R: 2
+    }));
 //    g.on('mousedown', (e) {
 //      print('group mousedown');}
 //    );
@@ -70,50 +94,49 @@ void main() {
 //    g.on(dblclick, (e) => print('group double clicked'));
 
 //  canvas.add(circle);
-    stage.add(g);
 //    g.on('mousedown', (e) {
 //      print('group mousedown');}
 //    );
-    int i = 0;
-    g.on('mousedown', (e){
-      if (i < 2) {
-        g.moveUp();
-        ++i;
-      } else {
-        g.moveDown();
-        --i;
-      }
-
-    });
+//    int i = 0;
+//    g.on('mousedown', (e){
+//      if (i < 2) {
+//        g.moveUp();
+//        ++i;
+//      } else {
+//        g.moveDown();
+//        --i;
+//      }
+//
+//    });
 //    g.on(CLICK, (e) => print('group clicked'));
 //    g.on(dblclick, (e) => print('group double clicked'));
 
 //  canvas.add(rect);
 //    stage.add(ellipse);
-    stage.add(line);
+//    stage.add(line);
 
 //    g.add(line);
 //    g.add(circle);
 //    circle.moveToBottom();
 
-    Circle c2 = new Circle({
-      'x': 100,
-      'y': 100,
-      'r': 50,
-      'fill': 'red',
-      'listening': true,
-      'draggable': true
-    });
-
-    Layer layer2 = new Layer(svg, {
-      'id': 'two'
-    });
-
-    c2.on(MOUSEDOWN, (e) => print('c2 clicked'));
-    layer2.add(c2);
-    stage.add(layer2);
-
-    stage.add(ellipse);
+//    Circle c2 = new Circle({
+//      'x': 100,
+//      'y': 100,
+//      'r': 50,
+//      'fill': 'red',
+//      'listening': true,
+//      'draggable': true
+//    });
+//
+//    Layer layer2 = new Layer(svg, {
+//      'id': 'two'
+//    });
+//
+//    c2.on(MOUSEDOWN, (e) => print('c2 clicked'));
+//    layer2.add(c2);
+//    stage.add(layer2);
+//
+//    stage.add(ellipse);
 //
 //    var txt = new Text({
 //      'text': 'A',
@@ -125,18 +148,18 @@ void main() {
 //
 //    stage.add(txt);
 
-    Polygon p = new Polygon({
-      'points': "220,10 300,210 170,250 123,234",
-      'fill': 'lime',
-      'draggable': true
-    });
-    layer2.add(p);
-
-    Path path = new Path({
-      'd': "M150 0 L75 200 L225 200 Z",
-      'draggable': true
-    });
-    stage.add(path);
+//    Polygon p = new Polygon({
+//      'points': "220,10 300,210 170,250 123,234",
+//      'fill': 'lime',
+//      'draggable': true
+//    });
+//    layer2.add(p);
+//
+//    Path path = new Path({
+//      'd': "M150 0 L75 200 L225 200 Z",
+//      'draggable': true
+//    });
+//    stage.add(path);
 //
 //    p.x = p.x + 200;
 //    p.y = p.y + 100;
@@ -155,14 +178,15 @@ void main() {
 //    layer.draggalbe = true;
 
     var polyline = new Polyline({
-      'points': [100, 100, 200, 100, 200, 200, 300, 200],
+      'points': [200, 200, -100, -100], // 200, 200, 300, 200],
       'stroke': 'red',
       'stroke-width': 5,
       'fill': 'none'
     });
     stage.add(polyline);
 
+    // test scale
 //    stage.scaleX = 1.67;
-    stage.scaleX = 0.5;
-    stage.scaleY = 0.5;
+//    stage.scaleX = 0.5;
+//    stage.scaleY = 0.5;
 }

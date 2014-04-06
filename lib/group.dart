@@ -58,12 +58,20 @@ class Group extends Node implements Container<Node> {
     // if the group already reflected, add children to its reflecton
     if (_reflection != null) {
       (_reflection as _I_Container_Reflection).reflectionAdd(child);
+    } else {
+      // this group wasn't reflectable before, since the child is
+      // reflectable, the group is reflectable now. Reflect the group.
+      (parent as Group)._reflectionAdd(this);
     }
   }
 
   void removeChild(Node node) {
     node._parent = null;
     _children.remove(node);
+
+    if (_reflection != null && node._reflection != null) {
+      (_reflection as Group).removeChild(node._reflection as Node);
+    }
   }
 
   void insert(int index, Node node) {

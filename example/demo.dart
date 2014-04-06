@@ -6,7 +6,7 @@ void main() {
   Stage stage = new Stage(container, svg, {
       WIDTH: 600,
       HEIGHT: 600,
-      DRAGGABLE: true
+//      DRAGGABLE: true
     });
 
     Circle circle = new Circle({
@@ -89,6 +89,8 @@ void main() {
 //    circle.on('click', (e) {
 //      print ("circle clicked");
 //    });
+    circle.on(MOUSEOVER, (e) {print('***** Circle MouseEnter *****');});
+    circle.on(MOUSEOUT, (e) {print('***** Circle MouseOut *****'); });
 //    g.on(mousemove, (e) => print('....'));
 //    g.on(click, (e) => print('group clicked'));
 //    g.on(dblclick, (e) => print('group double clicked'));

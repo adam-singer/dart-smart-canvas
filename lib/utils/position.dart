@@ -8,4 +8,12 @@ class Position {
     this.x = x;
     this.y = y;
   }
+
+  Position operator+(Position p) {
+    return new Position(x: x + p.x, y: y + p.y);
+  }
+
+  Position operator-(Position p) {
+    return new Position(x: x - p.x, y: y - p.y);
+  }
 }

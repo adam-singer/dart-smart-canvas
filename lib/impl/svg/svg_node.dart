@@ -59,11 +59,11 @@ abstract class SvgNode extends NodeImpl {
   }
 
   void _startDragHandling() {
-    _element.onMouseDown.listen(_dragStart).resume();
+    _element.onMouseDown.listen(dragStart).resume();
   }
 
   void _stopDragHandling() {
-    _element.onMouseDown.listen(_dragStart).cancel();
+    _element.onMouseDown.listen(dragStart).cancel();
   }
 
   Set<String> _getElementAttributeNames() {
@@ -91,10 +91,16 @@ abstract class SvgNode extends NodeImpl {
 
   void _setElementStyles() {
     _getStyleNames().forEach((name) {
-      if (hasAttribute(name)) {
-        _element.style.setProperty(name, '${getAttribute(name)}');
-      }
+      _setElementStyle(name);
     });
+  }
+
+  void _setElementStyle(String name) {
+    if (hasAttribute(name)) {
+      _element.style.setProperty(name, '${getAttribute(name)}');
+    } else {
+      _element.style.removeProperty(name);
+    }
   }
 
   void remove() {
@@ -149,7 +155,7 @@ abstract class SvgNode extends NodeImpl {
     return (e) => handlers(e);
   }
 
-  void _dragStart(DOM.MouseEvent e) {
+  void dragStart(DOM.MouseEvent e) {
     if (stage.dragging) {
       return;
     }
@@ -201,7 +207,6 @@ abstract class SvgNode extends NodeImpl {
           ' offset: ${_dragOffsetX}, ${_dragOffsetY} ${transformMatrix.tx}, ${transformMatrix.ty}');
 
       translate();
-//      this._element.setAttribute(TRANSFORM, 'translate(${transformMatrix.tx}, ${transformMatrix.ty})');
       fire(DRAGMOVE, e);
     }
   }
@@ -234,30 +239,13 @@ abstract class SvgNode extends NodeImpl {
   }
 
   void _handleAttrChange(String attr, oldValue, newValue) {
-    // apply translate to position changes
-//    if (attr == X || attr == Y) {
-//      if (oldValue == null) {
-//        oldValue = 0;
-//      }
-//      num diff = newValue - oldValue;
-//
-//      if (attr == X) {
-//        transformMatrix.tx = diff;
-////        _element.setAttribute(TRANSFORM, 'translate($diff, ${getAttribute(Y, 0)})');
-//      } else {
-//        transformMatrix.ty = diff;
-////        _element.setAttribute(TRANSFORM, 'translate(${getAttribute(X, 0)}, $diff)');
-//      }
-//      translate();
-//    } else
     if (_isStyle(attr)) {
-      _setElementStyles();
+      _setElementStyle(attr);
     } else {
       // apply attribute change to svg element
       var elementAttr = _mapToElementAttr(attr);
       if (elementAttr != null) {
         _setElementAttribute(elementAttr);
-//        _element.setAttribute(elementAttr, '$newValue');
       }
     }
   }

@@ -73,6 +73,8 @@ const String STAGE_MOUSE_UP = 'stageMouseUp';
 const String STAGE_MOUSE_MOVE = 'stageMouseMove';
 const String STAGE_DBLCLICK = 'stageDblClick';
 const String STAGE_CLICK = 'sstageClick';
+const String OFFSET_X = 'offsetX';
+const String OFFSET_Y = 'offsetY';
 
 // svg node names
 const String SC_LAYER = '__sc_layer';

@@ -22,8 +22,7 @@ abstract class NodeImpl extends NodeBase {
     return clone;
   }
 
-//  void set stage(Stage stage) { _stage = stage; }
-//  Stage get stage => _stage;
+  void dragStart(DOM.MouseEvent e);
 
   Node get shell => _shell;
 

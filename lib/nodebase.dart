@@ -40,7 +40,14 @@ class NodeBase extends EventBus {
   }
 
   void removeAttribute(String attr) {
+    var oldValue = _attrs[attr];
     _attrs.remove(attr);
+    var event = attr + CHANGED;
+    if (hasListener(event)) {
+      fire(event, oldValue, null);
+    } else{
+      fire(ANY_CHANGED, attr, oldValue, null);
+    }
   }
 
   String getAttributeString(String attr) {
@@ -49,7 +56,7 @@ class NodeBase extends EventBus {
   }
 
   bool hasAttribute(String attr){
-    return _attrs[attr] != null;
+    return _attrs.containsKey(attr);
   }
 
   Map<String, dynamic> get attrs => _attrs;

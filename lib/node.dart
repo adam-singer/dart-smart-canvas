@@ -19,6 +19,13 @@ abstract class Node extends NodeBase {
     _attrs.addAll(config);
     _x0 = getAttribute(X, 0);
     _y0 = getAttribute(Y, 0);
+    if (hasAttribute(OFFSET_X)) {
+      _transformMatrix.tx -= getAttribute(OFFSET_X);
+    }
+
+    if (hasAttribute(OFFSET_Y)) {
+      _transformMatrix.ty -= getAttribute(OFFSET_Y);
+    }
   }
 
   void remove() {
@@ -121,7 +128,6 @@ abstract class Node extends NodeBase {
     return this;
   }
 
-
   Node clone([Map<String, dynamic> config]) {
     ClassMirror cm = reflectClass(this.runtimeType);
     Map<String, dynamic> cnfg;
@@ -142,6 +148,11 @@ abstract class Node extends NodeBase {
     return new BBox();
   }
 
+  void dragStart(DOM.MouseEvent e) {
+    if (_reflection != null) {
+      (_reflection as Node)._impl.dragStart(e);
+    }
+  }
 
   /**
    * Show the node
@@ -192,11 +203,25 @@ abstract class Node extends NodeBase {
   void set id(String value) => setAttribute(ID, value);
   String get id => getAttribute(ID);
 
-  void set x(num value) { tx = value; }
+  void set x(num value) { translateX = value; }
   num get x { return _x0 + _transformMatrix.tx; }
 
-  void set y(num value) { ty = value; }
+  void set y(num value) { translateY = value; }
   num get y { return _y0 + _transformMatrix.ty; }
+
+  void set offsetX(num value) {
+    num oldValue = getAttribute(OFFSET_X, 0);
+    _attrs[OFFSET_X] = value;
+    _transformMatrix.tx += value - oldValue;
+  }
+  num get offsetX => getAttribute(OFFSET_X, 0);
+
+  void set offsetY(num value) {
+    num oldValue = getAttribute(OFFSET_Y, 0);
+    _attrs[OFFSET_Y] = value;
+    _transformMatrix.ty += value - oldValue;
+  }
+  num get offsetY => getAttribute(OFFSET_Y, 0);
 
   void set width(num value) => setAttribute(WIDTH, value);
   num get width => getAttribute(WIDTH, 0);
@@ -262,28 +287,42 @@ abstract class Node extends NodeBase {
   }
   num get scaleY => _transformMatrix.sy;
 
-  void set tx(num tx) {
+  void set translateX(num tx) {
     num oldValue = _transformMatrix.tx;
     _transformMatrix.tx = tx;
     if (oldValue != tx) {
       fire('translateXChanged', oldValue, tx);
     }
   }
-  num get tx => _transformMatrix.tx;
+  num get translateX => _transformMatrix.tx;
 
-  void set ty(num ty) {
+  void set translateY(num ty) {
     num oldValue = _transformMatrix.ty;
     _transformMatrix.ty = ty;
     if (oldValue != ty) {
       fire('translateYChanged', oldValue, ty);
     }
   }
-  num get ty => _transformMatrix.ty;
+  num get translateY => _transformMatrix.ty;
 
   TransformMatrix get transformMatrix => _transformMatrix;
 
   Position get position {
-    return new Position(x: _x0 + transformMatrix.tx, y: _y0 + transformMatrix.ty);
+    return new Position(x: _x0 +  transformMatrix.tx, y: _y0 + transformMatrix.ty);
+  }
+
+  void set absolutePosition(Position pos) {
+    Position position = new Position();
+    Position posParent;
+    var parent = _parent;
+    while (parent != null) {
+      posParent = (parent as Node).position;
+      position.x += posParent.x;
+      position.y += posParent.y;
+      parent = parent.parent;
+    }
+    this.x = pos.x - position.x;
+    this.y = pos.y - position.y;
   }
 
   Position get absolutePosition {
@@ -292,15 +331,9 @@ abstract class Node extends NodeBase {
     var parent = _parent;
     while (parent != null) {
       posParent = (parent as Node).position;
-      pos.x += posParent.x;
-      pos.y += posParent.y;
+      pos += posParent;
       parent = parent.parent;
     }
     return pos;
-//    if (_impl != null) {
-//      return _impl.absolutePosition;
-//    } else {
-//      return new Position();
-//    }
   }
 }

@@ -3,9 +3,11 @@ import '../lib/smartcanvas.dart';
 
 void main() {
   dom.Element container = dom.document.querySelector('#smartCanvas');
+
+
   Stage stage = new Stage(container, svg, {
-      WIDTH: 600,
-      HEIGHT: 600,
+      WIDTH: container.clientWidth,
+      HEIGHT: 900,
 //      DRAGGABLE: true
     });
 
@@ -207,9 +209,14 @@ void main() {
       STROKE_WIDTH: 0.5
     }));
     Rect grid = new Rect({
-       WIDTH: 600,
-       HEIGHT: 600,
+       WIDTH: stage.width,
+       HEIGHT: stage.height,
        FILL: fillPattern
     });
     stage.add(grid);
+
+    dom.window.onResize.listen((e) {
+      stage.width = container.clientWidth;
+      grid.width = stage.width;
+    });
 }

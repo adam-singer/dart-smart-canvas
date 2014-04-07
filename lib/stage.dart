@@ -53,8 +53,11 @@ class Stage extends NodeBase implements Container<Node> {
     _element.setAttribute('role', 'presentation');
     _element.style
       ..display = 'inline-block'
+      ..position = 'relative'
       ..width = '${getAttribute(WIDTH)}'
-      ..height = '${getAttribute(HEIGHT)}';
+      ..height = '${getAttribute(HEIGHT)}'
+      ..margin = '0'
+      ..padding = '0';
   }
 
   void _populateConfig(Map<String, dynamic> config) {

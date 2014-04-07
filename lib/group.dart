@@ -40,17 +40,7 @@ class Group extends Node implements Container<Node> {
       // only reflect reflectable node
       if (child.reflectable) {
         _reflectionAdd(child);
-//        // if group wasn't reflectable, reflect its children.
-//        if (child is Container) {
-//          (child as Container).children.forEach((node) {
-//            _reflectionAdd(node);
-//          });
-//        }
-//        return;
       }
-
-      // add child to reflection
-//      _reflectionAdd(child);
     }
   }
 

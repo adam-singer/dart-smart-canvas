@@ -42,6 +42,9 @@ abstract class NodeImpl extends NodeBase {
     return null;
   }
 
+  void set id(String value) => setAttribute(ID, value);
+  String get id => getAttribute(ID, '');
+
   num get width => getAttribute(WIDTH);
   num get height => getAttribute(HEIGHT);
   bool get isDragging;

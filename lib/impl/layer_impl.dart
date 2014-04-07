@@ -9,4 +9,6 @@ abstract class LayerImpl extends NodeImpl implements Container<NodeImpl> {
   void resume();
 
   DOM.Element get element => _element;
+
+  void addPattern(pattern);
 }

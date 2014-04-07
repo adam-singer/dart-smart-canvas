@@ -97,6 +97,11 @@ abstract class SvgNode extends NodeImpl {
 
   void _setElementStyle(String name) {
     if (hasAttribute(name)) {
+      var value = getAttribute(name);
+      if (value is SCPattern) {
+        _element.setAttribute(name, 'url(#${value.id})');
+        return;
+      }
       _element.style.setProperty(name, '${getAttribute(name)}');
     } else {
       _element.style.removeProperty(name);
@@ -274,13 +279,15 @@ abstract class SvgNode extends NodeImpl {
   }
 
   void _setTransform() {
-    SVG.GraphicsElement el = _element as SVG.GraphicsElement;
-    SVG.Transform tr = el.transform.baseVal.createSvgTransformFromMatrix(_elMatrix);
-    if (el.transform.baseVal.length == 0) {
-      el.transform.baseVal.appendItem(tr);
-    } else {
-      el.transform.baseVal.replaceItem(tr, 0);
-    }
+    try {
+      SVG.GraphicsElement el = _element as SVG.GraphicsElement;
+      SVG.Transform tr = el.transform.baseVal.createSvgTransformFromMatrix(_elMatrix);
+      if (el.transform.baseVal.length == 0) {
+        el.transform.baseVal.appendItem(tr);
+      } else {
+        el.transform.baseVal.replaceItem(tr, 0);
+      }
+    } catch(e) {}
   }
 
   String get _nodeName;

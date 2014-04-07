@@ -179,16 +179,37 @@ void main() {
 ////    c2.moveTo(canvas.defaultLayer);
 //    layer.draggalbe = true;
 
-    var polyline = new Polyline({
-      'points': [200, 200, -100, -100], // 200, 200, 300, 200],
-      'stroke': 'red',
-      'stroke-width': 5,
-      'fill': 'none'
-    });
-    stage.add(polyline);
+//    var polyline = new Polyline({
+//      'points': [200, 200, -100, -100], // 200, 200, 300, 200],
+//      'stroke': 'red',
+//      'stroke-width': 5,
+//      'fill': 'none'
+//    });
+//    stage.add(polyline);
 
     // test scale
 //    stage.scaleX = 1.67;
 //    stage.scaleX = 0.5;
 //    stage.scaleY = 0.5;
+
+
+    // test pattern
+    SCPattern fillPattern = new SCPattern({
+      ID: 'grid',
+      WIDTH: 8,
+      HEIGHT: 8,
+      PATTERN_UNITS: "userSpaceOnUse"
+    });
+    fillPattern.add(new Path({
+      D: 'M8 0 L0 0 0 8',
+      FILL: 'none',
+      STROKE: 'red',
+      STROKE_WIDTH: 0.5
+    }));
+    Rect grid = new Rect({
+       WIDTH: 600,
+       HEIGHT: 600,
+       FILL: fillPattern
+    });
+    stage.add(grid);
 }

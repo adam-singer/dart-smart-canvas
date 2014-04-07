@@ -75,6 +75,7 @@ const String STAGE_DBLCLICK = 'stageDblClick';
 const String STAGE_CLICK = 'sstageClick';
 const String OFFSET_X = 'offsetX';
 const String OFFSET_Y = 'offsetY';
+const String PATTERN_UNITS = 'patternUnits';
 
 // svg node names
 const String SC_LAYER = '__sc_layer';

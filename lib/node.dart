@@ -200,6 +200,8 @@ abstract class Node extends NodeBase {
     return layer == null ? null : layer.stage;
   }
 
+  NodeImpl get impl => _impl;
+
   void set id(String value) => setAttribute(ID, value);
   String get id => getAttribute(ID);
 
@@ -229,8 +231,8 @@ abstract class Node extends NodeBase {
   void set height(num value) => setAttribute(HEIGHT, value);
   num get height => getAttribute(HEIGHT, 0);
 
-  void set stroke(String value) => setAttribute(STROKE, value);
-  String get stroke => getAttribute(STROKE);
+  void set stroke(dynamic value) => setAttribute(STROKE, value);
+  dynamic get stroke => getAttribute(STROKE);
 
   void set strokeWidth(num value) => setAttribute(STROKE_WIDTH, value);
   num get strokeWidth => getAttribute(STROKE_WIDTH);
@@ -238,8 +240,8 @@ abstract class Node extends NodeBase {
   void set strokeOpacity(num value) => setAttribute(STROKE_OPACITY, value);
   num get strokeOpacity => getAttribute(STROKE_OPACITY);
 
-  void set fill(String value) => setAttribute(FILL, value);
-  String get fill => getAttribute(FILL);
+  void set fill(dynamic value) => setAttribute(FILL, value);
+  dynamic get fill => getAttribute(FILL);
 
   void set fillOpacity(num value) => setAttribute(FILL_OPACITY, value);
   num get fillOpacity => getAttribute(FILL_OPACITY);

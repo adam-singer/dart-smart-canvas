@@ -59,6 +59,12 @@ class Layer extends Group {
     _impl.addPattern(pattern.impl as SvgPattern);
   }
 
+  void removePattern(SCPattern pattern) {
+    if (pattern.impl != null) {
+      _impl.removePattern(pattern.impl);
+    }
+  }
+
   void _handleStageDragMove(e) {
     _transformMatrix.tx = _stage._transformMatrix.tx;
     _transformMatrix.ty = _stage._transformMatrix.ty;
@@ -75,9 +81,6 @@ class Layer extends Group {
     _stage
     .on('widthChanged', (oldValue, newValue) { width = newValue; })
     .on('heightChanged', (oldValue, newValue) { height = newValue; })
-//    .on('scaleXChanged', (oldValue, newValue) { scaleX = newValue; })
-//    .on('scaleYChanged', (oldValue, newValue) { scaleY = newValue; })
-//    .on(DRAGMOVE, _handleStageDragMove);
     ;
     fire('stageSet');
   }

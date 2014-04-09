@@ -30,6 +30,14 @@ abstract class Node extends NodeBase {
 
   void remove() {
     if (_parent != null) {
+      if (layer != null) {
+        if (fill is SCPattern) {
+          layer.removePattern(fill);
+        } else if (stroke is SCPattern) {
+          layer.removePattern(stroke);
+        }
+      }
+
       if (_impl != null) {
         _impl.remove();
       }
@@ -152,6 +160,21 @@ abstract class Node extends NodeBase {
     if (_reflection != null) {
       (_reflection as Node)._impl.dragStart(e);
     }
+  }
+
+  Position getRelativePosition(Node referenceParent) {
+    Position pos = position;
+    Position posParent;
+    var parent = _parent;
+    while (parent != null) {
+      posParent = (parent as Node).position;
+      pos += posParent;
+      if (parent == referenceParent) {
+        return pos;
+      }
+      parent = parent.parent;
+    }
+    return null;
   }
 
   /**

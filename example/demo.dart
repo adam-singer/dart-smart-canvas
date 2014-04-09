@@ -8,7 +8,7 @@ void main() {
   Stage stage = new Stage(container, svg, {
       WIDTH: container.clientWidth,
       HEIGHT: 900,
-//      DRAGGABLE: true
+      DRAGGABLE: true
     });
 
     Circle circle = new Circle({
@@ -194,7 +194,6 @@ void main() {
 //    stage.scaleX = 0.5;
 //    stage.scaleY = 0.5;
 
-
     // test pattern
     SCPattern fillPattern = new SCPattern({
       ID: 'grid',
@@ -215,8 +214,10 @@ void main() {
     });
     stage.add(grid);
 
-    dom.window.onResize.listen((e) {
-      stage.width = container.clientWidth;
-      grid.width = stage.width;
-    });
+    grid.remove();
+//
+//    dom.window.onResize.listen((e) {
+//      stage.width = container.clientWidth;
+//      grid.width = stage.width;
+//    });
 }

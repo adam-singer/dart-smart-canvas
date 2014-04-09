@@ -57,6 +57,15 @@ class SvgLayer extends SvgNode implements LayerImpl {
     _defs.append(pattern.element);
   }
 
+  void removePattern(SvgPattern pattern) {
+    _patterns.remove(pattern);
+    pattern.element.remove();
+    if (_defs.nodes.isEmpty) {
+      _defs.remove();
+      _defs = null;
+    }
+  }
+
   void add(SvgNode child) {
     _children.add(child);
     child.parent = this;
@@ -122,26 +131,11 @@ class SvgLayer extends SvgNode implements LayerImpl {
   }
 
   void _onTranslateXChanged(oldValue, newValue) {
-    _elMatrix
-    ..a = transformMatrix.sx
-    ..b = transformMatrix.rx
-    ..c = transformMatrix.ry
-    ..d = transformMatrix.sy;
-
-    SVG.Matrix m = _elMatrix.translate(transformMatrix.tx, transformMatrix.ty);
-    (_element as SVG.SvgSvgElement).viewBox.baseVal.x = -m.e;
-    print('--${(_element as SVG.SvgSvgElement).viewBox.baseVal.x}');
+    (_element as SVG.SvgSvgElement).viewBox.baseVal.x = -newValue;
   }
 
   void _onTranslateYChanged(oldValue, newValue) {
-    _elMatrix
-    ..a = transformMatrix.sx
-    ..b = transformMatrix.rx
-    ..c = transformMatrix.ry
-    ..d = transformMatrix.sy;
-
-    SVG.Matrix m = _elMatrix.translate(transformMatrix.tx, transformMatrix.ty);
-    (_element as SVG.SvgSvgElement).viewBox.baseVal.y = -m.f;
+    (_element as SVG.SvgSvgElement).viewBox.baseVal.y = -newValue;
   }
 
   List<SvgNode> get children => _children;

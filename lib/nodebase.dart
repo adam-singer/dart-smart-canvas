@@ -60,4 +60,5 @@ class NodeBase extends EventBus {
   }
 
   Map<String, dynamic> get attrs => _attrs;
+  int get uid => _uid;
 }

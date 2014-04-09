@@ -17,6 +17,7 @@ abstract class SvgNode extends NodeImpl {
   SvgNode(Node shell) : super(shell) {
     _setClassName();
     _element = _createElement();
+    _element.dataset['scNode'] = '${shell.uid}';
     _setElementAttributes();
     _setElementStyles();
     translate();
@@ -172,16 +173,9 @@ abstract class SvgNode extends NodeImpl {
     var pointerPosition = this.stage.pointerPosition;
     var m = (_element as SVG.GraphicsElement).getCtm();
 
-    var m1 = (_element as SVG.GraphicsElement).getScreenCtm();
-          print('dS: ${m1.e}, ${m1.f}');
+    this._dragOffsetX = pointerPosition.x - m.e / m.a + stage.tx; //* stage.scaleX;
+    this._dragOffsetY = pointerPosition.y - m.f / m.d + stage.ty; // * stage.scaleY;
 
-    this._dragOffsetX = pointerPosition.x - m.e / m.a + stage.tx * stage.scaleX;
-    this._dragOffsetY = pointerPosition.y - m.f / m.d + stage.ty * stage.scaleY;
-
-    print ('dragStart - pp: ${pointerPosition.x}, ${pointerPosition.y} ' +
-        'offset: ${_dragOffsetX}, ${_dragOffsetY}  '+
-        's: ${stage.scaleX} ${stage.scaleY} t:${stage.tx}, ${stage.ty} ' +
-        'x:${m.e}, ${m.a} - y:${m.f}, ${m.d}');
     if (_dragMoveHandler == null) {
       _dragMoveHandler = this.stage.element.onMouseMove.listen(_dragMove);
     }
@@ -204,12 +198,9 @@ abstract class SvgNode extends NodeImpl {
       }
       var pointerPosition = this.stage.pointerPosition;
       var m = (_element as SVG.GraphicsElement).getCtm();
-      var m1 = (_element as SVG.GraphicsElement).getScreenCtm();
-      print('dM: ${m1.e}, ${m1.f}');
+
       transformMatrix.tx = (pointerPosition.x - this._dragOffsetX);
       transformMatrix.ty = (pointerPosition.y - this._dragOffsetY);
-      print ('dragMove - pp: ${pointerPosition.x}, ${pointerPosition.y} '+
-          ' offset: ${_dragOffsetX}, ${_dragOffsetY} ${transformMatrix.tx}, ${transformMatrix.ty}');
 
       translate();
       fire(DRAGMOVE, e);

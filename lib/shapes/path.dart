@@ -10,4 +10,7 @@ class Path extends Node {
   NodeImpl _createCanvasImpl() {
     throw ExpNotImplemented;
   }
+
+  void set d(String value) => setAttribute(D, value);
+  String get d => getAttribute(D);
 }

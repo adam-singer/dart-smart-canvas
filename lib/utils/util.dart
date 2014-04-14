@@ -1,7 +1,13 @@
 part of smartcanvas;
 
 String capitalize(String s) {
-  return s[0].toUpperCase() + s.substring(1);
+  if (s.length > 0) {
+    if (s.length == 1) {
+      return s[0].toUpperCase();
+    }
+    return s[0].toUpperCase() + s.substring(1);
+  }
+  return s;
 }
 
 dynamic getValue(Map map, key, [defaultValue = null]) {
@@ -20,7 +26,15 @@ Map merge(Map map1, Map map2, [Map map3 = null, Map map4 = null]) {
     map.forEach((k, v) {
       if (rt.containsKey(k)) {
         if (v is Map) {
-          rt [k] = merge(rt[k], map[k]);
+          rt[k] = merge(rt[k], map[k]);
+        } else if (v is Iterable){
+          for (int i = 0; i < v.length && i < rt[k].length; i++) {
+            if (v[i] is Map) {
+              rt[k][i] = merge(rt[k][i], v[i]);
+            } else {
+              rt[k][i] = v[i];
+            }
+          }
         } else {
           rt[k] = v;
         }

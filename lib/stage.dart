@@ -22,8 +22,12 @@ class Stage extends NodeBase implements Container<Node> {
     if (_container == null) {
       throw "container doesn't exit";
     }
-    _container.createShadowRoot().append(this._element);
-//    _container.nodes.add(this._element);
+
+    if (!getValue(config, DISABLE_SHADOW_ROOT, false)) {
+      _container.createShadowRoot().append(this._element);
+    } else {
+      _container.nodes.add(this._element);
+    }
 
     _reflectionLayer = new _ReflectionLayer({
       WIDTH: this.width,
@@ -112,8 +116,8 @@ class Stage extends NodeBase implements Container<Node> {
   }
 
   void _setPointerPosition(e) {
-    num x = ((e.client.x - _element.offsetLeft)/ _transformMatrix.sx).round();
-    num y = ((e.client.y - _element.offsetTop) / _transformMatrix.sy).round();
+    num x = (e.client.x - _element.offsetLeft) ~/ _transformMatrix.sx;
+    num y = (e.client.y - _element.offsetTop) ~/ _transformMatrix.sy;
 //    print('cx: ${e.client.x}, ${e.client.y} - offset:${_element.offsetLeft}, ${_element.offsetTop} - t: ${_transformMatrix.tx}, ${_transformMatrix.ty} - pp: $x, $y');
     this._pointerPosition = new Position(x: x, y: y);
 //    add(new Circle({
@@ -160,7 +164,7 @@ class Stage extends NodeBase implements Container<Node> {
   void removeChild(Node node) {
     if (node is Layer) {
       _children.remove(node);
-      node._stage = null;
+      node._parent = null;
     } else {
       _defaultLayer.removeChild(node);
     }
@@ -296,5 +300,7 @@ class Stage extends NodeBase implements Container<Node> {
   bool get draggable => getAttribute(DRAGGABLE, false);
 
   bool get dragging => _dragging;
+
+
 }
 

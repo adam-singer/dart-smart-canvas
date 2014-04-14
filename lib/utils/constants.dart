@@ -76,6 +76,7 @@ const String STAGE_CLICK = 'sstageClick';
 const String OFFSET_X = 'offsetX';
 const String OFFSET_Y = 'offsetY';
 const String PATTERN_UNITS = 'patternUnits';
+const String DISABLE_SHADOW_ROOT = 'disableShadowRoot';
 
 // svg node names
 const String SC_LAYER = '__sc_layer';

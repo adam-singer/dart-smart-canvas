@@ -111,7 +111,9 @@ abstract class SvgNode extends NodeImpl {
 
   void remove() {
     _element.remove();
-    (parent as Container).children.remove(this);
+    if (parent != null) {
+      (parent as Container).children.remove(this);
+    }
     parent = null;
   }
 

@@ -1,7 +1,7 @@
 part of smartcanvas;
 
 class Layer extends Group {
-  Stage _stage;
+  Stage _parent;
   LayerImpl _impl;
   String _type;
 
@@ -66,8 +66,8 @@ class Layer extends Group {
   }
 
   void _handleStageDragMove(e) {
-    _transformMatrix.tx = _stage._transformMatrix.tx;
-    _transformMatrix.ty = _stage._transformMatrix.ty;
+    _transformMatrix.tx = _parent._transformMatrix.tx;
+    _transformMatrix.ty = _parent._transformMatrix.ty;
     fire('translateChanged');
   }
 
@@ -76,15 +76,15 @@ class Layer extends Group {
   String get type => _type;
 
   void set stage(Stage value) {
-    _stage = value;
-    _transformMatrix = _stage._transformMatrix;
-    _stage
+    _parent = value;
+    _transformMatrix = _parent._transformMatrix;
+    _parent
     .on('widthChanged', (oldValue, newValue) { width = newValue; })
     .on('heightChanged', (oldValue, newValue) { height = newValue; })
     ;
     fire('stageSet');
   }
-  Stage get stage => _stage;
+  Stage get stage => _parent;
 
   num get width => getAttribute(WIDTH);
   num get height => getAttribute(HEIGHT);

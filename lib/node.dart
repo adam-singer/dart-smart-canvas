@@ -152,8 +152,9 @@ abstract class Node extends NodeBase {
     return clone;
   }
 
-  BBox getBBox() {
-    return new BBox();
+  BBox getBBox(bool isAbsolute) {
+    Position pos = isAbsolute ? this.absolutePosition : this.position;
+    return new BBox(x: pos.x, y: pos.y, width: this.width, height: this.height);
   }
 
   void dragStart(DOM.MouseEvent e) {
@@ -210,10 +211,10 @@ abstract class Node extends NodeBase {
    */
   Layer get layer {
     Node parent = this._parent as Node;
-    while(parent != null && parent._parent != null) {
+    while(parent != null && parent is! Layer) {
       parent = parent._parent as Node;
     }
-    return (parent is Layer) ? parent : null;
+    return parent;
   }
 
   /**
@@ -340,7 +341,7 @@ abstract class Node extends NodeBase {
     Position position = new Position();
     Position posParent;
     var parent = _parent;
-    while (parent != null) {
+    while (parent != null && parent is! Stage) {
       posParent = (parent as Node).position;
       position.x += posParent.x;
       position.y += posParent.y;
@@ -354,7 +355,7 @@ abstract class Node extends NodeBase {
     Position pos = position;
     Position posParent;
     var parent = _parent;
-    while (parent != null) {
+    while (parent != null && parent is! Stage) {
       posParent = (parent as Node).position;
       pos += posParent;
       parent = parent.parent;

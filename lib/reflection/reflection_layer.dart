@@ -62,15 +62,15 @@ class _ReflectionLayer extends Layer implements _I_Container_Reflection {
     var reflection = _createReflection(node);
 
     // find top layer
-    var topLayerIndex = _stage._children.length - 1;
+    var topLayerIndex = _parent._children.length - 1;
 
     // check if the node is on top layer
-    if (topLayerIndex >= 0 && _stage._children.indexOf(node.layer) < topLayerIndex) {
+    if (topLayerIndex >= 0 && _parent._children.indexOf(node.layer) < topLayerIndex) {
       // the node isn't on top layer
       // insert the node before the first node of the top layer
 
       // get top layer
-      var topLayer = _stage._children[topLayerIndex];
+      var topLayer = _parent._children[topLayerIndex];
 
       // find the reflection index of the first node in top layer
       var firstReflectableNode = topLayer.firstReflectableNode(excludeChild: true);

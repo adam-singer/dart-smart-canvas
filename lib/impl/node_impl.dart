@@ -28,16 +28,16 @@ abstract class NodeImpl extends NodeBase {
 
   LayerImpl get layer {
     NodeImpl parent = this.parent;
-    while(parent != null && parent.parent != null) {
+    while(parent != null && parent is! LayerImpl) {
       parent = parent.parent;
     }
-    return (parent is LayerImpl) ? parent : null;
+    return parent;
   }
 
   Stage get stage {
     LayerImpl layer = this.layer;
     if (layer != null) {
-      return (layer.shell as Layer)._stage;
+      return (layer.shell as Layer)._parent;
     }
     return null;
   }

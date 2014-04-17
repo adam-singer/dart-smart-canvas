@@ -179,15 +179,15 @@ class Stage extends NodeBase implements Container<Node> {
         node.width = this.width;
         node.height = this.height;
       }
-      node.createImpl(node.type);
+//      node.createImpl(node.type);
       _element.nodes.insert(index, node._impl.element);
 
-      if (node._reflection == null) {
+//      if (node._reflection == null) {
         node._reflection = _reflectionLayer;
         node.children.forEach((child) {
           _reflectionLayer.reflectNode(child);
         });
-      }
+//      }
 
     } else {
       _defaultLayer.insert(index, node);
@@ -300,7 +300,5 @@ class Stage extends NodeBase implements Container<Node> {
   bool get draggable => getAttribute(DRAGGABLE, false);
 
   bool get dragging => _dragging;
-
-
 }
 

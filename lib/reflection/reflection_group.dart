@@ -21,7 +21,7 @@ class _ReflectionGroup extends Group implements _I_Container_Reflection {
         return;
       }
 
-      Node _reflectionChild = (child is Group) ? new _ReflectionGroup(child) : new _ReflectionNode(child);
+      Node _reflectionChild = _createReflection(child) as Node;
       add(_reflectionChild);
     });
   }

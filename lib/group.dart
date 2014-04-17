@@ -8,7 +8,9 @@ class Group extends Node implements Container<Node> {
   NodeImpl _createSvgImpl() {
     SvgGroup impl = new SvgGroup(this);
     _children.forEach((node) {
-      node._impl = node.createImpl(svg);
+      if (node.impl == null || node._impl.type != svg) {
+        node._impl = node.createImpl(svg);
+      }
       impl.add(node._impl);
     });
     return impl;

@@ -50,12 +50,12 @@ class _ReflectionLayer extends Layer implements _I_Container_Reflection {
     }
 
     if (!node.reflectable) {
-      // if group wasn't reflectable, reflect its children
-      if (node is Container) {
-        (node as Container).children.forEach((child){
-          reflectNode(child);
-        });
-      }
+//      // if group wasn't reflectable, reflect its children
+//      if (node is Container) {
+//        (node as Container).children.forEach((child){
+//          reflectNode(child);
+//        });
+//      }
       return;
     }
 

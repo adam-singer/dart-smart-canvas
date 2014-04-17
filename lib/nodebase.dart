@@ -21,9 +21,13 @@ class NodeBase extends EventBus {
     }
   }
 
-  void setAttribute(String attr, dynamic value) {
+  void setAttribute(String attr, dynamic value, [bool removeIfNull = false]) {
     var oldValue = _attrs[attr];
-    _attrs[attr] = value;
+    if (value == null && removeIfNull) {
+      removeAttribute(attr);
+    } else {
+      _attrs[attr] = value;
+    }
     if (oldValue != value) {
       var event = attr + CHANGED;
       if (hasListener(event)) {

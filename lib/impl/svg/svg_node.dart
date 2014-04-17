@@ -73,6 +73,7 @@ abstract class SvgNode extends NodeImpl {
 
   List<String> _getStyleNames() {
     return [STROKE, STROKE_WIDTH, STROKE_OPACITY,
+            STROKE_LINECAP, STROKE_DASHARRAY,
             FILL, OPACITY, DISPLAY];
   }
 
@@ -97,8 +98,8 @@ abstract class SvgNode extends NodeImpl {
   }
 
   void _setElementStyle(String name) {
-    if (hasAttribute(name)) {
-      var value = getAttribute(name);
+    var value = getAttribute(name);
+    if (value != null) {
       if (value is SCPattern) {
         _element.setAttribute(name, 'url(#${value.id})');
         return;
@@ -164,7 +165,10 @@ abstract class SvgNode extends NodeImpl {
   }
 
   void dragStart(DOM.MouseEvent e) {
-    if (stage.dragging) {
+    if (e.button != 0 ||
+        !DOM.window.navigator.userAgent.contains('Mac OS') ||
+        e.ctrlKey ||
+        stage.dragging) {
       return;
     }
 

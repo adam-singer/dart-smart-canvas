@@ -264,6 +264,12 @@ abstract class Node extends NodeBase {
   void set strokeOpacity(num value) => setAttribute(STROKE_OPACITY, value);
   num get strokeOpacity => getAttribute(STROKE_OPACITY);
 
+  void set strokeLinecap(String value) => setAttribute(STROKE_LINECAP, value);
+  String get strokeLinecap => getAttribute(STROKE_LINECAP);
+
+  void set strokeDashArray(String value) => setAttribute(STROKE_DASHARRAY, value, true);
+  String get strokeDashArray => getAttribute(STROKE_DASHARRAY);
+
   void set fill(dynamic value) => setAttribute(FILL, value);
   dynamic get fill => getAttribute(FILL);
 
@@ -362,4 +368,6 @@ abstract class Node extends NodeBase {
     }
     return pos;
   }
+
+  bool get isReflection => this is _I_Reflection;
 }

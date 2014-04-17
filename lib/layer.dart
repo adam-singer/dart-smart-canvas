@@ -71,6 +71,33 @@ class Layer extends Group {
     fire('translateChanged');
   }
 
+  void remove() {
+    if (_parent != null) {
+      if (layer != null) {
+        if (fill is SCPattern) {
+          layer.removePattern(fill);
+        } else if (stroke is SCPattern) {
+          layer.removePattern(stroke);
+        }
+      }
+
+      if (_impl != null) {
+        _impl.remove();
+      }
+
+      if (_reflection != null) {
+        _children.forEach((child) {
+          if (child._reflection != null) {
+            (child._reflection as Node).remove();
+          }
+        });
+      }
+
+      _parent.children.remove(this);
+      _parent = null;
+    }
+  }
+
   Layer get layer => this;
 
   String get type => _type;
